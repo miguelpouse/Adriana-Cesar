@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda - Adriana y César</title>
+    
+    <!-- Nuevas Fuentes Más Elegantes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400&family=Pinyon+Script&display=swap" rel="stylesheet">
+
+    <style>
+        /* ================= CSS ================= */
+        :root {
+            --bg-color: #FDF9F1; /* Crema Nude */
+            --text-dark: #1B2A47; /* Azul Marino */
+            --accent: #C2593E; /* Terracota */
+            --accent-alt: #5B7040; /* Verde Olivo */
+            --gold: #D4AF37; /* Dorado */
+            --blush: #FDECEF; /* Rosa Blush */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            text-align: center;
+            overflow-x: hidden;
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .script-text {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 3rem;
+            color: var(--gold);
+        }
+
+        /* --- Animación de Latido para el Título --- */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.08); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.08); }
+            70% { transform: scale(1); }
+        }
+
+        .heartbeat {
+            display: inline-block;
+            animation: heartbeat 2s infinite;
+        }
+
+        /* Sistema de Animaciones Globales (Fade In Up) */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero / Video Background */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #FFFFFF;
+            overflow: hidden;
+        }
+
+        .hero video {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(27, 42, 71, 0.5);
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+            color: var(--gold);
+            line-height: 1.2;
+        }
+
+        .hero p.subtitle {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: var(--blush);
+            font-family: 'Lato', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Separadores Florales Full-Width (De Ancho Completo) */
+        .floral-divider-container {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            overflow: hidden;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        .floral-divider {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
+            opacity: 0.85;
+        }
+
+        /* Sección general */
+        section {
+            padding: 40px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--accent-alt);
+            margin-bottom: 15px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        /* Sección Padres y Padrinos */
+        .parents-godparents-container {
+            background: white;
+            border-radius: 12px;
+            padding: 35px 25px;
+            box-shadow: 0 8px 25px rgba(27, 42, 71, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .family-group {
+            margin-bottom: 25px;
+        }
+
+        .family-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .family-group h3 {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .family-names {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .family-divider-line {
+            width: 40px;
+            height: 1px;
+            background-color: var(--gold);
+            margin: 20px auto;
+        }
+
+        /* Efecto Rasca y Gana */
+        .scratch-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .scratch-card {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background-color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border: 1px solid var(--gold);
+        }
+
+        .scratch-card span {
+            font-size: 1.4rem;
+            font-family: 'Cinzel', serif;
+            color: var(--text-dark);
+        }
+
+        .scratch-card small {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.55rem;
+            letter-spacing: 1px;
+            color: var(--accent-alt);
+        }
+
+        canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            cursor: pointer;
+        }
+
+        /* Cuenta Regresiva Oculta inicialmente */
+        #countdown-wrapper {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #countdown-wrapper.revealed {
+            opacity: 1;
+            max-height: 500px;
+            transform: translateY(0);
+            margin-top: 20px;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            font-size: 1rem;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--blush);
+            padding: 15px;
+            border-radius: 8px;
+            min-width: 70px;
+        }
+        
+        .countdown-item span.num {
+            font-size: 1.8rem;
+            font-family: 'Cinzel', serif;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        /* Tarjetas de Evento */
+        .event-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(27, 42, 71, 0.08);
+            border-top: 3px solid var(--accent-alt);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .icon-svg {
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: background-color 0.3s, transform 0.2s;
+            font-family: 'Cinzel', sans-serif;
+        }
+
+        .btn:hover {
+            background-color: #a3462f; 
+            transform: translateY(-2px);
+        }
+
+        /* Carrusel Vertical con Movimiento Constante y Suave tipo Cinta */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid var(--gold);
+            background: white;
+            padding: 15px;
+            box-shadow: 0 8px 25px rgba(27, 42, 71, 0.05);
+        }
+
+        .carousel {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            scroll-behavior: auto; /* Desactivado el smooth nativo para controlarlo por JS de forma continua */
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .carousel img {
+            width: 70%;
+            min-width: 70%;
+            height: 450px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border-radius: 8px;
+            filter: grayscale(100%) contrast(110%);
+            transition: filter 0.5s ease, transform 0.5s ease;
+            pointer-events: auto;
+        }
+
+        /* Al pasar el cursor sobre la foto, recupera su color original */
+        .carousel img:hover {
+            filter: grayscale(0%) contrast(100%);
+            transform: scale(1.02);
+        }
+
+        /* Sección Cómo Llegar Mejorada */
+        .location-section {
+            background: white;
+            border-radius: 12px;
+            padding: 35px 25px;
+            box-shadow: 0 8px 25px rgba(27, 42, 71, 0.06);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            text-align: left;
+        }
+
+        .location-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            background: var(--bg-color);
+            border: 1px solid var(--gold);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Cinzel', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--text-dark);
+            color: white;
+            border-color: var(--text-dark);
+        }
+
+        .location-content {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .location-content.active {
+            display: block;
+        }
+
+        .location-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Grid de Botones Acciones */
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .action-card {
+            background: white;
+            padding: 30px 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .action-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        /* Modales */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(27, 42, 71, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--bg-color);
+            padding: 40px 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            border: 1px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 2rem;
+            font-weight: 300;
+            cursor: pointer;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        /* Formularios en Modal */
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border: 1px solid rgba(27, 42, 71, 0.2);
+            border-radius: 4px;
+            background-color: white;
+            color: var(--text-dark);
+            font-family: 'Lato', sans-serif;
+        }
+        
+        .radio-group {
+            display: flex; 
+            justify-content: space-around; 
+            margin: 20px 0;
+        }
+
+        /* Footer Enriquecido */
+        footer {
+            background-color: var(--text-dark);
+            color: var(--bg-color);
+            padding: 60px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        footer h2 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        
+        .footer-divider {
+            width: 50px;
+            height: 1px;
+            background-color: var(--gold);
+            margin: 15px auto;
+        }
+
+        .footer-social {
+            margin: 20px 0;
+        }
+        
+        .footer-social a {
+            color: var(--gold);
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: opacity 0.3s;
+        }
+
+        .footer-social a:hover {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <video autoplay muted loop playsinline>
+            <source src="portada_vertical_loop.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <h1 class="heartbeat">Adriana<br><span class="script-text">&</span><br>César</h1>
+        <p style="color: white; font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 3px;">¡Nuestra Boda!</p>
+        <p class="subtitle">Te elijo hoy y por el resto de mi vida</p>
+    </header>
+
+    <!-- SEPARADOR FLORAL FULL-WIDTH 1 -->
+    <div class="floral-divider-container">
+        <img src="flores3.png" alt="Decoración floral" class="floral-divider">
+    </div>
+
+    <!-- SECCIÓN PADRES Y PADRINOS -->
+    <section class="animate-on-scroll">
+        <div class="parents-godparents-container">
+            <div class="family-group">
+                <h3>Con la bendición de nuestros padres</h3>
+                <div class="family-names">
+                    <p><strong>Padres de la Novia:</strong><br>Nombre Padre de Novia & Nombre Madre de Novia</p>
+                    <p style="margin-top: 10px;"><strong>Padres del Novio:</strong><br>Nombre Padre de Novio & Nombre Madre de Novio</p>
+                </div>
+            </div>
+
+            <div class="family-divider-line"></div>
+
+            <div class="family-group">
+                <h3>Padrinos de Velación</h3>
+                <div class="family-names">
+                    <p>Nombre Padrino & Nombre Madrina</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEPARADOR FLORAL FULL-WIDTH 2 -->
+    <div class="floral-divider-container">
+        <img src="flores1.png" alt="Decoración floral" class="floral-divider">
+    </div>
+
+    <!-- FECHA Y RASCA Y GANA -->
+    <section class="animate-on-scroll">
+        <h2>Ver la fecha</h2>
+        <p>Rasca los tres círculos para descubrir el gran día y desbloquear la cuenta regresiva.</p>
+        
+        <div class="scratch-container">
+            <div class="scratch-card">
+                <span>17<br><small>DÍA</small></span>
+                <canvas id="scratch1"></canvas>
+            </div>
+            <div class="scratch-card">
+                <span>Octubre<br><small>MES</small></span>
+                <canvas id="scratch2"></canvas>
+            </div>
+            <div class="scratch-card">
+                <span>2026<br><small>AÑO</small></span>
+                <canvas id="scratch3"></canvas>
+            </div>
+        </div>
+
+        <!-- CUENTA REGRESIVA (Oculta hasta raspar) -->
+        <div id="countdown-wrapper">
+            <h2>Faltan</h2>
+            <div class="countdown">
+                <div class="countdown-item"><span class="num" id="dias">00</span><small>Días</small></div>
+                <div class="countdown-item"><span class="num" id="horas">00</span><small>Hs</small></div>
+                <div class="countdown-item"><span class="num" id="mins">00</span><small>Min</small></div>
+                <div class="countdown-item"><span class="num" id="segs">00</span><small>Seg</small></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEPARADOR FLORAL FULL-WIDTH 3 -->
+    <div class="floral-divider-container">
+        <img src="flores1.png" alt="Decoración floral" class="floral-divider">
+    </div>
+
+    <!-- EVENTOS -->
+    <section class="animate-on-scroll">
+        <div class="event-card">
+            <!-- Icono de Iglesia -->
+            <svg class="icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5v-15a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v15a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/>
+                <path d="M12 2v6"/>
+                <path d="M9 5h6"/>
+                <path d="M12 11v4"/>
+                <path d="M10 13h4"/>
+            </svg>
+            <h2>CEREMONIA</h2>
+            <p><strong>Sábado 17 Octubre 2026</strong><br>2:30 PM</p>
+            <p style="margin-top: 10px;">Parroquia Nuestra Señora</p>
+        </div>
+
+        <div class="event-card">
+            <svg class="icon-svg" viewBox="0 0 24 24" width="48" height="48" stroke="var(--gold)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v5a5 5 0 0 0 5 5z"/></svg>
+            <h2>CELEBRACIÓN</h2>
+            <p><strong>Sábado 17 Octubre 2026</strong><br>4:30 PM</p>
+            <p style="margin-top: 10px;">Salón Exclusivo</p>
+        </div>
+    </section>
+
+    <!-- SEPARADOR FLORAL FULL-WIDTH 4 -->
+    <div class="floral-divider-container">
+        <img src="flores1.png" alt="Decoración floral" class="floral-divider">
+    </div>
+
+    <!-- SECCIÓN CÓMO LLEGAR MEJORADA -->
+    <section class="animate-on-scroll">
+        <div class="location-section">
+            <h2 style="text-align: center;">¿Cómo llegar?</h2>
+            <p style="text-align: center; margin-bottom: 20px;">Selecciona el destino para ver la ubicación</p>
+            
+            <div class="location-tabs">
+                <button class="tab-btn active" onclick="switchTab(event, 'ceremonia-loc')">Ceremonia</button>
+                <button class="tab-btn" onclick="switchTab(event, 'recepcion-loc')">Recepción</button>
+            </div>
+
+            <div id="ceremonia-loc" class="location-content active">
+                <div class="location-details">
+                    <p><strong>Parroquia Nuestra Señora</strong></p>
+                    <p style="font-size: 0.9rem; margin: 5px 0 15px 0;">Sábado 17 de Octubre • 2:30 PM</p>
+                    <a href="LINK_DE_GOOGLE_MAPS_CEREMONIA" target="_blank" class="btn" style="margin-top: 0;">Abrir en Google Maps</a>
+                </div>
+            </div>
+
+            <div id="recepcion-loc" class="location-content">
+                <div class="location-details">
+                    <p><strong>Salón Exclusivo</strong></p>
+                    <p style="font-size: 0.9rem; margin: 5px 0 15px 0;">Sábado 17 de Octubre • 4:30 PM</p>
+                    <a href="LINK_DE_GOOGLE_MAPS_RECEPCION" target="_blank" class="btn" style="margin-top: 0;">Abrir en Google Maps</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEPARADOR FLORAL FULL-WIDTH 5 -->
+    <div class="floral-divider-container">
+        <img src="flores1.png" alt="Decoración floral" class="floral-divider">
+    </div>
+
+    <!-- CARRUSEL VERTICAL Y AUTOMÁTICO (RECORRIDO SUAVE Y CONSTANTE) -->
+    <section class="animate-on-scroll">
+        <h2>Retratos de nuestro amor</h2>
+        <p>La clave es disfrutar cada momento.</p><br>
+        <div class="carousel-container" id="autoCarouselContainer">
+            <div class="carousel" id="autoCarousel">
+                <img src="foto1.jpg" alt="Retrato 1">
+                <img src="foto2.jpg" alt="Retrato 2">
+                <img src="foto3.jpg" alt="Retrato 3">
+                <img src="foto4.jpg" alt="Retrato 4">
+                <img src="foto5.jpg" alt="Retrato 5">
+                <img src="foto6.jpg" alt="Retrato 6">
+                <img src="foto7.jpg" alt="Retrato 7">
+                <img src="foto8.jpg" alt="Retrato 8">
+                <img src="foto9.jpg" alt="Retrato 9">
+                <img src="foto10.jpg" alt="Retrato 10">
+                <img src="foto11.jpg" alt="Retrato 11">
+                <img src="foto12.jpg" alt="Retrato 12">
+                <img src="foto13.jpg" alt="Retrato 13">
+                <img src="foto14.jpg" alt="Retrato 14">
+                <img src="foto15.jpg" alt="Retrato 15">
+                <img src="foto16.jpg" alt="Retrato 16">
+            </div>
+        </div>
+    </section>
+
+    <!-- SEPARADOR FLORAL FULL-WIDTH 6 -->
+    <div class="floral-divider-container">
+        <img src="flores1.png" alt="Decoración floral" class="floral-divider">
+    </div>
+
+    <!-- BOTONES DE ACCIÓN (MODALES) -->
+    <section class="action-grid animate-on-scroll">
+        <div class="action-card">
+            <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--text-dark)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            <h3>Música</h3>
+            <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalMusica')">Sugerir</button>
+        </div>
+        
+        <div class="action-card">
+            <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--text-dark)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+            <h3>Dress Code</h3>
+            <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalDress')">Ver más</button>
+        </div>
+
+        <div class="action-card">
+            <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--text-dark)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <h3>Tips y Notas</h3>
+            <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalTips')">Ver más</button>
+        </div>
+
+        <div class="action-card">
+            <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--text-dark)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+            <h3>Regalos</h3>
+            <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalRegalos')">Ver más</button>
+        </div>
+    </section>
+
+    <!-- SEPARADOR FLORAL FULL-WIDTH 7 -->
+    <div class="floral-divider-container">
+        <img src="flores1.png" alt="Decoración floral" class="floral-divider">
+    </div>
+
+    <!-- CÓDIGO QR / FOTOS -->
+    <section class="animate-on-scroll">
+        <h2>Compartimos este día junto a ti</h2>
+        <p>Sube tus fotos y videos de este hermoso día.</p><br>
+        <img src="qr_placeholder.png" alt="Código QR" style="width: 220px; border-radius: 4px; border: 1px solid var(--accent-alt); padding: 10px; background: white;">
+        <br>
+        <a href="TU_LINK_DE_FOTOS_AQUI" target="_blank" class="btn">Subir fotos al Álbum</a>
+    </section>
+
+    <!-- SEPARADOR FLORAL FULL-WIDTH 8 -->
+    <div class="floral-divider-container">
+        <img src="flores1.png" alt="Decoración floral" class="floral-divider">
+    </div>
+
+    <!-- CONFIRMACIÓN Y DESPEDIDA -->
+    <section class="animate-on-scroll">
+        <h2>Confirmación</h2>
+        <p>¿Nos acompañas en este día tan especial?</p>
+        <button class="btn" onclick="openModal('modalAsistencia')">Confirmar asistencia</button>
+    </section>
+
+    <!-- SEPARADOR FLORAL FULL-WIDTH 9 (Justo antes del Footer) -->
+    <div class="floral-divider-container">
+        <img src="flores2.png" alt="Decoración floral" class="floral-divider">
+    </div>
+
+    <!-- FOOTER ENRIQUECIDO -->
+    <footer class="animate-on-scroll">
+        <h2>Adriana & César</h2>
+        <p>Gracias por ser parte de nuestra historia.</p>
+        <div class="footer-divider"></div>
+        <div class="footer-social">
+            <a href="#">Instagram</a> | <a href="#">Facebook</a> | <a href="#">Álbum Digital</a>
+        </div>
+        <p style="font-size: 0.75rem; margin-top: 20px;">© 2026 Todos los derechos reservados.</p>
+        <p style="font-size: 0.75rem;">Diseñado con <span style="color: var(--accent);">♥</span> para nuestro gran día.</p>
+    </footer>
+
+    <!-- ================= MODALES ================= -->
+    
+    <!-- Modal Música -->
+    <div id="modalMusica" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modalMusica')">&times;</span>
+            <h2>Sugerir Canción</h2>
+            <form action="https://formspree.io/f/TU_CODIGO_PARA_MUSICA" method="POST">
+                <input type="text" name="nombre_invitado" placeholder="Ingrese su nombre completo" required>
+                <input type="text" name="cancion" placeholder="Nombre de la canción y autor" required>
+                <input type="url" name="link_youtube" placeholder="Link de YouTube (opcional)">
+                <button type="submit" class="btn" style="width: 100%;">Enviar Sugerencia</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Dress Code -->
+    <div id="modalDress" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modalDress')">&times;</span>
+            <h2>Dress Code</h2>
+            <p><strong>Vestimenta Formal</strong></p>
+            <p style="font-size: 0.9rem; margin-top: 15px; color: var(--text-dark);">Si necesitas inspiración en la paleta del evento, te compartimos algunas ideas para acompañarnos en esta celebración.</p>
+            <a href="LINK_DE_INSPIRACION" target="_blank" class="btn" style="margin-top: 25px; display: block; text-align: center;">Ver enlace de inspiración</a>
+        </div>
+    </div>
+
+    <!-- Modal Tips y Notas -->
+    <div id="modalTips" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modalTips')">&times;</span>
+            <h2>Tips y Notas</h2>
+            <ul style="text-align: left; margin: 25px 15px; font-size: 0.95rem; line-height: 1.8; color: var(--text-dark);">
+                <li>¡Por favor, ser puntuales!</li>
+                <li>Queremos que disfrutes de esta fiesta al máximo, por eso decidimos que sea un evento <strong>sólo para adultos</strong>.</li>
+                <li>Considera llevar un abrigo ligero para disfrutar cómodamente de los espacios exteriores.</li>
+                <li>¡Olvídate de todo y ven a disfrutar!</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal Regalos -->
+    <div id="modalRegalos" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modalRegalos')">&times;</span>
+            <h2>Regalos</h2>
+            <p style="font-size: 0.95rem; margin-bottom: 25px;">El mejor regalo es tu presencia. Sin embargo, si deseas tener un detalle con nosotros, contamos con una mesa de regalos:</p>
+            
+            <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/52031028" target="_blank" class="btn" style="width: 100%; margin-bottom: 25px; background-color: var(--text-dark); display: block; text-align: center;">Ver Mesa Liverpool</a>
+            
+            <p style="font-size: 0.95rem; margin-bottom: 15px;">También contaremos con sobres disponibles el día del evento, o si lo prefieres, puedes contribuir mediante:</p>
+            
+            <div style="text-align: left; font-size: 0.9rem; line-height: 1.6; background: rgba(255,255,255,0.5); padding: 15px; border-radius: 8px;">
+                <p><strong>Depósito bancario:</strong><br>Cuenta: XXXX XXXX XXXX XXXX</p>
+                <hr style="border: 0; border-top: 1px solid rgba(27, 42, 71, 0.1); margin: 10px 0;">
+                <p><strong>PayPal:</strong><br>Correo: correopaypal@gmail.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Asistencia -->
+    <div id="modalAsistencia" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modalAsistencia')">&times;</span>
+            <h2>Confirmar Asistencia</h2>
+            <p style="font-size: 0.9rem;">¿Nos acompañas en este día tan especial?</p>
+            
+            <form action="https://formspree.io/f/TU_CODIGO_PARA_ASISTENCIA" method="POST">
+                <div class="radio-group">
+                    <label><input type="radio" name="asistencia" value="Sí confirmo" required> ¡Sí, confirmo!</label>
+                    <label><input type="radio" name="asistencia" value="No asiste"> No podré asistir</label>
+                </div>
+                
+                <input type="text" name="nombre" placeholder="Ingrese su nombre completo" required>
+                <input type="text" name="notas" placeholder="Algún dato importante (Ej: Soy vegetariano)">
+                <button type="submit" class="btn" style="width: 100%;">Enviar Respuesta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= SCRIPTS ================= -->
+    <script>
+        // Animaciones al hacer Scroll (Intersection Observer)
+        document.addEventListener("DOMContentLoaded", function() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach(section => {
+                observer.observe(section);
+            });
+        });
+
+        // Lógica de Pestañas (Cómo Llegar)
+        function switchTab(evt, tabId) {
+            const contents = document.querySelectorAll('.location-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Carrusel con Movimiento Constante, Fluido y Suave tipo Cinta Continua
+        const autoCarousel = document.getElementById('autoCarousel');
+        let isPaused = false;
+        let animationFrameId;
+
+        function startContinuousScroll() {
+            function step() {
+                if (!isPaused && autoCarousel) {
+                    autoCarousel.scrollLeft += 0.8; // Velocidad del desplazamiento constante (ajústala si lo quieres más rápido o lento)
+                    
+                    const maxScrollLeft = autoCarousel.scrollWidth - autoCarousel.clientWidth;
+                    // Si llega al final, regresa suavemente al inicio para hacerlo infinito
+                    if (autoCarousel.scrollLeft >= maxScrollLeft - 1) {
+                        autoCarousel.scrollLeft = 0;
+                    }
+                }
+                animationFrameId = requestAnimationFrame(step);
+            }
+            animationFrameId = requestAnimationFrame(step);
+        }
+
+        if(autoCarousel) {
+            startContinuousScroll();
+
+            // Pausar al colocar el cursor encima o tocar la pantalla para que puedan ver o interactuar
+            autoCarousel.addEventListener('mouseenter', () => { isPaused = true; });
+            autoCarousel.addEventListener('mouseleave', () => { isPaused = false; });
+            autoCarousel.addEventListener('touchstart', () => { isPaused = true; }, {passive: true});
+            autoCarousel.addEventListener('touchend', () => { 
+                setTimeout(() => { isPaused = false; }, 3000); 
+            }, {passive: true});
+        }
+
+        // Lógica de Modales
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.style.display = "none";
+            }
+        }
+
+        // Cuenta Regresiva Lógica
+        const fechaBoda = new Date("Oct 17, 2026 14:30:00").getTime();
+        setInterval(function() {
+            const ahora = new Date().getTime();
+            const distancia = fechaBoda - ahora;
+            if(distancia > 0) {
+                const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+                const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+                
+                document.getElementById("dias").innerText = dias < 10 ? "0" + dias : dias;
+                document.getElementById("horas").innerText = horas < 10 ? "0" + horas : horas;
+                document.getElementById("mins").innerText = minutos < 10 ? "0" + minutos : minutos;
+                document.getElementById("segs").innerText = segundos < 10 ? "0" + segundos : segundos;
+            }
+        }, 1000);
+
+        // Estado de raspado de cada círculo
+        let scratchStatus = { scratch1: false, scratch2: false, scratch3: false };
+
+        function checkReveal() {
+            if (scratchStatus.scratch1 && scratchStatus.scratch2 && scratchStatus.scratch3) {
+                const countdownSection = document.getElementById('countdown-wrapper');
+                if (!countdownSection.classList.contains('revealed')) {
+                    countdownSection.classList.add('revealed');
+                    setTimeout(() => {
+                        countdownSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 500);
+                }
+            }
+        }
+
+        function isScratchedEnough(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            let transparentPixels = 0;
+            
+            for (let i = 3; i < pixels.length; i += 4) {
+                if (pixels[i] < 128) {
+                    transparentPixels++;
+                }
+            }
+            
+            const totalPixels = pixels.length / 4;
+            const percentage = (transparentPixels / totalPixels) * 100;
+            
+            if (percentage > 40) {
+                scratchStatus[canvasId] = true;
+                checkReveal();
+            }
+        }
+
+        function setupScratchCard(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            
+            canvas.width = 90;
+            canvas.height = 90;
+
+            ctx.fillStyle = '#D4AF37'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '300 12px Lato';
+            ctx.textAlign = 'center';
+            ctx.fillText('RASPE', canvas.width/2, canvas.height/2 + 4);
+
+            let isDrawing = false;
+
+            function scratch(e) {
+                if (!isDrawing) return;
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, 15, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            canvas.addEventListener('mousedown', () => isDrawing = true);
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
+            
+            canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('touchmove', (e) => { scratch(e); }, {passive: false});
+
+            canvas.addEventListener('mouseup', () => { 
+                isDrawing = false; 
+                if(!scratchStatus[canvasId]) isScratchedEnough(canvasId); 
+            });
+            canvas.addEventListener('touchend', () => { 
+                isDrawing = false; 
+                if(!scratchStatus[canvasId]) isScratchedEnough(canvasId); 
+            });
+        }
+
+        setupScratchCard('scratch1');
+        setupScratchCard('scratch2');
+        setupScratchCard('scratch3');
+    </script>
+</body>
+</html>
