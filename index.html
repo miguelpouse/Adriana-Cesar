@@ -5,12 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuestra Boda - Adriana y César</title>
     
-    <!-- Nuevas Fuentes Más Elegantes de Google Fonts -->
+    <!-- Fuentes de Google para cuerpo y respaldo -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
+        /* Declaración de STXingkai */
+        @font-face {
+            font-family: 'STXingkai';
+            src: url('STXingkai.woff2') format('woff2'),
+                 url('STXingkai.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
         /* ================= CSS ================= */
         :root {
             --bg-color: #FDF9F1; /* Crema Nude */
@@ -36,16 +46,49 @@
             font-weight: 300;
         }
 
-        h1, h2, h3 {
-            font-family: 'Cinzel', serif;
-            font-weight: 600;
-            letter-spacing: 2px;
+        /* Títulos principales con STXingkai */
+        h1, h2, h3, .script-text {
+            font-family: 'STXingkai', 'Great Vibes', cursive, serif;
+            letter-spacing: 1px;
+            text-transform: none; 
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 1.8rem;
         }
 
         .script-text {
-            font-family: 'Pinyon Script', cursive;
-            font-size: 3rem;
+            font-size: 4rem;
             color: var(--gold);
+        }
+
+        /* Estilo especial para los nombres del Hero (Terracota con borde/sombra dorada) */
+        .hero-names {
+            font-family: 'STXingkai', 'Great Vibes', cursive, serif;
+            color: var(--accent); /* Color terracota */
+            text-shadow: 
+                -1px -1px 0 var(--gold),  
+                 1px -1px 0 var(--gold),
+                -1px  1px 0 var(--gold),
+                 1px  1px 0 var(--gold),
+                 0 0 10px rgba(212, 175, 55, 0.4); /* Pequeño borde y destello dorado */
+        }
+
+        /* Párrafos, menús y textos generales con fuente nítida y limpia */
+        p, span, small, a, button, input, label, li {
+            font-family: 'Lato', sans-serif;
+            font-style: normal;
         }
 
         /* --- Animación de Latido para el Título --- */
@@ -100,25 +143,23 @@
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(27, 42, 71, 0.5);
+            background: rgba(27, 42, 71, 0.4);
             z-index: -1;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 4.8rem;
             font-weight: 400;
             margin-bottom: 10px;
-            color: var(--gold);
-            line-height: 1.2;
         }
 
         .hero p.subtitle {
             margin-top: 15px;
             font-size: 1.1rem;
             color: var(--blush);
-            font-family: 'Lato', sans-serif;
             letter-spacing: 2px;
             text-transform: uppercase;
+            font-weight: 400;
         }
 
         /* Separadores Florales Full-Width (De Ancho Completo) */
@@ -152,12 +193,6 @@
             margin: 0 auto;
         }
 
-        h2 {
-            font-size: 1.8rem;
-            color: var(--accent-alt);
-            margin-bottom: 15px;
-        }
-
         p {
             line-height: 1.6;
         }
@@ -181,11 +216,11 @@
         }
 
         .family-group h3 {
-            font-size: 1.1rem;
+            font-size: 1.8rem;
             color: var(--accent);
             margin-bottom: 8px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-transform: none;
         }
 
         .family-names {
@@ -205,36 +240,38 @@
         .scratch-container {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             margin-top: 30px;
         }
 
         .scratch-card {
             position: relative;
-            width: 90px;
-            height: 90px;
+            width: 115px;
+            height: 115px;
             border-radius: 50%;
             background-color: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            border: 1px solid var(--gold);
+            border: 2px solid var(--accent);
         }
 
         .scratch-card span {
-            font-size: 1.4rem;
-            font-family: 'Cinzel', serif;
+            font-size: 1.7rem;
+            font-family: 'STXingkai', 'Great Vibes', serif;
             color: var(--text-dark);
+            line-height: 1.1;
         }
 
         .scratch-card small {
-            font-family: 'Lato', sans-serif;
-            font-size: 0.55rem;
-            letter-spacing: 1px;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
             color: var(--accent-alt);
+            margin-top: 3px;
+            font-weight: 700;
         }
 
         canvas {
@@ -278,10 +315,10 @@
         }
         
         .countdown-item span.num {
-            font-size: 1.8rem;
-            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-family: 'STXingkai', 'Great Vibes', serif;
             color: var(--accent);
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 5px;
         }
 
@@ -316,7 +353,7 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             transition: background-color 0.3s, transform 0.2s;
-            font-family: 'Cinzel', sans-serif;
+            font-weight: 700;
         }
 
         .btn:hover {
@@ -334,13 +371,14 @@
             background: white;
             padding: 15px;
             box-shadow: 0 8px 25px rgba(27, 42, 71, 0.05);
+            margin-top: 15px;
         }
 
         .carousel {
             display: flex;
             gap: 15px;
             overflow-x: auto;
-            scroll-behavior: auto; /* Desactivado el smooth nativo para controlarlo por JS de forma continua */
+            scroll-behavior: auto; 
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
         }
@@ -361,7 +399,6 @@
             pointer-events: auto;
         }
 
-        /* Al pasar el cursor sobre la foto, recupera su color original */
         .carousel img:hover {
             filter: grayscale(0%) contrast(100%);
             transform: scale(1.02);
@@ -390,10 +427,10 @@
             padding: 10px 20px;
             border-radius: 30px;
             cursor: pointer;
-            font-family: 'Cinzel', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: var(--text-dark);
             transition: all 0.3s ease;
+            font-weight: 700;
         }
 
         .tab-btn.active {
@@ -447,9 +484,10 @@
         }
 
         .action-card h3 {
-            font-size: 1.2rem;
+            font-size: 1.6rem;
             margin-bottom: 15px;
             color: var(--text-dark);
+            text-transform: none;
         }
 
         /* Modales */
@@ -498,7 +536,6 @@
             border-radius: 4px;
             background-color: white;
             color: var(--text-dark);
-            font-family: 'Lato', sans-serif;
         }
         
         .radio-group {
@@ -518,9 +555,10 @@
 
         footer h2 {
             color: var(--gold);
-            font-size: 1.8rem;
-            letter-spacing: 3px;
+            font-size: 3rem;
+            letter-spacing: 2px;
             margin-bottom: 5px;
+            text-transform: none;
         }
 
         footer p {
@@ -563,8 +601,9 @@
             <source src="portada_vertical_loop.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
-        <h1 class="heartbeat">Adriana<br><span class="script-text">&</span><br>César</h1>
-        <p style="color: white; font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 3px;">¡Nuestra Boda!</p>
+        <!-- Aplicado el estilo hero-names con color terracota y borde/sombra dorada -->
+        <h1 class="heartbeat hero-names">Adriana<br><span class="script-text">&</span><br>César</h1>
+        <p style="color: white; font-size: 1.2rem; letter-spacing: 3px;">¡Nuestra Boda!</p>
         <p class="subtitle">Te elijo hoy y por el resto de mi vida</p>
     </header>
 
@@ -611,7 +650,7 @@
                 <canvas id="scratch1"></canvas>
             </div>
             <div class="scratch-card">
-                <span>Octubre<br><small>MES</small></span>
+                <span>Oct<br><small>MES</small></span>
                 <canvas id="scratch2"></canvas>
             </div>
             <div class="scratch-card">
@@ -640,22 +679,21 @@
     <!-- EVENTOS -->
     <section class="animate-on-scroll">
         <div class="event-card">
-            <!-- Icono de Iglesia -->
-            <svg class="icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 19.5v-15a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v15a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/>
                 <path d="M12 2v6"/>
                 <path d="M9 5h6"/>
                 <path d="M12 11v4"/>
                 <path d="M10 13h4"/>
             </svg>
-            <h2>CEREMONIA</h2>
+            <h2>Ceremonia</h2>
             <p><strong>Sábado 17 Octubre 2026</strong><br>2:30 PM</p>
             <p style="margin-top: 10px;">Parroquia Nuestra Señora</p>
         </div>
 
         <div class="event-card">
-            <svg class="icon-svg" viewBox="0 0 24 24" width="48" height="48" stroke="var(--gold)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v5a5 5 0 0 0 5 5z"/></svg>
-            <h2>CELEBRACIÓN</h2>
+            <svg class="icon-svg" viewBox="0 0 24 24" width="48" height="48" stroke="var(--accent)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v5a5 5 0 0 0 5 5z"/></svg>
+            <h2>Celebración</h2>
             <p><strong>Sábado 17 Octubre 2026</strong><br>4:30 PM</p>
             <p style="margin-top: 10px;">Salón Exclusivo</p>
         </div>
@@ -700,10 +738,14 @@
         <img src="flores1.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- CARRUSEL VERTICAL Y AUTOMÁTICO (RECORRIDO SUAVE Y CONSTANTE) -->
+    <!-- CARRUSEL VERTICAL Y AUTOMÁTICO -->
     <section class="animate-on-scroll">
+        <svg class="icon-svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+        </svg>
         <h2>Retratos de nuestro amor</h2>
-        <p>La clave es disfrutar cada momento.</p><br>
+        <p>La clave es disfrutar cada momento.</p>
         <div class="carousel-container" id="autoCarouselContainer">
             <div class="carousel" id="autoCarousel">
                 <img src="foto1.jpg" alt="Retrato 1">
@@ -731,30 +773,38 @@
         <img src="flores1.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- BOTONES DE ACCIÓN (MODALES) -->
-    <section class="action-grid animate-on-scroll">
-        <div class="action-card">
-            <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--text-dark)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-            <h3>Música</h3>
-            <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalMusica')">Sugerir</button>
-        </div>
-        
-        <div class="action-card">
-            <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--text-dark)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
-            <h3>Dress Code</h3>
-            <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalDress')">Ver más</button>
-        </div>
+    <!-- BOTONES DE ACCIÓN -->
+    <section class="animate-on-scroll">
+        <svg class="icon-svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+        <h2>Detalles del Evento</h2>
+        <div class="action-grid">
+            <div class="action-card">
+                <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--accent)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                <h3>Música</h3>
+                <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalMusica')">Sugerir</button>
+            </div>
+            
+            <div class="action-card">
+                <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--accent)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+                <h3>Dress Code</h3>
+                <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalDress')">Ver más</button>
+            </div>
 
-        <div class="action-card">
-            <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--text-dark)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-            <h3>Tips y Notas</h3>
-            <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalTips')">Ver más</button>
-        </div>
+            <div class="action-card">
+                <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--accent)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <h3>Tips y Notas</h3>
+                <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalTips')">Ver más</button>
+            </div>
 
-        <div class="action-card">
-            <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--text-dark)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-            <h3>Regalos</h3>
-            <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalRegalos')">Ver más</button>
+            <div class="action-card">
+                <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--accent)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                <h3>Regalos</h3>
+                <button class="btn" style="padding: 10px 20px; font-size: 0.75rem;" onclick="openModal('modalRegalos')">Ver más</button>
+            </div>
         </div>
     </section>
 
@@ -765,6 +815,11 @@
 
     <!-- CÓDIGO QR / FOTOS -->
     <section class="animate-on-scroll">
+        <svg class="icon-svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
         <h2>Compartimos este día junto a ti</h2>
         <p>Sube tus fotos y videos de este hermoso día.</p><br>
         <img src="qr_placeholder.png" alt="Código QR" style="width: 220px; border-radius: 4px; border: 1px solid var(--accent-alt); padding: 10px; background: white;">
@@ -779,6 +834,10 @@
 
     <!-- CONFIRMACIÓN Y DESPEDIDA -->
     <section class="animate-on-scroll">
+        <svg class="icon-svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
         <h2>Confirmación</h2>
         <p>¿Nos acompañas en este día tan especial?</p>
         <button class="btn" onclick="openModal('modalAsistencia')">Confirmar asistencia</button>
@@ -925,10 +984,9 @@
         function startContinuousScroll() {
             function step() {
                 if (!isPaused && autoCarousel) {
-                    autoCarousel.scrollLeft += 0.8; // Velocidad del desplazamiento constante (ajústala si lo quieres más rápido o lento)
+                    autoCarousel.scrollLeft += 0.8; 
                     
                     const maxScrollLeft = autoCarousel.scrollWidth - autoCarousel.clientWidth;
-                    // Si llega al final, regresa suavemente al inicio para hacerlo infinito
                     if (autoCarousel.scrollLeft >= maxScrollLeft - 1) {
                         autoCarousel.scrollLeft = 0;
                     }
@@ -941,7 +999,6 @@
         if(autoCarousel) {
             startContinuousScroll();
 
-            // Pausar al colocar el cursor encima o tocar la pantalla para que puedan ver o interactuar
             autoCarousel.addEventListener('mouseenter', () => { isPaused = true; });
             autoCarousel.addEventListener('mouseleave', () => { isPaused = false; });
             autoCarousel.addEventListener('touchstart', () => { isPaused = true; }, {passive: true});
@@ -1021,13 +1078,13 @@
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d', { willReadFrequently: true });
             
-            canvas.width = 90;
-            canvas.height = 90;
+            canvas.width = 115;
+            canvas.height = 115;
 
-            ctx.fillStyle = '#D4AF37'; 
+            ctx.fillStyle = '#C2593E'; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#FFFFFF';
-            ctx.font = '300 12px Lato';
+            ctx.font = '700 13px Lato';
             ctx.textAlign = 'center';
             ctx.fillText('RASPE', canvas.width/2, canvas.height/2 + 4);
 
@@ -1042,7 +1099,7 @@
 
                 ctx.globalCompositeOperation = 'destination-out';
                 ctx.beginPath();
-                ctx.arc(x, y, 15, 0, Math.PI * 2);
+                ctx.arc(x, y, 18, 0, Math.PI * 2);
                 ctx.fill();
             }
 
