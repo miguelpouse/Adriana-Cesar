@@ -37,6 +37,10 @@
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-dark);
@@ -44,7 +48,7 @@
             overflow-x: hidden;
             font-family: 'Lato', sans-serif;
             font-weight: 300;
-            font-size: 1.15rem; /* Textos generales aumentados para máxima visibilidad */
+            font-size: 1.15rem;
             line-height: 1.8;
         }
 
@@ -78,7 +82,7 @@
         /* Estilo especial y adaptable para los nombres del Hero */
         .hero-names {
             font-family: 'STXingkai', 'Great Vibes', cursive, serif;
-            color: var(--text-dark); /* Color azul marino */
+            color: var(--text-dark);
             font-size: clamp(3rem, 8vw, 4.8rem); 
             line-height: 1.05;
             text-shadow: 
@@ -88,11 +92,10 @@
                  0.8px  0.8px 0 var(--bg-color);
         }
 
-        /* Textos, párrafos y elementos generales con tamaño optimizado */
         p, span, a, button, input, label, li {
             font-family: 'Lato', sans-serif;
             font-style: normal;
-            font-size: 1.1rem; /* Todos los párrafos y textos del cuerpo se ven más grandes */
+            font-size: 1.1rem;
         }
 
         small {
@@ -325,7 +328,7 @@
 
         #countdown-wrapper.revealed {
             opacity: 1;
-            max-height: 500px;
+            max-height: 600px;
             transform: translateY(0);
             margin-top: 20px;
         }
@@ -380,7 +383,10 @@
         }
 
         .btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             background-color: var(--accent);
             color: white;
             padding: 14px 30px;
@@ -534,7 +540,7 @@
             text-transform: none;
         }
 
-        /* Sección de Asistencia */
+        /* Sección de Asistencia (Centrada) */
         .rsvp-card-section {
             background: white;
             border-radius: 16px;
@@ -543,7 +549,7 @@
             border: 1px solid rgba(212, 175, 55, 0.4);
             position: relative;
             overflow: hidden;
-            text-align: left;
+            text-align: center;
         }
 
         .rsvp-card-section::before {
@@ -556,6 +562,11 @@
         .rsvp-card-section p {
             font-size: 1.12rem;
             text-align: center;
+        }
+
+        .rsvp-form-container {
+            text-align: left;
+            margin-top: 20px;
         }
 
         /* Modales generales */
@@ -642,6 +653,7 @@
             font-size: 1.05rem;
             color: var(--text-dark);
             text-align: center;
+            gap: 8px;
         }
 
         .rsvp-option-label input[type="radio"] {
@@ -694,25 +706,33 @@
             margin: 15px auto;
         }
 
-        .footer-social {
-            margin: 20px 0;
-        }
-        
-        .footer-social a {
-            color: var(--gold);
+        /* Botón Flotante para Navegación (Regresar arriba) */
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: var(--accent);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-decoration: none;
-            margin: 0 10px;
-            font-size: 1.05rem;
-            letter-spacing: 1px;
-            transition: opacity 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 999;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 1.2rem;
         }
 
-        .footer-social a:hover {
-            opacity: 0.7;
+        .back-to-top:hover {
+            background-color: var(--text-dark);
+            transform: translateY(-3px);
         }
     </style>
 </head>
-<body>
+<body id="inicio">
 
     <!-- HERO SECTION REDISEÑADO -->
     <header class="hero">
@@ -728,7 +748,7 @@
             <h1 class="heartbeat hero-names">Adriana<br><span class="script-text">&</span><br>César</h1>
             
             <div class="hero-line"></div>
-            <p class="tagline">14 • Noviembre • 2026</p>
+            <p class="tagline">• 2026 •</p>
             <p style="color: rgba(253, 249, 241, 0.95); font-size: 1rem; letter-spacing: 1.5px; margin-top: 10px; font-style: italic;">"Te elijo hoy y por el resto de mi vida"</p>
         </div>
     </header>
@@ -785,7 +805,7 @@
             </div>
         </div>
 
-        <!-- CUENTA REGRESIVA -->
+        <!-- CUENTA REGRESIVA Y BOTÓN CALENDARIO -->
         <div id="countdown-wrapper">
             <h2>Faltan</h2>
             <div class="countdown">
@@ -794,6 +814,12 @@
                 <div class="countdown-item"><span class="num" id="mins">00</span><small>Min</small></div>
                 <div class="countdown-item"><span class="num" id="segs">00</span><small>Seg</small></div>
             </div>
+            
+            <!-- Botón para Agregar al Calendario con Icono SVG -->
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+de+Adriana+y+C%C3%A9sar&dates=20261114T143000Z/20261114T235900Z&details=Acompa%C3%B1anos+en+nuestra+boda.&location=Catedral+San+Bernardino+de+Siena+y+Sal%C3%B3n+Bamboo+Xochimilco" target="_blank" class="btn" style="background-color: var(--text-dark); margin-top: 15px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Agregar al Calendario
+            </a>
         </div>
     </section>
 
@@ -961,34 +987,38 @@
     <!-- SECCIÓN DE CONFIRMACIÓN DE ASISTENCIA -->
     <section class="animate-on-scroll">
         <div class="rsvp-card-section">
-            <svg class="icon-svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="icon-svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="display: block; margin: 0 auto 15px auto;">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                 <polyline points="22,6 12,13 2,6"></polyline>
             </svg>
             <h2>Confirmación de Asistencia</h2>
             <p style="margin-bottom: 25px;">Tu presencia es el regalo más importante para nosotros. Por favor, confirma tu asistencia antes del 15 de Octubre.</p>
             
-            <form action="https://formspree.io/f/myegpkbw" method="POST" style="text-align: left;">
-                <label for="nombre-asistencia" style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);">Nombre completo:</label>
-                <input type="text" id="nombre-asistencia" name="nombre" placeholder="Ingresa tu nombre y apellido" required>
-                
-                <label style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark); display: block; margin-top: 10px;">¿Nos acompañas?</label>
-                <div class="rsvp-options">
-                    <label class="rsvp-option-label">
-                        <input type="radio" name="asistencia" value="Sí confirmo" required>
-                        <span>✨ ¡Sí, ahí estaré!</span>
-                    </label>
-                    <label class="rsvp-option-label">
-                        <input type="radio" name="asistencia" value="No asiste">
-                        <span>❌ No podré asistir</span>
-                    </label>
-                </div>
+            <div class="rsvp-form-container">
+                <form action="https://formspree.io/f/myegpkbw" method="POST">
+                    <label for="nombre-asistencia" style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);">Nombre completo:</label>
+                    <input type="text" id="nombre-asistencia" name="nombre" placeholder="Ingresa tu nombre y apellido" required>
+                    
+                    <label style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark); display: block; margin-top: 10px;">¿Nos acompañas?</label>
+                    <div class="rsvp-options">
+                        <label class="rsvp-option-label">
+                            <input type="radio" name="asistencia" value="Sí confirmo" required>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-alt)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>¡Sí, ahí estaré!</span>
+                        </label>
+                        <label class="rsvp-option-label">
+                            <input type="radio" name="asistencia" value="No asiste">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            <span>No podré asistir</span>
+                        </label>
+                    </div>
 
-                <label for="notas-asistencia" style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);">Comentarios o restricciones alimentarias (Opcional):</label>
-                <input type="text" id="notas-asistencia" name="notas" placeholder="Ej. Alergia a algún alimento, vegetariano...">
+                    <label for="notas-asistencia" style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);">Comentarios o restricciones alimentarias (Opcional):</label>
+                    <input type="text" id="notas-asistencia" name="notas" placeholder="Ej. Alergia a algún alimento, vegetariano...">
 
-                <button type="submit" class="btn" style="width: 100%; margin-top: 10px; padding: 16px;">Enviar Confirmación</button>
-            </form>
+                    <button type="submit" class="btn" style="width: 100%; margin-top: 10px; padding: 16px;">Enviar Confirmación</button>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -1002,12 +1032,13 @@
         <h2>Adriana & César</h2>
         <p>Gracias por ser parte de nuestra historia.</p>
         <div class="footer-divider"></div>
-        <div class="footer-social">
-            <a href="#">Instagram</a> | <a href="#">Facebook</a> | <a href="#">Álbum Digital</a>
-        </div>
         <p style="font-size: 0.9rem; margin-top: 20px;">© 2026 Todos los derechos reservados.</p>
         <p style="font-size: 0.9rem;">Diseñado con <span style="color: var(--accent);">♥</span> para nuestro gran día.</p>
+        <p style="font-size: 0.85rem; margin-top: 15px; opacity: 0.9;">Sitio desarrollado por <a href="AQUI_TU_LINK" target="_blank" style="color: var(--gold); text-decoration: underline;">MZG Systems</a></p>
     </footer>
+
+    <!-- BOTÓN FLOTANTE PARA REGRESAR ARRIBA -->
+    <a href="#inicio" class="back-to-top" title="Volver arriba">↑</a>
 
     <!-- ================= MODALES ================= -->
     
