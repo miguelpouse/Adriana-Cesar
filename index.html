@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuestra Boda - Adriana y César</title>
     
-    <!-- Fuentes de Google para cuerpo y respaldo -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -303,7 +302,7 @@
         }
 
         .scratch-card small {
-            font-size: 0.75rem;
+            font-size: 1.4rem;
             letter-spacing: 2px;
             color: var(--accent-alt);
             margin-top: 3px;
@@ -540,13 +539,13 @@
             text-transform: none;
         }
 
-        /* Sección de Asistencia (Centrada) */
+        /* ================= SECCIÓN DE ASISTENCIA REDISEÑADA (RSVP) ================= */
         .rsvp-card-section {
-            background: white;
-            border-radius: 16px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08);
-            border: 1px solid rgba(212, 175, 55, 0.4);
+            background: linear-gradient(145deg, #ffffff, var(--bg-color));
+            border-radius: 20px;
+            padding: 45px 35px;
+            box-shadow: 0 15px 35px rgba(27, 42, 71, 0.08), 0 0 20px rgba(212, 175, 55, 0.15);
+            border: 1.5px solid var(--gold);
             position: relative;
             overflow: hidden;
             text-align: center;
@@ -555,86 +554,25 @@
         .rsvp-card-section::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 5px;
+            top: 0; left: 0; width: 100%; height: 6px;
             background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold));
         }
 
         .rsvp-card-section p {
             font-size: 1.12rem;
             text-align: center;
+            color: var(--text-dark);
         }
 
         .rsvp-form-container {
             text-align: left;
-            margin-top: 20px;
-        }
-
-        /* Modales generales */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(27, 42, 71, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: var(--bg-color);
-            padding: 40px 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 450px;
-            position: relative;
-            border: 1px solid var(--gold);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            text-align: left;
-        }
-
-        .modal-content h2 {
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .modal-content p {
-            font-size: 1.1rem;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px; right: 20px;
-            font-size: 2rem;
-            font-weight: 300;
-            cursor: pointer;
-            color: var(--accent);
-            line-height: 1;
-        }
-
-        /* Formularios e Inputs */
-        input, select {
-            width: 100%;
-            padding: 14px 16px;
-            margin: 10px 0 20px 0;
-            border: 1px solid rgba(27, 42, 71, 0.2);
-            border-radius: 8px;
-            background-color: white;
-            color: var(--text-dark);
-            font-size: 1.05rem;
-            font-family: 'Lato', sans-serif;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(194, 89, 62, 0.15);
+            margin-top: 25px;
         }
 
         .rsvp-options {
             display: flex;
             gap: 12px;
-            margin: 15px 0 20px 0;
+            margin: 15px 0 25px 0;
         }
 
         .rsvp-option-label {
@@ -643,17 +581,17 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 15px 10px;
+            padding: 16px 12px;
             background: white;
             border: 2px solid rgba(27, 42, 71, 0.15);
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-weight: 700;
             font-size: 1.05rem;
             color: var(--text-dark);
             text-align: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .rsvp-option-label input[type="radio"] {
@@ -663,6 +601,7 @@
         .rsvp-option-label:hover {
             border-color: var(--accent);
             background-color: rgba(194, 89, 62, 0.02);
+            transform: translateY(-2px);
         }
 
         .rsvp-option-label input[type="radio"]:checked + span {
@@ -672,38 +611,145 @@
         .rsvp-option-label:has(input[type="radio"]:checked) {
             border-color: var(--accent);
             background-color: var(--blush);
-            box-shadow: 0 4px 12px rgba(194, 89, 62, 0.15);
+            box-shadow: 0 6px 15px rgba(194, 89, 62, 0.18);
+            transform: translateY(-2px);
         }
 
-        /* Footer Enriquecido */
-        footer {
-            background-color: var(--text-dark);
-            color: var(--bg-color);
-            padding: 60px 20px;
+        /* ================= MODALES REDISEÑADOS ================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 24, 41, 0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #ffffff, var(--bg-color));
+            padding: 45px 35px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 460px;
+            position: relative;
+            border: 1.5px solid var(--gold);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25), 0 0 20px rgba(212, 175, 55, 0.2);
+            text-align: left;
+            transform: scale(0.85) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
             text-align: center;
-            margin-top: 50px;
+            font-size: 2.2rem;
+            color: var(--accent);
+        }
+
+        .modal-content p {
+            font-size: 1.1rem;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            width: 35px; height: 35px;
+            background-color: var(--blush);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.6rem;
+            font-weight: 400;
+            cursor: pointer;
+            color: var(--accent);
+            line-height: 1;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(194, 89, 62, 0.2);
+        }
+
+        .close-btn:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        /* Formularios e Inputs generales */
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            margin: 10px 0 20px 0;
+            border: 1px solid rgba(27, 42, 71, 0.2);
+            border-radius: 10px;
+            background-color: white;
+            color: var(--text-dark);
+            font-size: 1.05rem;
+            font-family: 'Lato', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(194, 89, 62, 0.15);
+        }
+
+        /* ================= FOOTER ENRIQUECIDO Y VISTOSO ================= */
+        footer {
+            background: linear-gradient(135deg, #0F1829 0%, #1B2A47 100%);
+            color: var(--bg-color);
+            padding: 70px 20px 50px 20px;
+            text-align: center;
+            margin-top: 60px;
+            position: relative;
+            border-top: 2px solid var(--gold);
         }
 
         footer h2 {
             color: var(--gold);
-            font-size: 3rem;
+            font-size: 3.5rem;
             letter-spacing: 2px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             text-transform: none;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         footer p {
-            font-size: 1rem;
-            letter-spacing: 1px;
-            opacity: 0.85;
-            margin-bottom: 10px;
+            font-size: 1.05rem;
+            letter-spacing: 1.5px;
+            opacity: 0.9;
+            margin-bottom: 8px;
         }
         
         .footer-divider {
-            width: 50px;
-            height: 1px;
-            background-color: var(--gold);
-            margin: 15px auto;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 20px auto;
+        }
+
+        .footer-badge {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
         }
 
         /* Botón Flotante para Navegación (Regresar arriba) */
@@ -734,7 +780,6 @@
 </head>
 <body id="inicio">
 
-    <!-- HERO SECTION REDISEÑADO -->
     <header class="hero">
         <video autoplay muted loop playsinline>
             <source src="portada_vertical_loop.mp4" type="video/mp4">
@@ -753,19 +798,17 @@
         </div>
     </header>
 
-    <!-- SEPARADOR FLORAL FULL-WIDTH 1 -->
     <div class="floral-divider-container">
         <img src="flores3.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- SECCIÓN PADRES Y PADRINOS -->
     <section class="animate-on-scroll">
         <div class="parents-godparents-container">
             <div class="family-group">
                 <h3>Con la bendición de nuestros padres</h3>
                 <div class="family-names">
-                    <p><strong>Padres de la Novia:</strong><br>Nombre Padre de Novia & Nombre Madre de Novia</p>
-                    <p style="margin-top: 15px;"><strong>Padres del Novio:</strong><br>Nombre Padre de Novio & Nombre Madre de Novio</p>
+                    <p><strong>Padres de la Novia:</strong><br>Guillermo Bravo Ruíz ✞ & María del Socorro González Trujillo</p>
+                    <p style="margin-top: 15px;"><strong>Padres del Novio:</strong><br>Julio César Méndez Zúñiga & Estela Antonia Franco Suárez</p>
                 </div>
             </div>
 
@@ -774,38 +817,35 @@
             <div class="family-group">
                 <h3>Padrinos de Velación</h3>
                 <div class="family-names">
-                    <p>Nombre Padrino & Nombre Madrina</p>
+                    <p>Julio César Méndez Zúñiga & Estela Antonia Franco Suárez</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SEPARADOR FLORAL FULL-WIDTH 2 -->
     <div class="floral-divider-container">
         <img src="flores1.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- FECHA Y RASCA Y GANA -->
     <section class="animate-on-scroll">
         <h2>Ver la fecha</h2>
         <p>Rasca los tres círculos para descubrir el gran día y desbloquear la cuenta regresiva.</p>
         
         <div class="scratch-container">
             <div class="scratch-card">
-                <span>14<br><small>DÍA</small></span>
+                <span>14<br><small>día</small></span>
                 <canvas id="scratch1"></canvas>
             </div>
             <div class="scratch-card">
-                <span>Nov<br><small>MES</small></span>
+                <span>Nov<br><small>mes</small></span>
                 <canvas id="scratch2"></canvas>
             </div>
             <div class="scratch-card">
-                <span>2026<br><small>AÑO</small></span>
+                <span>2026<br><small>año</small></span>
                 <canvas id="scratch3"></canvas>
             </div>
         </div>
 
-        <!-- CUENTA REGRESIVA Y BOTÓN CALENDARIO -->
         <div id="countdown-wrapper">
             <h2>Faltan</h2>
             <div class="countdown">
@@ -815,7 +855,6 @@
                 <div class="countdown-item"><span class="num" id="segs">00</span><small>Seg</small></div>
             </div>
             
-            <!-- Botón para Agregar al Calendario con Icono SVG -->
             <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+de+Adriana+y+C%C3%A9sar&dates=20261114T143000Z/20261114T235900Z&details=Acompa%C3%B1anos+en+nuestra+boda.&location=Catedral+San+Bernardino+de+Siena+y+Sal%C3%B3n+Bamboo+Xochimilco" target="_blank" class="btn" style="background-color: var(--text-dark); margin-top: 15px;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 Agregar al Calendario
@@ -823,12 +862,10 @@
         </div>
     </section>
 
-    <!-- SEPARADOR FLORAL FULL-WIDTH 3 -->
     <div class="floral-divider-container">
         <img src="flores1.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- EVENTOS -->
     <section class="animate-on-scroll">
         <div class="event-card">
             <svg class="icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
@@ -851,12 +888,10 @@
         </div>
     </section>
 
-    <!-- SEPARADOR FLORAL FULL-WIDTH 4 -->
     <div class="floral-divider-container">
         <img src="flores1.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- SECCIÓN CÓMO LLEGAR -->
     <section class="animate-on-scroll">
         <div class="location-section">
             <h2 style="text-align: center;">¿Cómo llegar?</h2>
@@ -885,12 +920,10 @@
         </div>
     </section>
 
-    <!-- SEPARADOR FLORAL FULL-WIDTH 5 -->
     <div class="floral-divider-container">
         <img src="flores1.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- CARRUSEL VERTICAL Y AUTOMÁTICO -->
     <section class="animate-on-scroll">
         <svg class="icon-svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
@@ -920,12 +953,10 @@
         </div>
     </section>
 
-    <!-- SEPARADOR FLORAL FULL-WIDTH 6 -->
     <div class="floral-divider-container">
         <img src="flores1.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- BOTONES DE ACCIÓN -->
     <section class="animate-on-scroll">
         <svg class="icon-svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 18V5l12-2v13"></path>
@@ -953,19 +984,17 @@
             </div>
 
             <div class="action-card">
-                <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--accent)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                <svg class="icon-svg" viewBox="0 0 24 24" width="36" height="36" stroke="var(--accent)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7 z"/></svg>
                 <h3>Regalos</h3>
                 <button class="btn" style="padding: 10px 20px; font-size: 0.9rem;" onclick="openModal('modalRegalos')">Ver más</button>
             </div>
         </div>
     </section>
 
-    <!-- SEPARADOR FLORAL FULL-WIDTH 7 -->
     <div class="floral-divider-container">
         <img src="flores1.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- CÓDIGO QR / FOTOS -->
     <section class="animate-on-scroll">
         <svg class="icon-svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -979,12 +1008,10 @@
         <a href="https://drive.google.com/drive/folders/1AyEcbYYZL-7CwhQZGs7Jm2YCyeLZHOaM?usp=sharing" target="_blank" class="btn">Subir fotos al Álbum</a>
     </section>
 
-    <!-- SEPARADOR FLORAL FULL-WIDTH 8 -->
     <div class="floral-divider-container">
         <img src="flores1.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- SECCIÓN DE CONFIRMACIÓN DE ASISTENCIA -->
     <section class="animate-on-scroll">
         <div class="rsvp-card-section">
             <svg class="icon-svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="display: block; margin: 0 auto 15px auto;">
@@ -992,7 +1019,7 @@
                 <polyline points="22,6 12,13 2,6"></polyline>
             </svg>
             <h2>Confirmación de Asistencia</h2>
-            <p style="margin-bottom: 25px;">Tu presencia es el regalo más importante para nosotros. Por favor, confirma tu asistencia antes del 15 de Octubre.</p>
+            <p style="margin-bottom: 25px;">Tu presencia es el regalo más importante para nosotros. Por favor, confirma tu asistencia antes del 14 de Noviembre.</p>
             
             <div class="rsvp-form-container">
                 <form action="https://formspree.io/f/myegpkbw" method="POST">
@@ -1016,36 +1043,32 @@
                     <label for="notas-asistencia" style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);">Comentarios o restricciones alimentarias (Opcional):</label>
                     <input type="text" id="notas-asistencia" name="notas" placeholder="Ej. Alergia a algún alimento, vegetariano...">
 
-                    <button type="submit" class="btn" style="width: 100%; margin-top: 10px; padding: 16px;">Enviar Confirmación</button>
+                    <button type="submit" class="btn" style="width: 100%; margin-top: 15px; padding: 16px;">Enviar Confirmación</button>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- SEPARADOR FLORAL FULL-WIDTH 9 -->
     <div class="floral-divider-container">
         <img src="flores2.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- FOOTER ENRIQUECIDO -->
     <footer class="animate-on-scroll">
         <h2>Adriana & César</h2>
         <p>Gracias por ser parte de nuestra historia.</p>
         <div class="footer-divider"></div>
-        <p style="font-size: 0.9rem; margin-top: 20px;">© 2026 Todos los derechos reservados.</p>
-        <p style="font-size: 0.9rem;">Diseñado con <span style="color: var(--accent);">♥</span> para nuestro gran día.</p>
-        <p style="font-size: 0.85rem; margin-top: 15px; opacity: 0.9;">Sitio desarrollado por <a href="AQUI_TU_LINK" target="_blank" style="color: var(--gold); text-decoration: underline;">MZG Systems</a></p>
+        <div class="footer-badge">
+            <p style="font-size: 0.9rem; margin-bottom: 5px;">© 2026 Todos los derechos reservados.</p>
+            <p style="font-size: 0.9rem; margin-bottom: 5px;">Diseñado con <span style="color: var(--accent);">♥</span> para nuestro gran día.</p>
+            <p style="font-size: 0.85rem; margin-top: 8px;">Sitio desarrollado por <a href="https://wa.me/5215650146406" target="_blank" style="color: var(--gold); text-decoration: underline; font-weight: 700;">MZG Systems</a></p>
+        </div>
     </footer>
 
-    <!-- BOTÓN FLOTANTE PARA REGRESAR ARRIBA -->
     <a href="#inicio" class="back-to-top" title="Volver arriba">↑</a>
 
-    <!-- ================= MODALES ================= -->
-    
-    <!-- Modal Música -->
     <div id="modalMusica" class="modal-overlay">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modalMusica')">&times;</span>
+            <span class="close-btn" onclick="closeModal('modalMusica')">×</span>
             <h2>Sugerir Canción</h2>
             <form action="https://formspree.io/f/mgawzopn" method="POST">
                 <input type="text" name="nombre_invitado" placeholder="Ingrese su nombre completo" required>
@@ -1056,35 +1079,36 @@
         </div>
     </div>
 
-    <!-- Modal Dress Code -->
     <div id="modalDress" class="modal-overlay">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modalDress')">&times;</span>
+            <span class="close-btn" onclick="closeModal('modalDress')">×</span>
             <h2>Dress Code</h2>
-            <p><strong>Vestimenta Formal</strong></p>
-            <p style="font-size: 1.05rem; margin-top: 15px; color: var(--text-dark);">Si necesitas inspiración en la paleta del evento, te compartimos algunas ideas para acompañarnos en esta celebración.</p>
-            <a href="LINK_DE_INSPIRACION" target="_blank" class="btn" style="margin-top: 25px; display: block; text-align: center;">Ver enlace de inspiración</a>
+            <p style="font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-bottom: 10px; text-align: center;">Vestimenta Formal</p>
+            
+            <div style="text-align: left; font-size: 1.05rem; line-height: 1.7; background: rgba(255,255,255,0.6); padding: 20px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.3);">
+                <p style="margin-bottom: 12px;">Queremos que luzcas elegante y te sientas cómodo celebrando con nosotros este día tan especial.</p>
+                <p style="margin-bottom: 12px;"><strong>Nota importante:</strong> Solicitamos amablemente a nuestras invitadas <strong>evitar el color blanco</strong>, ya que está reservado exclusivamente para la novia.</p>
+                <p>¡Gracias por tu comprensión y por acompañarnos!</p>
+            </div>
         </div>
     </div>
 
-    <!-- Modal Tips y Notas -->
     <div id="modalTips" class="modal-overlay">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modalTips')">&times;</span>
+            <span class="close-btn" onclick="closeModal('modalTips')">×</span>
             <h2>Tips y Notas</h2>
             <ul style="text-align: left; margin: 25px 15px; font-size: 1.05rem; line-height: 1.8; color: var(--text-dark);">
                 <li>¡Por favor, ser puntuales!</li>
-                <li>Queremos que disfrutes de esta fiesta al máximo, por eso decidimos que sea un evento <strong>sólo para adultos</strong>.</li>
+                <li>Queremos que disfrutes de esta fiesta al máximo, por eso decidimos que sea un evento <strong>SÓLO PARA ADULTOS</strong>.</li>
                 <li>Considera llevar un abrigo ligero para disfrutar cómodamente de los espacios exteriores.</li>
                 <li>¡Olvídate de todo y ven a disfrutar!</li>
             </ul>
         </div>
     </div>
 
-    <!-- Modal Regalos -->
     <div id="modalRegalos" class="modal-overlay">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('modalRegalos')">&times;</span>
+            <span class="close-btn" onclick="closeModal('modalRegalos')">×</span>
             <h2>Regalos</h2>
             <p style="font-size: 1.05rem; margin-bottom: 25px;">El mejor regalo es tu presencia. Sin embargo, si deseas tener un detalle con nosotros, contamos con una mesa de regalos:</p>
             
@@ -1100,7 +1124,6 @@
         </div>
     </div>
 
-    <!-- ================= SCRIPTS ================= -->
     <script>
         // Animaciones al hacer Scroll (Intersection Observer)
         document.addEventListener("DOMContentLoaded", function() {
@@ -1167,16 +1190,29 @@
             }, {passive: true});
         }
 
-        // Lógica de Modales
+        // Lógica de Modales Interactivos con Clases
         function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
         }
+        
         function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
         }
+
         window.onclick = function(event) {
             if (event.target.classList.contains('modal-overlay')) {
-                event.target.style.display = "none";
+                event.target.classList.remove('active');
+                setTimeout(() => {
+                    event.target.style.display = "none";
+                }, 300);
             }
         }
 
