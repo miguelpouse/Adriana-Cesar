@@ -115,6 +115,22 @@
             animation: heartbeat 3s infinite;
         }
 
+        /* --- Efecto Sutil y Elegante para "Nos casamos..." --- */
+        @keyframes softGlow {
+            0%, 100% { opacity: 0.85; transform: scale(1); text-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+            50% { opacity: 1; transform: scale(1.01); text-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+        }
+
+        .wedding-announcement {
+            font-family: 'STXingkai', 'Great Vibes', cursive, serif;
+            font-size: clamp(2.2rem, 5vw, 3rem);
+            color: var(--gold);
+            line-height: 1.3;
+            margin-bottom: 25px;
+            animation: softGlow 4s ease-in-out infinite;
+            letter-spacing: 1.5px;
+        }
+
         /* Sistema de Animaciones Globales (Fade In Up) */
         .animate-on-scroll {
             opacity: 0;
@@ -271,6 +287,15 @@
             margin: 20px auto;
         }
 
+        .honor-phrase {
+            font-size: 1.15rem;
+            font-style: italic;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+        }
+
         /* Efecto Rasca y Gana */
         .scratch-container {
             display: flex;
@@ -360,9 +385,8 @@
             font-size: 0.95rem;
         }
 
-        /* Tarjetas de Evento */
+        /* Tarjetas de Evento con imagen adaptable (cover + center) */
         .event-card {
-            background: white;
             border-radius: 12px;
             padding: 40px 30px;
             margin-bottom: 25px;
@@ -371,6 +395,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .event-card p {
@@ -615,6 +642,20 @@
             transform: translateY(-2px);
         }
 
+        /* Estilos adicionales para la sección condicional de acompañante */
+        #acompanante-container {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.4s ease, margin 0.4s ease;
+        }
+
+        #acompanante-container.show {
+            max-height: 150px;
+            opacity: 1;
+            margin-bottom: 20px;
+        }
+
         /* ================= MODALES REDISEÑADOS ================= */
         .modal-overlay {
             position: fixed;
@@ -708,73 +749,135 @@
             box-shadow: 0 0 0 3px rgba(194, 89, 62, 0.15);
         }
 
-        /* ================= FOOTER ENRIQUECIDO Y VISTOSO ================= */
+        /* ================= ESTILOS PARA CÍRCULOS DE COLORES DRESS CODE ================= */
+        .dress-code-palette {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+            background: rgba(255,255,255,0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .palette-group {
+            text-align: left;
+        }
+
+        .palette-group span {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .color-circles {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .color-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            border: 2px solid white;
+        }
+
+        /* ================= FOOTER MINIMALISTA, ELEGANTE Y PROFESIONAL ================= */
         footer {
-            background: linear-gradient(135deg, #0F1829 0%, #1B2A47 100%);
+            background-color: #0F1829;
             color: var(--bg-color);
-            padding: 70px 20px 50px 20px;
+            padding: 60px 20px 40px 20px;
             text-align: center;
             margin-top: 60px;
-            position: relative;
-            border-top: 2px solid var(--gold);
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
         }
 
-        footer h2 {
+        .footer-content {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-names {
+            font-family: 'STXingkai', 'Great Vibes', cursive, serif;
+            font-size: 2.8rem;
             color: var(--gold);
-            font-size: 3.5rem;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-            text-transform: none;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        footer p {
-            font-size: 1.05rem;
             letter-spacing: 1.5px;
-            opacity: 0.9;
-            margin-bottom: 8px;
-        }
-        
-        .footer-divider {
-            width: 80px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
-            margin: 20px auto;
+            line-height: 1.1;
         }
 
-        .footer-badge {
-            display: inline-block;
-            margin-top: 25px;
-            padding: 12px 25px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 30px;
-            backdrop-filter: blur(5px);
+        .footer-date {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.95rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(253, 249, 241, 0.75);
         }
 
-        /* Botón Flotante para Navegación (Regresar arriba) */
+        .footer-line {
+            width: 40px;
+            height: 1px;
+            background-color: var(--gold);
+            opacity: 0.5;
+            margin: 10px 0;
+        }
+
+        .footer-developer {
+            font-size: 0.85rem;
+            color: rgba(253, 249, 241, 0.6);
+            letter-spacing: 0.5px;
+            margin-top: 15px;
+        }
+
+        .footer-developer a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: opacity 0.2s;
+        }
+
+        .footer-developer a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        /* ================= BOTÓN FLOTANTE (REGRESAR ARRIBA) ================= */
         .back-to-top {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background-color: var(--accent);
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--accent), #a3462f);
             color: white;
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 20px rgba(194, 89, 62, 0.35), 0 0 0 2px rgba(212, 175, 55, 0.4);
             z-index: 999;
-            transition: background-color 0.3s, transform 0.3s;
-            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.3rem;
         }
 
         .back-to-top:hover {
-            background-color: var(--text-dark);
-            transform: translateY(-3px);
+            background: linear-gradient(135deg, var(--text-dark), #0F1829);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(27, 42, 71, 0.4), 0 0 0 3px var(--gold);
+        }
+
+        .back-to-top:active {
+            transform: translateY(-2px) scale(0.98);
         }
     </style>
 </head>
@@ -804,6 +907,12 @@
 
     <section class="animate-on-scroll">
         <div class="parents-godparents-container">
+            <div class="wedding-announcement">
+                Nos casamos, no lo creíamos pero al fin llegó el día
+            </div>
+
+            <div class="family-divider-line"></div>
+
             <div class="family-group">
                 <h3>Con la bendición de nuestros padres</h3>
                 <div class="family-names">
@@ -820,6 +929,9 @@
                     <p>Julio César Méndez Zúñiga & Estela Antonia Franco Suárez</p>
                 </div>
             </div>
+
+            <div class="family-divider-line"></div>
+            <p class="honor-phrase"><strong>T</strong>enemos el honor de invitarte a formar parte de esta nueva etapa en nuestras vidas.</p>
         </div>
     </section>
 
@@ -867,7 +979,7 @@
     </div>
 
     <section class="animate-on-scroll">
-        <div class="event-card">
+        <div class="event-card" style="background-image: linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('iglesia.jpg');">
             <svg class="icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 19.5v-15a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v15a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/>
                 <path d="M12 2v6"/>
@@ -880,7 +992,7 @@
             <p style="margin-top: 12px;">Catedral San Bernardino de Siena</p>
         </div>
 
-        <div class="event-card">
+        <div class="event-card" style="background-image: linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('salon.jpg');">
             <svg class="icon-svg" viewBox="0 0 24 24" width="48" height="48" stroke="var(--accent)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v5a5 5 0 0 0 5 5z"/></svg>
             <h2>Celebración</h2>
             <p><strong>Sábado 14 Noviembre 2026</strong><br>4:30 PM</p>
@@ -1040,6 +1152,28 @@
                         </label>
                     </div>
 
+                    <!-- Sección condicional de acompañante -->
+                    <div id="acompanante-pregunta-container" style="display: none;">
+                        <label style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark); display: block; margin-top: 10px;">¿Llevarás algún acompañante?</label>
+                        <div class="rsvp-options">
+                            <label class="rsvp-option-label">
+                                <input type="radio" name="lleva_acompanante" value="Sí" id="acompanante-si">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-alt)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Sí, con acompañante</span>
+                            </label>
+                            <label class="rsvp-option-label">
+                                <input type="radio" name="lleva_acompanante" value="No" id="acompanante-no" checked>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                <span>Iré solo(a)</span>
+                            </label>
+                        </div>
+
+                        <div id="acompanante-container">
+                            <label for="nombre-acompanante" style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);">Nombre completo del acompañante:</label>
+                            <input type="text" id="nombre-acompanante" name="nombre_acompanante" placeholder="Ingresa nombre y apellido del acompañante">
+                        </div>
+                    </div>
+
                     <label for="notas-asistencia" style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);">Comentarios o restricciones alimentarias (Opcional):</label>
                     <input type="text" id="notas-asistencia" name="notas" placeholder="Ej. Alergia a algún alimento, vegetariano...">
 
@@ -1054,17 +1188,20 @@
     </div>
 
     <footer class="animate-on-scroll">
-        <h2>Adriana & César</h2>
-        <p>Gracias por ser parte de nuestra historia.</p>
-        <div class="footer-divider"></div>
-        <div class="footer-badge">
-            <p style="font-size: 0.9rem; margin-bottom: 5px;">© 2026 Todos los derechos reservados.</p>
-            <p style="font-size: 0.9rem; margin-bottom: 5px;">Diseñado con <span style="color: var(--accent);">♥</span> para nuestro gran día.</p>
-            <p style="font-size: 0.85rem; margin-top: 8px;">Sitio desarrollado por <a href="https://wa.me/5215650146406" target="_blank" style="color: var(--gold); text-decoration: underline; font-weight: 700;">MZG Systems</a></p>
+        <div class="footer-content">
+            <h2 class="footer-names">Adriana & César</h2>
+            <p class="footer-date">14 • 11 • 2026</p>
+            <div class="footer-line"></div>
+            <p class="footer-developer">
+                Desarrollado con <span style="color: var(--accent);">♥</span> por <a href="https://wa.me/5215650146406" target="_blank">MZG Systems</a>
+            </p>
         </div>
     </footer>
 
-    <a href="#inicio" class="back-to-top" title="Volver arriba">↑</a>
+    <!-- Botón flotante "Volver arriba" -->
+    <a href="#inicio" class="back-to-top" title="Volver arriba">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+    </a>
 
     <div id="modalMusica" class="modal-overlay">
         <div class="modal-content">
@@ -1079,6 +1216,7 @@
         </div>
     </div>
 
+    <!-- MODAL DRESS CODE CON PALETA DE COLORES EN CÍRCULOS -->
     <div id="modalDress" class="modal-overlay">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('modalDress')">×</span>
@@ -1087,8 +1225,30 @@
             
             <div style="text-align: left; font-size: 1.05rem; line-height: 1.7; background: rgba(255,255,255,0.6); padding: 20px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.3);">
                 <p style="margin-bottom: 12px;">Queremos que luzcas elegante y te sientas cómodo celebrando con nosotros este día tan especial.</p>
-                <p style="margin-bottom: 12px;"><strong>Nota importante:</strong> Solicitamos amablemente a nuestras invitadas <strong>evitar el color blanco</strong>, ya que está reservado exclusivamente para la novia.</p>
-                <p>¡Gracias por tu comprensión y por acompañarnos!</p>
+                <p style="margin-bottom: 12px;"><strong>Nota importante:</strong> Solicitamos amablemente a nuestras invitadas <strong>evitar el color blanco y el terracota</strong>, ya que están reservados exclusivamente para la novia y sus damas de honor.</p>
+                
+                <div class="dress-code-palette">
+                    <div class="palette-group">
+                        <span>Colores sugeridos para mujeres:</span>
+                        <div class="color-circles">
+                            <div class="color-circle" style="background-color: #1B2A47;" title="Azul Marino"></div>
+                            <div class="color-circle" style="background-color: #5B7040;" title="Verde Olivo"></div>
+                            <div class="color-circle" style="background-color: #D4AF37;" title="Dorado / Champagne"></div>
+                            <div class="color-circle" style="background-color: #7A4242;" title="Vino / Borgoña"></div>
+                            <div class="color-circle" style="background-color: #D8BFD8;" title="Rosa Pastel / Lila"></div>
+                        </div>
+                    </div>
+                    <div class="palette-group">
+                        <span>Colores sugeridos para hombres:</span>
+                        <div class="color-circles">
+                            <div class="color-circle" style="background-color: #0F1829;" title="Traje Negro / Azul Oscuro"></div>
+                            <div class="color-circle" style="background-color: #4A5568;" title="Gris Oxford"></div>
+                            <div class="color-circle" style="background-color: #2C3E50;" title="Azul Marino"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 15px;">¡Gracias por tu comprensión y por acompañarnos!</p>
             </div>
         </div>
     </div>
@@ -1098,8 +1258,9 @@
             <span class="close-btn" onclick="closeModal('modalTips')">×</span>
             <h2>Tips y Notas</h2>
             <ul style="text-align: left; margin: 25px 15px; font-size: 1.05rem; line-height: 1.8; color: var(--text-dark);">
-                <li>¡Por favor, ser puntuales!</li>
+                <li>¡Por favor, ser puntuales! Se sugiere llegar temprano, la iglesia cuenta con estacionamiento.</li>
                 <li>Queremos que disfrutes de esta fiesta al máximo, por eso decidimos que sea un evento <strong>SÓLO PARA ADULTOS</strong>.</li>
+                <li>El salón cuenta con servicio de valet parking con un costo de $60 pesos.</li>
                 <li>Considera llevar un abrigo ligero para disfrutar cómodamente de los espacios exteriores.</li>
                 <li>¡Olvídate de todo y ven a disfrutar!</li>
             </ul>
@@ -1144,6 +1305,42 @@
 
             document.querySelectorAll('.animate-on-scroll').forEach(section => {
                 observer.observe(section);
+            });
+
+            // Lógica para mostrar/ocultar el campo de acompañante según la asistencia principal
+            const radiosAsistencia = document.querySelectorAll('input[name="asistencia"]');
+            const preguntaAcompananteContainer = document.getElementById('acompanante-pregunta-container');
+            const inputAcompananteNombre = document.getElementById('nombre-acompanante');
+            const radioAcompananteNo = document.getElementById('acompanante-no');
+
+            radiosAsistencia.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'Sí confirmo') {
+                        preguntaAcompananteContainer.style.display = 'block';
+                    } else {
+                        preguntaAcompananteContainer.style.display = 'none';
+                        document.getElementById('acompanante-container').classList.remove('show');
+                        radioAcompananteNo.checked = true;
+                        inputAcompananteNombre.value = '';
+                    }
+                });
+            });
+
+            // Lógica para mostrar el input del nombre del acompañante
+            const radiosAcompanante = document.querySelectorAll('input[name="lleva_acompanante"]');
+            const acompananteContainer = document.getElementById('acompanante-container');
+
+            radiosAcompanante.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'Sí') {
+                        acompananteContainer.classList.add('show');
+                        inputAcompananteNombre.setAttribute('required', 'true');
+                    } else {
+                        acompananteContainer.classList.remove('show');
+                        inputAcompananteNombre.removeAttribute('required');
+                        inputAcompananteNombre.value = '';
+                    }
+                });
             });
         });
 
