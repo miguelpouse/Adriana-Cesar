@@ -95,6 +95,19 @@
             font-family: 'Lato', sans-serif;
             font-style: normal;
             font-size: 1.1rem;
+            text-align: left;
+        }
+
+        /* Textos específicos centrados donde se requiera */
+        .hero p, .parents-godparents-container p, .location-section p, .rsvp-card-section p, 
+        .modal-content p, footer p, .event-card p, h2, h3, .script-text, .wedding-announcement {
+            text-align: center;
+        }
+
+        /* Justificación específica solicitada para detalles del evento y textos largos */
+        .justified-text {
+            text-align: justify;
+            text-justify: inter-word;
         }
 
         small {
@@ -385,7 +398,7 @@
             font-size: 0.95rem;
         }
 
-        /* Tarjetas de Evento con imagen adaptable (cover + center) */
+        /* Tarjetas de Evento (Ceremonia y Celebración) con fondo más claro (menos translúcido) */
         .event-card {
             border-radius: 12px;
             padding: 40px 30px;
@@ -398,6 +411,8 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            /* Se reduce la opacidad del degradado blanco para que la foto de fondo se vea más clara y nítida */
+            background-image: linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)), var(--event-bg);
         }
 
         .event-card p {
@@ -916,8 +931,8 @@
             <div class="family-group">
                 <h3>Con la bendición de nuestros padres</h3>
                 <div class="family-names">
-                    <p><strong>Padres de la Novia:</strong><br>Guillermo Bravo Ruíz ✞ & María del Socorro González Trujillo</p>
-                    <p style="margin-top: 15px;"><strong>Padres del Novio:</strong><br>Julio César Méndez Zúñiga & Estela Antonia Franco Suárez</p>
+                    <p style="text-align: center;"><strong>Padres de la Novia:</strong><br>Guillermo Bravo Ruíz ✞ & María del Socorro González Trujillo</p>
+                    <p style="margin-top: 15px; text-align: center;"><strong>Padres del Novio:</strong><br>Julio César Méndez Zúñiga & Estela Antonia Franco Suárez</p>
                 </div>
             </div>
 
@@ -926,7 +941,7 @@
             <div class="family-group">
                 <h3>Padrinos de Velación</h3>
                 <div class="family-names">
-                    <p>Julio César Méndez Zúñiga & Estela Antonia Franco Suárez</p>
+                    <p style="text-align: center;">Julio César Méndez Zúñiga & Estela Antonia Franco Suárez</p>
                 </div>
             </div>
 
@@ -979,7 +994,8 @@
     </div>
 
     <section class="animate-on-scroll">
-        <div class="event-card" style="background-image: linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('iglesia.jpg');">
+        <!-- Tarjeta Ceremonia con variable de fondo más clara -->
+        <div class="event-card" style="--event-bg: url('iglesia.jpg');">
             <svg class="icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 19.5v-15a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v15a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/>
                 <path d="M12 2v6"/>
@@ -992,7 +1008,8 @@
             <p style="margin-top: 12px;">Catedral San Bernardino de Siena</p>
         </div>
 
-        <div class="event-card" style="background-image: linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)), url('salon.jpg');">
+        <!-- Tarjeta Celebración con variable de fondo más clara -->
+        <div class="event-card" style="--event-bg: url('salon.jpg');">
             <svg class="icon-svg" viewBox="0 0 24 24" width="48" height="48" stroke="var(--accent)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v5a5 5 0 0 0 5 5z"/></svg>
             <h2>Celebración</h2>
             <p><strong>Sábado 14 Noviembre 2026</strong><br>4:30 PM</p>
@@ -1016,16 +1033,16 @@
 
             <div id="ceremonia-loc" class="location-content active">
                 <div class="location-details">
-                    <p><strong>Catedral San Bernardino de Siena</strong></p>
-                    <p style="font-size: 1.05rem; margin: 8px 0 18px 0;">Sábado 14 de Noviembre • 2:30 PM</p>
+                    <p style="text-align: center;"><strong>Catedral San Bernardino de Siena</strong></p>
+                    <p style="font-size: 1.05rem; margin: 8px 0 18px 0; text-align: center;">Sábado 14 de Noviembre • 2:30 PM</p>
                     <a href="https://maps.app.goo.gl/thgBvpemCQfdpfDBA" target="_blank" class="btn" style="margin-top: 0;">Abrir en Google Maps</a>
                 </div>
             </div>
 
             <div id="recepcion-loc" class="location-content">
                 <div class="location-details">
-                    <p><strong>Salón Bamboo Xochimilco</strong></p>
-                    <p style="font-size: 1.05rem; margin: 8px 0 18px 0;">Sábado 14 de Noviembre • 4:30 PM</p>
+                    <p style="text-align: center;"><strong>Salón Bamboo Xochimilco</strong></p>
+                    <p style="font-size: 1.05rem; margin: 8px 0 18px 0; text-align: center;">Sábado 14 de Noviembre • 4:30 PM</p>
                     <a href="https://maps.app.goo.gl/wJ4imJvseeW3yhk49" target="_blank" class="btn" style="margin-top: 0;">Abrir en Google Maps</a>
                 </div>
             </div>
@@ -1224,8 +1241,8 @@
             <p style="font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-bottom: 10px; text-align: center;">Vestimenta Formal</p>
             
             <div style="text-align: left; font-size: 1.05rem; line-height: 1.7; background: rgba(255,255,255,0.6); padding: 20px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.3);">
-                <p style="margin-bottom: 12px;">Queremos que luzcas elegante y te sientas cómodo celebrando con nosotros este día tan especial.</p>
-                <p style="margin-bottom: 12px;"><strong>Nota importante:</strong> Solicitamos amablemente a nuestras invitadas <strong>evitar el color blanco y el terracota</strong>, ya que están reservados exclusivamente para la novia y sus damas de honor.</p>
+                <p class="justified-text" style="margin-bottom: 12px;">Queremos que luzcas elegante y te sientas cómodo celebrando con nosotros este día tan especial.</p>
+                <p class="justified-text" style="margin-bottom: 12px;"><strong>Nota importante:</strong> Solicitamos amablemente a nuestras invitadas <strong>evitar el color blanco y el terracota</strong>, ya que están reservados exclusivamente para la novia y sus damas de honor.</p>
                 
                 <div class="dress-code-palette">
                     <div class="palette-group">
@@ -1248,20 +1265,21 @@
                     </div>
                 </div>
 
-                <p style="margin-top: 15px;">¡Gracias por tu comprensión y por acompañarnos!</p>
+                <p style="margin-top: 15px; text-align: center;">¡Gracias por tu comprensión y por acompañarnos!</p>
             </div>
         </div>
     </div>
 
+    <!-- MODAL TIPS Y NOTAS CON TEXTO JUSTIFICADO -->
     <div id="modalTips" class="modal-overlay">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('modalTips')">×</span>
             <h2>Tips y Notas</h2>
-            <ul style="text-align: left; margin: 25px 15px; font-size: 1.05rem; line-height: 1.8; color: var(--text-dark);">
-                <li>¡Por favor, ser puntuales! Se sugiere llegar temprano, la iglesia cuenta con estacionamiento.</li>
-                <li>Queremos que disfrutes de esta fiesta al máximo, por eso decidimos que sea un evento <strong>SÓLO PARA ADULTOS</strong>.</li>
-                <li>El salón cuenta con servicio de valet parking con un costo de $60 pesos.</li>
-                <li>Considera llevar un abrigo ligero para disfrutar cómodamente de los espacios exteriores.</li>
+            <ul style="text-align: justify; text-justify: inter-word; margin: 25px 15px; font-size: 1.05rem; line-height: 1.8; color: var(--text-dark);">
+                <li style="margin-bottom: 10px;">¡Por favor, ser puntuales! Se sugiere llegar temprano, la iglesia cuenta con estacionamiento.</li>
+                <li style="margin-bottom: 10px;">Queremos que disfrutes de esta fiesta al máximo, por eso decidimos que sea un evento <strong>SÓLO PARA ADULTOS</strong>.</li>
+                <li style="margin-bottom: 10px;">El salón cuenta con servicio de valet parking con un costo de $60 pesos.</li>
+                <li style="margin-bottom: 10px;">Considera llevar un abrigo ligero para disfrutar cómodamente de los espacios exteriores.</li>
                 <li>¡Olvídate de todo y ven a disfrutar!</li>
             </ul>
         </div>
@@ -1271,16 +1289,16 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('modalRegalos')">×</span>
             <h2>Regalos</h2>
-            <p style="font-size: 1.05rem; margin-bottom: 25px;">El mejor regalo es tu presencia. Sin embargo, si deseas tener un detalle con nosotros, contamos con una mesa de regalos:</p>
+            <p class="justified-text" style="font-size: 1.05rem; margin-bottom: 25px;">El mejor regalo es tu presencia. Sin embargo, si deseas tener un detalle con nosotros, contamos con una mesa de regalos:</p>
             
             <a href="https://mesaderegalos.liverpool.com.mx/milistaderegalos/52031028" target="_blank" class="btn" style="width: 100%; margin-bottom: 25px; background-color: var(--text-dark); display: block; text-align: center;">Ver Mesa Liverpool</a>
             
-            <p style="font-size: 1.05rem; margin-bottom: 15px;">También contaremos con sobres disponibles el día del evento, o si lo prefieres, puedes contribuir mediante:</p>
+            <p class="justified-text" style="font-size: 1.05rem; margin-bottom: 15px;">También contaremos con sobres disponibles el día del evento, o si lo prefieres, puedes contribuir mediante:</p>
             
             <div style="text-align: left; font-size: 1.05rem; line-height: 1.6; background: rgba(255,255,255,0.5); padding: 15px; border-radius: 8px;">
-                <p><strong>Depósito bancario:</strong><br>Cuenta: XXXX XXXX XXXX XXXX</p>
+                <p style="text-align: left;"><strong>Depósito bancario:</strong><br>Cuenta: XXXX XXXX XXXX XXXX</p>
                 <hr style="border: 0; border-top: 1px solid rgba(27, 42, 71, 0.1); margin: 10px 0;">
-                <p><strong>PayPal:</strong><br>Correo: correopaypal@gmail.com</p>
+                <p style="text-align: left;"><strong>PayPal:</strong><br>Correo: correopaypal@gmail.com</p>
             </div>
         </div>
     </div>
