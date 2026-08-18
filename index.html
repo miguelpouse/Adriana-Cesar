@@ -1458,36 +1458,29 @@
                 observer.observe(section);
             });
 
-            // Lógica para mostrar/ocultar el botón de WhatsApp según la sección de la fecha y el footer
+            // Lógica corregida para mostrar/ocultar el botón de WhatsApp según el scroll y el footer
             const whatsappFloat = document.getElementById('whatsappFloat');
-            const fechaSection = document.getElementById('fecha-section');
             const footerElement = document.getElementById('main-footer');
 
-            if (whatsappFloat && fechaSection && footerElement) {
-                // Observador para la sección de la fecha (aparece al rebasarla hacia abajo)
-                const fechaObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        // Si la sección de la fecha ya salió de la pantalla por arriba (boundingClientRect.top < 0)
-                        if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
-                            whatsappFloat.classList.add('show');
-                        } else {
-                            whatsappFloat.classList.remove('show');
-                        }
-                    });
-                }, { threshold: 0 });
+            if (whatsappFloat && footerElement) {
+                // Control por evento scroll para mostrar/ocultar basado en la posición vertical
+                window.addEventListener('scroll', function() {
+                    const scrollY = window.scrollY;
+                    const footerRect = footerElement.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
 
-                fechaObserver.observe(fechaSection);
+                    // Mostrar el botón si hemos bajado más de 300px
+                    if (scrollY > 300) {
+                        whatsappFloat.classList.add('show');
+                    } else {
+                        whatsappFloat.classList.remove('show');
+                    }
 
-                // Observador para el footer (se oculta si entra al footer)
-                const footerObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            whatsappFloat.classList.remove('show');
-                        }
-                    });
-                }, { threshold: 0.1 });
-
-                footerObserver.observe(footerElement);
+                    // Ocultar si el footer ya es visible en la pantalla para evitar solapamientos
+                    if (footerRect.top <= windowHeight) {
+                        whatsappFloat.classList.remove('show');
+                    }
+                });
             }
 
             // Lógica para mostrar/ocultar el campo de acompañante según la asistencia principal
