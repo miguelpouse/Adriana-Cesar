@@ -128,20 +128,21 @@
             animation: heartbeat 3s infinite;
         }
 
-        /* --- Efecto Sutil y Elegante para "Nos casamos..." --- */
+        /* --- Efecto Sutil y Elegante para "Nos casamos..." en Verde Olivo con Sombra --- */
         @keyframes softGlow {
-            0%, 100% { opacity: 0.85; transform: scale(1); text-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
-            50% { opacity: 1; transform: scale(1.01); text-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+            0%, 100% { opacity: 0.9; transform: scale(1); text-shadow: 2px 2px 5px rgba(91, 112, 64, 0.25); }
+            50% { opacity: 1; transform: scale(1.01); text-shadow: 2px 2px 8px rgba(91, 112, 64, 0.4); }
         }
 
         .wedding-announcement {
             font-family: 'STXingkai', 'Great Vibes', cursive, serif;
             font-size: clamp(2.2rem, 5vw, 3rem);
-            color: var(--gold);
+            color: var(--accent-alt); /* Color Verde Olivo */
             line-height: 1.3;
             margin-bottom: 25px;
             animation: softGlow 4s ease-in-out infinite;
             letter-spacing: 1.5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15); /* Sombra elegante */
         }
 
         /* Sistema de Animaciones Globales (Fade In Up) */
@@ -282,15 +283,43 @@
         .family-group h3 {
             font-size: 1.9rem;
             color: var(--accent);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             letter-spacing: 1px;
             text-transform: none;
         }
 
         .family-names {
-            font-size: 1.15rem;
+            font-size: 1.12rem;
             color: var(--text-dark);
-            line-height: 1.8;
+            line-height: 1.6;
+        }
+
+        .couple-block {
+            margin: 12px 0;
+        }
+
+        .couple-block .role-title {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-alt);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .couple-names-stacked {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .couple-names-stacked .ampersand {
+            font-family: 'STXingkai', 'Great Vibes', cursive, serif;
+            font-size: 1.8rem;
+            color: var(--gold);
+            line-height: 1;
+            margin: 2px 0;
         }
 
         .family-divider-line {
@@ -304,7 +333,7 @@
             font-size: 1.15rem;
             font-style: italic;
             color: var(--text-dark);
-            margin-bottom: 25px;
+            margin-top: 20px;
             letter-spacing: 0.5px;
             opacity: 0.9;
         }
@@ -996,8 +1025,27 @@
             <div class="family-group">
                 <h3>Con la bendición de nuestros padres</h3>
                 <div class="family-names">
-                    <p style="text-align: center;"><strong>Padres de la Novia:</strong><br>Guillermo Bravo Ruíz ✞ & María del Socorro González Trujillo</p>
-                    <p style="margin-top: 15px; text-align: center;"><strong>Padres del Novio:</strong><br>Julio César Méndez Zúñiga & Estela Antonia Franco Suárez</p>
+                    <!-- Padres de la Novia -->
+                    <div class="couple-block">
+                        <p class="role-title">Padres de la Novia</p>
+                        <div class="couple-names-stacked">
+                            <span>Guillermo Bravo Ruíz ✞</span>
+                            <span class="ampersand">&</span>
+                            <span>María del Socorro González Trujillo</span>
+                        </div>
+                    </div>
+
+                    <div style="margin: 20px 0;"></div>
+
+                    <!-- Padres del Novio -->
+                    <div class="couple-block">
+                        <p class="role-title">Padres del Novio</p>
+                        <div class="couple-names-stacked">
+                            <span>Julio César Méndez Zúñiga</span>
+                            <span class="ampersand">&</span>
+                            <span>Estela Antonia Franco Suárez</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1006,7 +1054,13 @@
             <div class="family-group">
                 <h3>Padrinos de Velación</h3>
                 <div class="family-names">
-                    <p style="text-align: center;">Julio César Méndez Zúñiga & Estela Antonia Franco Suárez</p>
+                    <div class="couple-block">
+                        <div class="couple-names-stacked">
+                            <span>Julio César Méndez Zúñiga</span>
+                            <span class="ampersand">&</span>
+                            <span>Estela Antonia Franco Suárez</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
