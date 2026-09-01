@@ -1067,6 +1067,99 @@
             color: var(--text-dark);
             letter-spacing: 0.3px;
         }
+
+        /* ================= REPRODUCTOR DE MÚSICA FLOTANTE ================= */
+        .music-player-container {
+            position: fixed;
+            bottom: 95px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.5px solid var(--gold);
+            border-radius: 30px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 6px 20px rgba(27, 42, 71, 0.15);
+            z-index: 998;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .music-player-container:hover {
+            transform: scale(1.03);
+            background: white;
+        }
+
+        .music-btn {
+            background: var(--accent);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(184, 79, 62, 0.3);
+            transition: background-color 0.3s;
+        }
+
+        .music-btn:hover {
+            background-color: #9A4132;
+        }
+
+        .music-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .music-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 0.5px;
+        }
+
+        .music-status {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        /* Ondas animadas de reproducción */
+        .sound-waves {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 14px;
+            width: 16px;
+        }
+
+        .sound-waves span {
+            display: block;
+            width: 3px;
+            background-color: var(--accent);
+            border-radius: 2px;
+            height: 4px;
+        }
+
+        .playing .sound-waves span {
+            animation: soundWaveAnim 1.2s infinite ease-in-out;
+        }
+
+        .playing .sound-waves span:nth-child(1) { animation-delay: 0s; }
+        .playing .sound-waves span:nth-child(2) { animation-delay: 0.2s; }
+        .playing .sound-waves span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes soundWaveAnim {
+            0%, 100% { height: 4px; }
+            50% { height: 14px; }
+        }
     </style>
 </head>
 <body id="inicio">
@@ -1186,13 +1279,19 @@
                 Agregar al Calendario
             </a>
 
-            <!-- ITINERARIO (CON SVG DE PLATO LIMPIO Y ELEGANTE PARA EL BANQUETE) -->
+            <!-- ITINERARIO (CON NUEVOS ICONOS SVG ELEGANTES Y REPRESENTATIVOS) -->
             <div class="timeline-container">
                 <h2 class="timeline-title">Itinerario</h2>
                 
                 <div class="timeline-item">
                     <div class="timeline-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v15a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/><path d="M12 2v6"/><path d="M9 5h6"/><path d="M12 11v4"/><path d="M10 13h4"/></svg>
+                        <!-- Icono Iglesia / Ceremonia -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v4m-2-2h4"></path>
+                            <path d="M6 9v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9"></path>
+                            <path d="M9 22v-6h6v6"></path>
+                            <path d="M3 9l9-6 9 6"></path>
+                        </svg>
                     </div>
                     <div class="timeline-time">4:00 PM</div>
                     <div class="timeline-content">
@@ -1203,7 +1302,12 @@
 
                 <div class="timeline-item">
                     <div class="timeline-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v5a5 5 0 0 0 5 5z"/></svg>
+                        <!-- Icono Brindis / Copas -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 3h10l-2 9a3 3 0 0 1-6 0L7 3z"></path>
+                            <line x1="12" y1="12" x2="12" y2="21"></line>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                        </svg>
                     </div>
                     <div class="timeline-time">5:30 PM</div>
                     <div class="timeline-content">
@@ -1214,11 +1318,11 @@
 
                 <div class="timeline-item">
                     <div class="timeline-icon">
-                        <!-- SVG Estilo Plaqué / Plato de Banquete -->
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2a10 10 0 0 0 0 20 10 10 0 0 0 0-20z"></path>
-                            <path d="M12 6a6 6 0 0 0 0 12 6 6 0 0 0 0-12z"></path>
-                            <circle cx="12" cy="12" r="2"></circle>
+                        <!-- Icono Plato y Cubiertos / Banquete -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="7"></circle>
+                            <path d="M3 6v12"></path>
+                            <path d="M21 5v14"></path>
                         </svg>
                     </div>
                     <div class="timeline-time">7:00 PM</div>
@@ -1230,7 +1334,12 @@
 
                 <div class="timeline-item">
                     <div class="timeline-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                        <!-- Icono Notas Musicales / Baile -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
                     </div>
                     <div class="timeline-time">9:00 PM</div>
                     <div class="timeline-content">
@@ -1331,7 +1440,6 @@
                 <img src="foto16.jpg" alt="Retrato 16">
 				<img src="foto17.jpeg" alt="Retrato 17">
 				<img src="foto18.jpeg" alt="Retrato 18">
-				
 				<img src="foto20.jpeg" alt="Retrato 20">
 				<img src="foto21.jpeg" alt="Retrato 21">
 				<img src="foto22.jpeg" alt="Retrato 22">
@@ -1479,6 +1587,29 @@
         </div>
     </footer>
 
+    <!-- REPRODUCTOR DE MÚSICA FLOTANTE -->
+    <div class="music-player-container" id="musicPlayer" onclick="toggleMusic()" title="Reproducir / Pausar música">
+        <button class="music-btn" id="musicBtn">
+            <!-- Icono Play inicial -->
+            <svg id="musicIconSvg" width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </button>
+        <div class="music-info">
+            <span class="music-title">Nuestra Canción</span>
+            <span class="music-status" id="musicStatus">Toca para reproducir</span>
+        </div>
+        <div class="sound-waves" id="soundWaves">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    
+    <!-- ELEMENTO AUDIO HTML5 CON AUTOPLAY -->
+    <audio id="weddingAudio" loop autoplay>
+        <source src="Bruno Mars - Lo Arriesgo Todo.mp3" type="audio/mp3">
+        Tu navegador no soporta audio HTML5.
+    </audio>
+
     <!-- BOTONES FLOTANTES -->
     <a href="https://chat.whatsapp.com/JkoCqcP6zmhAyotMA3Sg00?s=cl&p=a&ilr=1" target="_blank" class="whatsapp-float-container" id="whatsappFloat" title="¿Tienes dudas? Escríbenos por WhatsApp">
         <div class="whatsapp-icon">
@@ -1620,19 +1751,54 @@
     </div>
 
     <script>
-        function toggleColors() {
-            const extraColors = document.getElementById('extra-colors');
-            const btn = document.getElementById('btn-ver-mas-colores');
-            if (extraColors.style.display === 'none' || extraColors.style.display === '') {
-                extraColors.style.display = 'block';
-                btn.innerText = 'Ver menos...';
+        /* CONTROL DE REPRODUCCIÓN DE MÚSICA MP3 Y AUTOPLAY INTELIGENTE */
+        const audio = document.getElementById('weddingAudio');
+        const musicPlayer = document.getElementById('musicPlayer');
+        const musicStatus = document.getElementById('musicStatus');
+        const musicIconSvg = document.getElementById('musicIconSvg');
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    musicPlayer.classList.add('playing');
+                    musicStatus.innerText = "Reproduciendo";
+                    musicIconSvg.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+                }).catch(e => {
+                    console.log("Error al reproducir audio: ", e);
+                });
             } else {
-                extraColors.style.display = 'none';
-                btn.innerText = 'Ver más opciones...';
+                audio.pause();
+                musicPlayer.classList.remove('playing');
+                musicStatus.innerText = "Pausado";
+                musicIconSvg.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
             }
         }
 
+        // Intento de reproducción automática al cargar y desbloqueo con el primer toque
         document.addEventListener("DOMContentLoaded", function() {
+            audio.play().then(() => {
+                musicPlayer.classList.add('playing');
+                musicStatus.innerText = "Reproduciendo";
+                musicIconSvg.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+            }).catch(() => {
+                // Si el navegador bloquea el autoplay inicial, arrancará al primer toque del usuario en la pantalla
+                const unlockAudio = function() {
+                    audio.play().then(() => {
+                        musicPlayer.classList.add('playing');
+                        musicStatus.innerText = "Reproduciendo";
+                        musicIconSvg.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+                        // Remover los eventos una vez que se reproduzca
+                        document.removeEventListener('click', unlockAudio);
+                        document.removeEventListener('touchstart', unlockAudio);
+                        document.removeEventListener('scroll', unlockAudio);
+                    }).catch(e => console.log(e));
+                };
+
+                document.addEventListener('click', unlockAudio);
+                document.addEventListener('touchstart', unlockAudio);
+                document.addEventListener('scroll', unlockAudio);
+            });
+
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
@@ -1707,6 +1873,18 @@
                 });
             });
         });
+
+        function toggleColors() {
+            const extraColors = document.getElementById('extra-colors');
+            const btn = document.getElementById('btn-ver-mas-colores');
+            if (extraColors.style.display === 'none' || extraColors.style.display === '') {
+                extraColors.style.display = 'block';
+                btn.innerText = 'Ver menos...';
+            } else {
+                extraColors.style.display = 'none';
+                btn.innerText = 'Ver más opciones...';
+            }
+        }
 
         function switchTab(evt, tabId) {
             const contents = document.querySelectorAll('.location-content');
