@@ -130,7 +130,7 @@
         .wedding-announcement {
             font-family: 'Lato', sans-serif;
             font-weight: 700;
-            font-size: clamp(2.2rem, 5vw, 3rem);
+            font-size: clamp(1rem, 2.8vw, 2rem);
             color: var(--text-dark); 
             line-height: 1.3;
             margin-bottom: 25px;
@@ -414,7 +414,7 @@
             font-size: 0.95rem;
         }
 
-        /* ================= ITINERARIO — TIMELINE ELEGANTE ================= */
+        /* ================= ITINERARIO — TIMELINE MEJORADO Y ELEGANTE ================= */
         .timeline-container {
             position: relative;
             width: 100%;
@@ -429,14 +429,14 @@
             top: 78px;
             bottom: 20px;
             left: 50%;
-            width: 1px;
+            width: 2px;
             transform: translateX(-50%);
             background: linear-gradient(
                 to bottom,
                 transparent,
-                rgba(212,175,55,.35) 7%,
-                rgba(184,79,62,.55) 45%,
-                rgba(212,175,55,.35) 93%,
+                rgba(212,175,55,.45) 7%,
+                rgba(184,79,62,.65) 45%,
+                rgba(212,175,55,.45) 93%,
                 transparent
             );
         }
@@ -447,15 +447,15 @@
             top: 82px;
             bottom: 24px;
             left: 50%;
-            width: 7px;
+            width: 10px;
             transform: translateX(-50%);
             background: linear-gradient(
                 to bottom,
                 transparent,
-                rgba(212,175,55,.08),
+                rgba(212,175,55,.12),
                 transparent
             );
-            filter: blur(4px);
+            filter: blur(5px);
             pointer-events: none;
         }
 
@@ -481,22 +481,22 @@
             letter-spacing: 2.4px;
             text-transform: uppercase;
             color: var(--accent-alt);
-            opacity: .78;
+            opacity: .85;
         }
 
         .timeline-item {
             position: relative;
             display: grid;
-            grid-template-columns: 1fr 70px 1fr;
+            grid-template-columns: 1fr 74px 1fr;
             align-items: center;
-            min-height: 106px;
-            margin: 0 0 18px;
+            min-height: 110px;
+            margin: 0 0 22px;
             padding: 0;
             text-align: left;
             opacity: 0;
-            transform: translateY(28px) scale(.97);
-            transition: opacity .75s cubic-bezier(.16,1,.3,1),
-                        transform .75s cubic-bezier(.16,1,.3,1);
+            transform: translateY(35px) scale(0.95);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             transition-delay: var(--timeline-delay, 0ms);
         }
 
@@ -506,19 +506,15 @@
         }
 
         .timeline-item:nth-of-type(even) {
-            --timeline-delay: 100ms;
+            --timeline-delay: 120ms;
         }
 
         .timeline-item:nth-of-type(3) {
-            --timeline-delay: 180ms;
+            --timeline-delay: 220ms;
         }
 
         .timeline-item:nth-of-type(4) {
-            --timeline-delay: 260ms;
-        }
-
-        .timeline-item:nth-of-type(5) {
-            --timeline-delay: 340ms;
+            --timeline-delay: 320ms;
         }
 
         .timeline-icon {
@@ -526,50 +522,53 @@
             grid-column: 2;
             grid-row: 1;
             justify-self: center;
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(145deg, #fffdf8, #f8eee6);
-            border: 1px solid rgba(212,175,55,.65);
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #ffffff, #fdf6ec);
+            border: 1.5px solid var(--gold);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 3;
-            box-shadow: 0 7px 20px rgba(27,42,71,.10), 0 0 0 7px rgba(253,249,241,.92);
-            transition: transform .4s cubic-bezier(.175,.885,.32,1.275),
-                        box-shadow .4s ease,
-                        border-color .4s ease;
+            box-shadow: 0 8px 25px rgba(27,42,71,.12), 0 0 0 6px rgba(253,249,241,.95);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        box-shadow 0.4s ease,
+                        border-color 0.4s ease;
         }
 
         .timeline-icon::before {
             content: "";
             position: absolute;
-            inset: 4px;
-            border: 1px dashed rgba(184,79,62,.34);
+            inset: 5px;
+            border: 1px dashed rgba(184,79,62,.4);
             border-radius: 50%;
+            animation: spinSlow 15s linear infinite;
+        }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .timeline-icon svg {
             position: relative;
             z-index: 1;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             stroke: var(--accent);
-            transition: transform .4s ease;
-        }
-
-        .timeline-item.visible .timeline-icon {
-            animation: timelineIconIn .8s cubic-bezier(.175,.885,.32,1.275) both;
+            stroke-width: 1.8px;
+            transition: transform 0.4s ease;
         }
 
         .timeline-item:hover .timeline-icon {
-            transform: scale(1.12) rotate(-4deg);
+            transform: scale(1.15) rotate(-6deg);
             border-color: var(--accent);
-            box-shadow: 0 10px 25px rgba(184,79,62,.16), 0 0 0 7px rgba(253,249,241,.95);
+            box-shadow: 0 12px 30px rgba(184,79,62,.2), 0 0 0 8px rgba(253,249,241,1);
         }
 
         .timeline-item:hover .timeline-icon svg {
-            transform: scale(1.08);
+            transform: scale(1.1);
         }
 
         .timeline-time {
@@ -577,24 +576,24 @@
             z-index: 2;
             grid-row: 1;
             font-family: 'CommercialScriptBT', 'Great Vibes', serif;
-            font-size: 2rem;
+            font-size: 2.1rem;
             line-height: 1;
             color: var(--accent);
             margin-bottom: 5px;
-            text-shadow: 0 2px 10px rgba(184,79,62,.12);
+            text-shadow: 0 2px 10px rgba(184,79,62,.15);
         }
 
         .timeline-content {
             position: relative;
             z-index: 2;
-            padding: 16px 18px;
-            background: rgba(255,255,255,.62);
-            border: 1px solid rgba(212,175,55,.22);
-            border-radius: 15px;
-            box-shadow: 0 8px 24px rgba(27,42,71,.045);
-            backdrop-filter: blur(7px);
-            -webkit-backdrop-filter: blur(7px);
-            transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.75);
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(27,42,71,0.06);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
         }
 
         .timeline-content::before {
@@ -603,16 +602,16 @@
             top: 50%;
             width: 12px;
             height: 12px;
-            background: rgba(255,255,255,.85);
-            border-top: 1px solid rgba(212,175,55,.22);
-            border-right: 1px solid rgba(212,175,55,.22);
+            background: rgba(255,255,255,0.9);
+            border-top: 1px solid rgba(212,175,55,0.3);
+            border-right: 1px solid rgba(212,175,55,0.3);
             transform: translateY(-50%) rotate(45deg);
         }
 
         .timeline-item:nth-of-type(odd) .timeline-time {
             grid-column: 1;
             text-align: right;
-            padding-right: 14px;
+            padding-right: 16px;
         }
 
         .timeline-item:nth-of-type(odd) .timeline-content {
@@ -627,7 +626,7 @@
         .timeline-item:nth-of-type(even) .timeline-time {
             grid-column: 3;
             text-align: left;
-            padding-left: 14px;
+            padding-left: 16px;
             grid-row: 1;
         }
 
@@ -641,30 +640,23 @@
         }
 
         .timeline-content h4 {
-            margin-bottom: 3px;
+            margin-bottom: 4px;
             color: var(--text-dark);
-            font-size: 1.08rem;
+            font-size: 1.12rem;
             font-weight: 700;
-            letter-spacing: .15px;
         }
 
         .timeline-content p {
-            font-size: .9rem;
+            font-size: 0.92rem;
             color: #566173;
-            line-height: 1.42;
+            line-height: 1.45;
             margin: 0;
         }
 
         .timeline-item:hover .timeline-content {
-            transform: translateY(-3px);
-            border-color: rgba(212,175,55,.45);
-            box-shadow: 0 13px 30px rgba(27,42,71,.09);
-        }
-
-        @keyframes timelineIconIn {
-            0% { opacity: 0; transform: scale(.55) rotate(-18deg); }
-            70% { transform: scale(1.08) rotate(3deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0); }
+            transform: translateY(-4px);
+            border-color: rgba(212,175,55,0.6);
+            box-shadow: 0 15px 35px rgba(27,42,71,0.1);
         }
 
         @media (max-width: 600px) {
@@ -696,25 +688,20 @@
                 margin-bottom: 42px;
             }
 
-            .timeline-title::after {
-                font-size: .61rem;
-                letter-spacing: 1.7px;
-            }
-
             .timeline-item,
             .timeline-item:nth-of-type(even) {
                 display: grid;
                 grid-template-columns: 60px 1fr;
-                min-height: 92px;
-                margin-bottom: 20px;
+                min-height: 95px;
+                margin-bottom: 22px;
             }
 
             .timeline-icon {
                 grid-column: 1 !important;
                 grid-row: 1 !important;
                 justify-self: center;
-                width: 48px;
-                height: 48px;
+                width: 50px;
+                height: 50px;
             }
 
             .timeline-time,
@@ -724,9 +711,9 @@
                 grid-row: 1 !important;
                 text-align: left !important;
                 align-self: start;
-                padding: 2px 0 0 10px !important;
+                padding: 2px 0 0 12px !important;
                 margin-left: 0;
-                font-size: 1.72rem;
+                font-size: 1.8rem;
             }
 
             .timeline-content,
@@ -735,8 +722,8 @@
                 grid-column: 2 !important;
                 grid-row: 1 !important;
                 align-self: end;
-                margin: 31px 0 0 10px;
-                padding: 12px 14px;
+                margin: 32px 0 0 12px;
+                padding: 12px 16px;
             }
 
             .timeline-content::before,
@@ -745,25 +732,6 @@
                 left: -7px;
                 right: auto;
                 transform: translateY(-50%) rotate(225deg);
-            }
-
-            .timeline-content h4 {
-                font-size: 1rem;
-            }
-
-            .timeline-content p {
-                font-size: .86rem;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .timeline-item,
-            .timeline-item.visible,
-            .timeline-item:hover .timeline-content,
-            .timeline-item:hover .timeline-icon {
-                transition: none;
-                animation: none;
-                transform: none;
             }
         }
 
@@ -1540,7 +1508,6 @@
             <div class="family-group">
                 <h3>Con la bendición de nuestros padres</h3>
                 <div class="family-names">
-                    <!-- Padres de la Novia -->
                     <div class="couple-block">
                         <p class="role-title">Padres de la Novia</p>
                         <div class="couple-names-stacked">
@@ -1552,7 +1519,6 @@
 
                     <div style="margin: 20px 0;"></div>
 
-                    <!-- Padres del Novio -->
                     <div class="couple-block">
                         <p class="role-title">Padres del Novio</p>
                         <div class="couple-names-stacked">
@@ -1588,7 +1554,6 @@
         <img src="flores1.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- Sección de Fecha -->
     <section id="fecha-section" class="animate-on-scroll">
         <h2>Ver la fecha</h2>
         <p>Rasca los tres círculos para descubrir el gran día y desbloquear la cuenta regresiva.</p>
@@ -1621,76 +1586,6 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 Agregar al Calendario
             </a>
-
-            <!-- ITINERARIO (CON NUEVOS ICONOS SVG ELEGANTES Y REPRESENTATIVOS) -->
-            <div class="timeline-container">
-                <h2 class="timeline-title">Itinerario</h2>
-                
-                <div class="timeline-item">
-                    <div class="timeline-icon">
-                        <!-- Icono Iglesia / Ceremonia -->
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2v4m-2-2h4"></path>
-                            <path d="M6 9v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9"></path>
-                            <path d="M9 22v-6h6v6"></path>
-                            <path d="M3 9l9-6 9 6"></path>
-                        </svg>
-                    </div>
-                    <div class="timeline-time">4:00 PM</div>
-                    <div class="timeline-content">
-                        <h4>Ceremonia Religiosa</h4>
-                        <p>Catedral San Bernardino de Siena</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-icon">
-                        <!-- Icono Brindis / Copas -->
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M7 3h10l-2 9a3 3 0 0 1-6 0L7 3z"></path>
-                            <line x1="12" y1="12" x2="12" y2="21"></line>
-                            <line x1="8" y1="21" x2="16" y2="21"></line>
-                        </svg>
-                    </div>
-                    <div class="timeline-time">5:30 PM</div>
-                    <div class="timeline-content">
-                        <h4>Recepción</h4>
-                        <p>Llegada al Salón Bamboo Xochimilco y Cóctel de Bienvenida</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-icon">
-                        <!-- Icono Plato y Cubiertos / Banquete -->
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="7"></circle>
-                            <path d="M3 6v12"></path>
-                            <path d="M21 5v14"></path>
-                        </svg>
-                    </div>
-                    <div class="timeline-time">6:30 PM</div>
-                    <div class="timeline-content">
-                        <h4>Banquete</h4>
-                        <p>Acompáñanos a compartir y degustar nuestra gran cena</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-icon">
-                        <!-- Icono Notas Musicales / Baile -->
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 18V5l12-2v13"></path>
-                            <circle cx="6" cy="18" r="3"></circle>
-                            <circle cx="18" cy="16" r="3"></circle>
-                        </svg>
-                    </div>
-                    <div class="timeline-time">7:00 PM</div>
-                    <div class="timeline-content">
-                        <h4>¡A celebrar!</h4>
-                        <p>Que comience la música y el baile</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -1747,6 +1642,77 @@
                     <p style="text-align: center;"><strong>Salón Bamboo Xochimilco</strong></p>
                     <p style="font-size: 1.05rem; margin: 8px 0 18px 0; text-align: center;">Sábado 14 de Noviembre • 5:30 PM</p>
                     <a href="https://maps.app.goo.gl/wJ4imJvseeW3yhk49" target="_blank" class="btn" style="margin-top: 0;">Abrir en Google Maps</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="floral-divider-container">
+        <img src="flores1.png" alt="Decoración floral" class="floral-divider">
+    </div>
+
+    <section class="animate-on-scroll">
+        <div class="timeline-container">
+            <h2 class="timeline-title">Itinerario</h2>
+            
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v4m-2-2h4"></path>
+                        <path d="M5 10v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10"></path>
+                        <path d="M10 22v-6h4v6"></path>
+                        <path d="M3 10l9-7 9 7"></path>
+                    </svg>
+                </div>
+                <div class="timeline-time">4:00 PM</div>
+                <div class="timeline-content">
+                    <h4>Ceremonia Religiosa</h4>
+                    <p>Catedral San Bernardino de Siena</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 2h8l-1.5 8a3.5 3.5 0 0 1-7 0L8 2z"></path>
+                        <line x1="12" y1="10" x2="12" y2="20"></line>
+                        <line x1="8" y1="20" x2="16" y2="20"></line>
+                    </svg>
+                </div>
+                <div class="timeline-time">5:30 PM</div>
+                <div class="timeline-content">
+                    <h4>Recepción</h4>
+                    <p>Llegada al Salón Bamboo Xochimilco y Cóctel de Bienvenida</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="8"></circle>
+                        <path d="M3 5v14"></path>
+                        <path d="M21 4v16"></path>
+                    </svg>
+                </div>
+                <div class="timeline-time">6:30 PM</div>
+                <div class="timeline-content">
+                    <h4>Banquete</h4>
+                    <p>Acompáñanos a compartir y degustar nuestra gran cena</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 17V4l12-2v13"></path>
+                        <circle cx="6" cy="17" r="3"></circle>
+                        <circle cx="18" cy="15" r="3"></circle>
+                    </svg>
+                </div>
+                <div class="timeline-time">7:00 PM</div>
+                <div class="timeline-content">
+                    <h4>¡A celebrar!</h4>
+                    <p>Que comience la música y el baile</p>
                 </div>
             </div>
         </div>
@@ -1914,7 +1880,6 @@
         <img src="flores2.png" alt="Decoración floral" class="floral-divider">
     </div>
 
-    <!-- FOOTER -->
     <footer id="main-footer" class="animate-on-scroll">
         <div class="footer-content">
             <h2 class="footer-names">Adriana & César</h2>
@@ -1930,10 +1895,8 @@
         </div>
     </footer>
 
-    <!-- REPRODUCTOR DE MÚSICA FLOTANTE -->
     <div class="music-player-container" id="musicPlayer" onclick="toggleMusic()" role="button" tabindex="0" aria-label="Reproducir o pausar música" title="Reproducir / Pausar música">
         <button class="music-btn" id="musicBtn">
-            <!-- Icono Play inicial -->
             <svg id="musicIconSvg" width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
         </button>
         <div class="music-info">
@@ -1947,14 +1910,12 @@
         </div>
     </div>
     
-    <!-- ELEMENTO AUDIO HTML5 CON AUTOPLAY -->
     <audio id="weddingAudio" loop autoplay>
         <source src="Bruno Mars - Lo Arriesgo Todo.mp3" type="audio/mp3">
         Tu navegador no soporta audio HTML5.
     </audio>
 
-    <!-- BOTONES FLOTANTES -->
-    <a href="https://chat.whatsapp.com/CiNw1g35OwQJkrmpXL1BrE target="_blank" class="whatsapp-float-container" id="whatsappFloat" title="¿Tienes dudas? Escríbenos por WhatsApp">
+    <a href="https://chat.whatsapp.com/CiNw1g35OwQJkrmpXL1BrE" target="_blank" class="whatsapp-float-container" id="whatsappFloat" title="¿Tienes dudas? Escríbenos por WhatsApp">
         <div class="whatsapp-icon">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
         </div>
@@ -1980,7 +1941,6 @@
         </div>
     </div>
 
-    <!-- MODAL DRESS CODE -->
     <div id="modalDress" class="modal-overlay">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('modalDress')">×</span>
@@ -1991,22 +1951,22 @@
                 
                 <div style="text-align: left; font-size: 1.05rem; line-height: 1.7; background: rgba(255,255,255,0.6); padding: 20px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.3);">
                     <p class="justified-text" style="margin-bottom: 12px;">Queremos que luzcas elegante y te sientas cómodo celebrando con nosotros este día tan especial.</p>
-                    <p class="justified-text" style="margin-bottom: 12px;"><strong>Nota importante:</strong> Solicitamos amablemente a nuestras invitadas <strong>evitar estrictamente los colores rojo, blanco y terracota</strong>, ya que están reservados exclusivamente para la novia y sus damas de honor.</p>
+                    <p class="justified-text" style="margin-bottom: 12px;"><strong>Nota importante:</strong> Solicitamos amablemente a todos nuestros invitados <strong>evitar estrictamente los colores rojo, blanco y terracota</strong>, ya que están reservados exclusivamente para los novios y la corte de honor.</p>
                     
                     <div class="dress-code-palette">
                         <div class="palette-group">
-                            <span>Colores permitidos para mujeres:</span>
+                            <span>Gama de colores sugerida para la vestimenta:</span>
                             
                             <div class="color-circles" id="colores-visibles" style="margin-top: 10px;">
+                                <div class="color-circle" style="background-color: #0F1829;" title="Negro / Azul Oscuro"></div>
+                                <div class="color-circle" style="background-color: #4A5568;" title="Gris Oxford"></div>
+                                <div class="color-circle" style="background-color: #2C3E50;" title="Azul Marino"></div>
                                 <div class="color-circle" style="background-color: #dcb878;" title="Golden Wheat"></div>
                                 <div class="color-circle" style="background-color: #eea057;" title="Apricot"></div>
-                                <div class="color-circle" style="background-color: #eb9638;" title="Marigold"></div>
                                 <div class="color-circle" style="background-color: #c67f3c;" title="Amber"></div>
                                 <div class="color-circle" style="background-color: #ba9567;" title="Tan"></div>
-                                <div class="color-circle" style="background-color: #9e6034;" title="Caramel"></div>
                                 <div class="color-circle" style="background-color: #958742;" title="Golden Olive"></div>
                                 <div class="color-circle" style="background-color: #606738;" title="Olive Green"></div>
-                                <div class="color-circle" style="background-color: #686742;" title="Olive Drab"></div>
                                 <div class="color-circle" style="background-color: #495734;" title="Moss Green"></div>
                             </div>
 
@@ -2017,16 +1977,9 @@
                                     <div class="color-circle" style="background-color: #5f4231;" title="Sepia"></div>
                                     <div class="color-circle" style="background-color: #593226;" title="Chestnut"></div>
                                     <div class="color-circle" style="background-color: #472523;" title="Mahogany"></div>
-                                    <div class="color-circle" style="background-color: #342322;" title="Dark Brown"></div>
-                                    <div class="color-circle" style="background-color: #7a352b;" title="Deep Auburn"></div>
-                                    <div class="color-circle" style="background-color: #f7b27b;" title="Peach"></div>
-                                    <div class="color-circle" style="background-color: #8d3c38;" title="Brick Red (oscuro)"></div>
-                                    <div class="color-circle" style="background-color: #6b262b;" title="Burgundy"></div>
-                                    <div class="color-circle" style="background-color: #551f26;" title="Wine"></div>
                                     <div class="color-circle" style="background-color: #205051;" title="Deep Teal"></div>
                                     <div class="color-circle" style="background-color: #27706f;" title="Teal"></div>
                                     <div class="color-circle" style="background-color: #35707b;" title="Steel Teal"></div>
-                                    <div class="color-circle" style="background-color: #1c5c68;" title="Petrol Teal"></div>
                                     <div class="color-circle" style="background-color: #1f4c3f;" title="Pine Green"></div>
                                     <div class="color-circle" style="background-color: #308a88;" title="Turquoise"></div>
                                     <div class="color-circle" style="background-color: #1f2f52;" title="Navy Blue"></div>
@@ -2041,14 +1994,6 @@
                             </div>
 
                         </div>
-                        <div class="palette-group" style="margin-top: 15px;">
-                            <span>Colores sugeridos para hombres:</span>
-                            <div class="color-circles" style="margin-top: 10px;">
-                                <div class="color-circle" style="background-color: #0F1829;" title="Traje Negro / Azul Oscuro"></div>
-                                <div class="color-circle" style="background-color: #4A5568;" title="Gris Oxford"></div>
-                                <div class="color-circle" style="background-color: #2C3E50;" title="Azul Marino"></div>
-                            </div>
-                        </div>
                     </div>
 
                     <p style="margin-top: 15px; text-align: center;">¡Gracias por tu comprensión y por acompañarnos!</p>
@@ -2057,7 +2002,6 @@
         </div>
     </div>
 
-    <!-- MODAL TIPS Y NOTAS -->
     <div id="modalTips" class="modal-overlay">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal('modalTips')">×</span>
@@ -2124,13 +2068,11 @@
                 musicStatus.innerText = "Reproduciendo";
                 musicIconSvg.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
             }).catch(() => {
-                // Si el navegador bloquea el autoplay inicial, arrancará al primer toque del usuario en la pantalla
                 const unlockAudio = function() {
                     audio.play().then(() => {
                         musicPlayer.classList.add('playing');
                         musicStatus.innerText = "Reproduciendo";
                         musicIconSvg.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
-                        // Remover los eventos una vez que se reproduzca
                         document.removeEventListener('click', unlockAudio);
                         document.removeEventListener('touchstart', unlockAudio);
                         document.removeEventListener('scroll', unlockAudio);
@@ -2172,8 +2114,6 @@
                 const windowHeight = window.innerHeight;
                 const inFooterZone = footerRect && footerRect.top <= windowHeight;
 
-                // El reproductor aparece exactamente en las mismas zonas en que
-                // aparece WhatsApp, manteniendo ambos controles visualmente limpios.
                 const shouldShow = window.scrollY > 300 && !inFooterZone;
 
                 whatsappFloat.classList.toggle('show', shouldShow);
@@ -2185,7 +2125,6 @@
             window.addEventListener('scroll', updateFloatingControls, { passive: true });
             window.addEventListener('resize', updateFloatingControls);
 
-            // Accesibilidad: también permite controlar la música con Enter/Espacio.
             if (musicPlayer) {
                 musicPlayer.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -2213,7 +2152,7 @@
                 });
 
                 timelineItems.forEach((item, index) => {
-                    item.style.setProperty('--timeline-delay', `${Math.min(index * 90, 270)}ms`);
+                    item.style.setProperty('--timeline-delay', `${Math.min(index * 100, 300)}ms`);
                     timelineObserver.observe(item);
                 });
             }
