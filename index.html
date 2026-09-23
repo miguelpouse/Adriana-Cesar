@@ -772,6 +772,12 @@
             transform: translateY(-2px);
         }
 
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .carousel-container {
             position: relative;
             width: 100%;
@@ -1886,9 +1892,12 @@
             <p style="margin-bottom: 25px;">Tu presencia es el regalo más importante para nosotros. Por favor, confirma tu asistencia antes del °1 de Noviembre.</p>
             
             <div class="rsvp-form-container">
-                <form action="https://formspree.io/f/mkjnblwr" method="POST">
+                <form id="rsvpForm" onsubmit="enviarRSVP(event)">
                     <label for="nombre-asistencia" style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);">Nombre completo:</label>
                     <input type="text" id="nombre-asistencia" name="nombre" placeholder="Ingresa tu nombre y apellido" required>
+                    
+                    <label for="correo-asistencia" style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark); display: block; margin-top: 10px;">Correo electrónico (opcional):</label>
+                    <input type="email" id="correo-asistencia" name="correo" placeholder="tucorreo@ejemplo.com">
                     
                     <label style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark); display: block; margin-top: 10px;">¿Nos acompañas?</label>
                     <div class="rsvp-options">
@@ -1928,7 +1937,11 @@
                     <label for="notas-asistencia" style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);">Comentarios o restricciones alimentarias (Opcional):</label>
                     <input type="text" id="notas-asistencia" name="notas" placeholder="Ej. Alergia a algún alimento, vegetariano...">
 
-                    <button type="submit" class="btn" style="width: 100%; margin-top: 15px; padding: 16px;">Enviar Confirmación</button>
+                    <button type="submit" class="btn" id="btnRSVP" style="width: 100%; margin-top: 15px; padding: 16px;">
+                        Enviar Confirmación
+                    </button>
+                    
+                    <p id="mensajeRSVP" style="display: none; text-align: center; margin-top: 15px; font-weight: 700;"></p>
                 </form>
             </div>
         </div>
@@ -2096,6 +2109,48 @@
     </div>
 
     <script>
+        /* ================= ENVÍO DEL FORMULARIO RSVP A GOOGLE SHEETS ================= */
+        const URL_GOOGLE_SHEETS = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-gPI3L3BDO5zpaBCi0wp61UxVkXqKl-eWned_BTFzckhN2F2kUt4rQ/exec";
+
+        async function enviarRSVP(event) {
+            event.preventDefault();
+
+            const form = document.getElementById('rsvpForm');
+            const btn = document.getElementById('btnRSVP');
+            const mensaje = document.getElementById('mensajeRSVP');
+            const formData = new FormData(form);
+
+            btn.disabled = true;
+            btn.innerText = 'Enviando...';
+            mensaje.style.display = 'none';
+
+            try {
+                await fetch(URL_GOOGLE_SHEETS, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                });
+
+                mensaje.style.display = 'block';
+                mensaje.style.color = 'var(--accent-alt)';
+                mensaje.innerText = '¡Gracias! Tu confirmación ha sido enviada con éxito. 💌';
+
+                form.reset();
+                document.getElementById('acompanante-pregunta-container').style.display = 'none';
+                document.getElementById('acompanante-container').classList.remove('show');
+                document.getElementById('nombre-acompanante').removeAttribute('required');
+
+            } catch (error) {
+                console.error('Error al enviar:', error);
+                mensaje.style.display = 'block';
+                mensaje.style.color = 'var(--accent)';
+                mensaje.innerText = 'Hubo un error al enviar. Por favor intenta de nuevo.';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Enviar Confirmación';
+            }
+        }
+
         /* CONTROL DE REPRODUCCIÓN DE MÚSICA MP3 Y AUTOPLAY INTELIGENTE */
         const audio = document.getElementById('weddingAudio');
         const musicPlayer = document.getElementById('musicPlayer');
@@ -2229,6 +2284,7 @@
                         document.getElementById('acompanante-container').classList.remove('show');
                         radioAcompananteNo.checked = true;
                         inputAcompananteNombre.value = '';
+                        inputAcompananteNombre.removeAttribute('required');
                     }
                 });
             });
