@@ -152,7 +152,6 @@
 
     .hint { font-size: 0.85rem; color: rgba(27,42,71,.65); margin-top: 12px; text-align: center; font-style: italic; }
 
-    /* Estilo especial para el aviso de descarga automática */
     .auto-download-msg {
         background: #e8f4ea;
         color: #2e6b3e;
@@ -161,7 +160,7 @@
         margin-top: 15px;
         font-size: 0.9rem;
         font-weight: 700;
-        display: none; /* Oculto por defecto */
+        display: none;
         animation: fadeIn 0.4s ease;
         border: 1px solid #c3e0c7;
     }
@@ -224,11 +223,10 @@
 
                 <button class="btn btn-dark" id="btnDescargar">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Volver a descargar PDF
+                    Descargar PDF
                 </button>
                 <button class="btn btn-outline" id="btnOtra">Buscar otro boleto</button>
 
-                <!-- Mensaje que aparece si la descarga automática se bloquea -->
                 <div id="autoDownloadMsg" class="auto-download-msg">
                     ¡Tu PDF se está descargando automáticamente!<br>
                     <small style="font-size:0.8rem; font-weight:400;">Si no lo ves, usa el botón de arriba.</small>
@@ -312,7 +310,7 @@ btnBuscar.addEventListener("click", async () => {
     btnBuscar.disabled = true;
     btnBuscar.innerHTML = '<span class="loader"></span> Buscando...';
     msgBusqueda.classList.add("hidden");
-    autoDownloadMsg.style.display = "none"; // Ocultar mensaje por defecto
+    autoDownloadMsg.style.display = "none";
 
     try {
         const registro = await buscarInvitado(nombre);
@@ -375,15 +373,12 @@ btnBuscar.addEventListener("click", async () => {
         resultado.scrollIntoView({ behavior: "smooth", block: "start" });
 
         // --- DESCARGA AUTOMÁTICA ---
-        // Esperamos 1 segundo para que la imagen del QR se pinte bien y disparamos el PDF
         setTimeout(async () => {
             try {
                 await generarYDescargarPDF();
-                // Si llegamos aquí, el navegador permitió la descarga sin bloquear
                 autoDownloadMsg.style.display = "block";
             } catch (e) {
                 console.warn("El navegador bloqueó la descarga automática. El usuario debe dar clic en el botón.");
-                // Si el navegador bloquea la descarga, el mensaje de error se oculta y se usa el botón
             }
         }, 1000);
 
@@ -414,8 +409,22 @@ btnOtra.addEventListener("click", () => {
 
 // --- FUNCIÓN UNIFICADA PARA GENERAR Y DESCARGAR EL PDF ---
 async function generarYDescargarPDF() {
-    // Pausa de 500ms por seguridad para que el celular procese la imagen del QR
-    await new Promise(r => setTimeout(r, 500));
+    // 1. Esperamos a que la etiqueta <img> del QR realmente exista en la página
+    let qrImg = null;
+    let waitAttempts = 0;
+    
+    while (!qrImg && waitAttempts < 30) {
+        await new Promise(r => setTimeout(r, 100)); // Espera 100ms
+        qrImg = document.querySelector("#qrCanvas img");
+        waitAttempts++;
+    }
+
+    if (!qrImg || !qrImg.src) {
+        throw new Error("La imagen del QR no se generó correctamente en la pantalla.");
+    }
+
+    // 2. Esperamos un poco más para asegurar que el celular procese la imagen
+    await new Promise(r => setTimeout(r, 300));
 
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a5" });
@@ -489,11 +498,6 @@ async function generarYDescargarPDF() {
         y += 5 + lines.length * 4.5 + 4;
     });
 
-    const qrImg = document.querySelector("#qrCanvas img");
-    if (!qrImg || !qrImg.src) {
-        throw new Error("La imagen del QR no está lista.");
-    }
-    
     const qrDataURL = qrImg.src;
     const qrSize = 45;
     const qrX = (W - qrSize) / 2;
@@ -518,7 +522,7 @@ async function generarYDescargarPDF() {
     pdf.save(nombreArchivo);
 }
 
-// Evento para el botón manual (por si el navegador bloqueó la descarga automática)
+// Evento para el botón manual
 btnDescargar.addEventListener("click", async () => {
     if (!datosActuales) return;
 
@@ -528,7 +532,6 @@ btnDescargar.addEventListener("click", async () => {
 
     try {
         await generarYDescargarPDF();
-        // Si la descarga es manual, no mostramos el mensaje de "automático"
     } catch (err) {
         console.error("Error detallado:", err);
         alert("Hubo un error al generar el PDF: " + err.message);
@@ -536,7 +539,7 @@ btnDescargar.addEventListener("click", async () => {
         btnDescargar.disabled = false;
         btnDescargar.innerHTML = `
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Volver a descargar PDF`;
+            Descargar PDF`;
     }
 });
 </script>
