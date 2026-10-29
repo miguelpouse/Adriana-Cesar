@@ -203,7 +203,6 @@
                 </div>
 
                 <div class="qr-container">
-                    <!-- Aquí se insertará el QR como imagen -->
                     <div id="qrCanvas"></div>
                     <span class="qr-caption">Muestra este código en la entrada</span>
                 </div>
@@ -321,11 +320,9 @@ btnBuscar.addEventListener("click", async () => {
             rowAcomp.style.display = "none";
         }
 
-        // 1. Limpiamos el contenedor del QR
         const qrContainer = document.getElementById("qrCanvas");
         qrContainer.innerHTML = "";
 
-        // 2. Generamos el QR con un pequeño retraso de seguridad
         const qrData = `BODA-AC-${normalizar(nombreReal).replace(/\s/g,"-")}-2026`;
         
         await new Promise((resolve, reject) => {
@@ -386,6 +383,9 @@ btnDescargar.addEventListener("click", async () => {
     btnDescargar.innerHTML = '<span class="loader"></span> Generando...';
 
     try {
+        // Pausa de 500ms para que el celular procese la imagen del QR en el DOM
+        await new Promise(r => setTimeout(r, 500));
+
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a5" });
         const W = pdf.internal.pageSize.getWidth();
@@ -458,9 +458,11 @@ btnDescargar.addEventListener("click", async () => {
             y += 5 + lines.length * 4.5 + 4;
         });
 
-        // Obtener la imagen del QR generada por la librería de Google
+        // Buscamos la imagen del QR generada por la librería
         const qrImg = document.querySelector("#qrCanvas img");
-        if (!qrImg) throw new Error("No se encontró la imagen del QR");
+        if (!qrImg || !qrImg.src) {
+            throw new Error("La imagen del QR no está lista.");
+        }
         
         const qrDataURL = qrImg.src;
         const qrSize = 45;
@@ -470,6 +472,8 @@ btnDescargar.addEventListener("click", async () => {
         pdf.setDrawColor(...goldRGB);
         pdf.setLineWidth(0.4);
         pdf.roundedRect(qrX - 3, qrY - 3, qrSize + 6, qrSize + 6, 2, 2);
+        
+        // Insertamos el QR
         pdf.addImage(qrDataURL, "PNG", qrX, qrY, qrSize, qrSize);
 
         pdf.setFont("helvetica", "normal");
@@ -482,11 +486,13 @@ btnDescargar.addEventListener("click", async () => {
         pdf.text("¡Gracias por acompañarnos en este día tan especial!", W/2, H - 10, { align: "center" });
 
         const nombreArchivo = `Boleto_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.pdf`;
+        
+        // Guardamos el PDF (esto descarga el archivo en el celular)
         pdf.save(nombreArchivo);
 
     } catch (err) {
-        console.error(err);
-        alert("Hubo un error al generar el PDF. Intenta de nuevo.");
+        console.error("Error detallado:", err);
+        alert("Hubo un error al generar el PDF: " + err.message);
     } finally {
         btnDescargar.disabled = false;
         btnDescargar.innerHTML = `
