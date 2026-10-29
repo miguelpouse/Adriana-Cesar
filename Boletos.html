@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boleto Digital - Adriana & César</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<!-- Librería del QR (Google) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- Librería del PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+    @font-face {
+        font-family: 'CommercialScriptBT';
+        src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype');
+        font-display: swap;
+    }
+
+    :root {
+        --bg-color: #FDF9F1;
+        --text-dark: #1B2A47;
+        --accent: #B84F3E;
+        --accent-alt: #5B7040;
+        --gold: #D4AF37;
+        --blush: #FDECEF;
+        --white: #FFFFFF;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-dark);
+        text-align: center;
+        font-family: 'Lato', sans-serif;
+        font-weight: 300;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px 15px;
+    }
+
+    h1, h2, h3 {
+        font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif;
+        letter-spacing: 1px;
+    }
+
+    h1 { font-size: clamp(2.8rem, 8vw, 4rem); color: var(--accent); line-height: 1.05; }
+    h2 { font-size: 2.2rem; color: var(--accent); margin-bottom: 10px; }
+
+    .hero-names {
+        text-shadow: -0.4px -0.4px 0 var(--white), 0.4px -0.4px 0 var(--white), -0.4px  0.4px 0 var(--white), 0.4px  0.4px 0 var(--white);
+    }
+
+    .tagline { font-family: 'CommercialScriptBT', 'Great Vibes', cursive; font-size: 1.5rem; color: var(--gold); margin-top: 5px; }
+    .subtitle { font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dark); opacity: 0.7; margin-bottom: 8px; }
+    .hero-line { width: 50px; height: 1px; background-color: var(--gold); margin: 12px auto; opacity: 0.8; }
+
+    .card {
+        background: white;
+        border-radius: 16px;
+        padding: 35px 25px;
+        box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08);
+        border: 1.5px solid var(--gold);
+        width: 100%;
+        max-width: 480px;
+        margin-top: 25px;
+    }
+
+    .card::before {
+        content: '';
+        display: block;
+        height: 5px;
+        margin: -35px -25px 25px -25px;
+        border-radius: 16px 16px 0 0;
+        background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold));
+    }
+
+    label { display: block; text-align: left; font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; color: var(--text-dark); }
+
+    input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid rgba(27, 42, 71, 0.2);
+        border-radius: 10px;
+        font-size: 1rem;
+        font-family: 'Lato', sans-serif;
+        transition: border-color .3s, box-shadow .3s;
+    }
+
+    input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(184, 79, 62, 0.15); }
+
+    .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+        background-color: var(--accent); color: white; padding: 14px 28px; border-radius: 6px;
+        border: none; cursor: pointer; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase;
+        font-weight: 700; transition: background-color .3s, transform .2s; width: 100%; margin-top: 15px;
+    }
+
+    .btn:hover { background-color: #9A4132; transform: translateY(-2px); }
+    .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    .btn-dark { background-color: var(--text-dark); }
+    .btn-dark:hover { background-color: #0F1829; }
+    .btn-outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+    .btn-outline:hover { background: var(--blush); }
+
+    #resultado { display: none; margin-top: 25px; width: 100%; max-width: 480px; }
+
+    .ticket {
+        background: white; border: 1.5px solid var(--gold); border-radius: 16px;
+        overflow: hidden; box-shadow: 0 15px 35px rgba(27, 42, 71, 0.12); position: relative;
+    }
+
+    .ticket-header { background: linear-gradient(135deg, var(--text-dark), #0F1829); color: var(--white); padding: 25px 20px 20px; text-align: center; position: relative; }
+    .ticket-header h3 { font-size: 2rem; color: var(--gold); line-height: 1; }
+    .ticket-header p { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; opacity: .85; margin-top: 6px; }
+
+    .ticket-divider { position: relative; height: 20px; background: white; }
+    .ticket-divider::before, .ticket-divider::after { content: ''; position: absolute; top: -10px; width: 20px; height: 20px; background: var(--bg-color); border-radius: 50%; border: 1.5px solid var(--gold); }
+    .ticket-divider::before { left: -11px; }
+    .ticket-divider::after { right: -11px; }
+
+    .ticket-body { padding: 5px 25px 30px; }
+    .ticket-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px dashed rgba(27, 42, 71, 0.15); gap: 15px; }
+    .ticket-row:last-of-type { border-bottom: none; }
+    .ticket-label { font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-alt); font-weight: 700; flex-shrink: 0; padding-top: 3px; }
+    .ticket-value { font-weight: 700; color: var(--text-dark); font-size: 1rem; text-align: right; word-break: break-word; }
+
+    .qr-container { display: flex; flex-direction: column; align-items: center; margin: 20px 0 10px; }
+    .qr-container img { border: 1.5px solid var(--gold); border-radius: 10px; padding: 10px; background: white; }
+    .qr-caption { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dark); opacity: .7; margin-top: 10px; }
+
+    .msg { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; }
+    .msg-err { background: var(--blush); color: var(--accent); }
+    .msg-ok  { background: #EEF3E6; color: var(--accent-alt); }
+
+    .loader { display: inline-block; width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.3); border-top-color: white; border-radius: 50%; animation: spin .8s linear infinite; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hidden { display: none !important; }
+
+    .footer { margin-top: 35px; font-size: 0.8rem; color: rgba(27,42,71,.6); letter-spacing: 1px; }
+    .footer a { color: var(--accent); text-decoration: none; font-weight: 700; }
+
+    .hint { font-size: 0.85rem; color: rgba(27,42,71,.65); margin-top: 12px; text-align: center; font-style: italic; }
+</style>
+</head>
+<body>
+
+    <div class="subtitle">Boleto Digital</div>
+    <h1 class="hero-names">Adriana & César</h1>
+    <div class="hero-line"></div>
+    <p class="tagline">14 • Noviembre • 2026</p>
+
+    <div class="card" id="searchCard">
+        <h2>Busca tu boleto</h2>
+        <p style="font-size:0.95rem; margin-bottom:20px;">Ingresa tu nombre completo tal como lo registraste en tu confirmación.</p>
+        <label for="inputNombre">Nombre completo</label>
+        <input type="text" id="inputNombre" placeholder="Ej. Carolina Ivette Navarro" autocomplete="off">
+        <button class="btn" id="btnBuscar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Buscar mi boleto
+        </button>
+        <p class="hint">Solo pueden descargar boleto los invitados que confirmaron asistencia.</p>
+        <div id="msgBusqueda" class="msg hidden"></div>
+    </div>
+
+    <div id="resultado">
+        <div class="ticket" id="ticket">
+            <div class="ticket-header">
+                <h3>Adriana & César</h3>
+                <p>Pase de Invitado</p>
+            </div>
+            <div class="ticket-divider"></div>
+            <div class="ticket-body">
+                <div class="ticket-row">
+                    <span class="ticket-label">Invitado</span>
+                    <span class="ticket-value" id="tNombre">—</span>
+                </div>
+                <div class="ticket-row">
+                    <span class="ticket-label">Fecha</span>
+                    <span class="ticket-value">Sábado 14 · Nov · 2026</span>
+                </div>
+                <div class="ticket-row">
+                    <span class="ticket-label">Ceremonia</span>
+                    <span class="ticket-value">4:00 PM<br>Catedral San Bernardino</span>
+                </div>
+                <div class="ticket-row">
+                    <span class="ticket-label">Recepción</span>
+                    <span class="ticket-value">5:30 PM<br>Salón Bamboo Xochimilco</span>
+                </div>
+                <div class="ticket-row" id="rowAcompanantes">
+                    <span class="ticket-label">Acompañante</span>
+                    <span class="ticket-value" id="tAcompanante">—</span>
+                </div>
+
+                <div class="qr-container">
+                    <!-- Aquí se insertará el QR como imagen -->
+                    <div id="qrCanvas"></div>
+                    <span class="qr-caption">Muestra este código en la entrada</span>
+                </div>
+
+                <button class="btn btn-dark" id="btnDescargar">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Descargar PDF
+                </button>
+                <button class="btn btn-outline" id="btnOtra">Buscar otro boleto</button>
+            </div>
+        </div>
+    </div>
+
+    <p class="footer">
+        Desarrollado con ♥ por <a href="https://wa.me/5215650146406" target="_blank">MZG Systems</a>
+    </p>
+
+<script>
+// --- CONFIGURACIÓN ---
+const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-gPI3L3BDO5zpaBCi0wp61UxVkXqKl-eWned_BTFzckhN2F2kUt4rQ/exec";
+const NOMBRE_COL       = "Nombre";
+const ASISTENCIA_COL   = "Asistencia";
+const ACOMPANANTE_COL  = "Lleva acompañante";
+const NOMBRE_ACOMP_COL = "Nombre de acompañante";
+
+// --- FUNCIONES ---
+function normalizar(s) {
+    return (s || "").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
+}
+
+function showMsg(el, text, type) {
+    el.textContent = text;
+    el.className = "msg " + (type === "ok" ? "msg-ok" : "msg-err");
+    el.classList.remove("hidden");
+}
+
+function validarConfirmacion(registro) {
+    const asist = normalizar(registro[ASISTENCIA_COL]);
+    return asist.includes("si") && !asist.includes("no");
+}
+
+async function buscarInvitado(nombreBuscado) {
+    try {
+        const resp = await fetch(SHEETS_API_URL);
+        if (!resp.ok) throw new Error("Error al conectar con Google");
+        const text = await resp.text();
+        if (text.includes("accounts.google.com") || text.includes("<!DOCTYPE html>")) {
+            throw new Error("El script de Google no tiene los permisos públicos correctos.");
+        }
+        const registros = JSON.parse(text);
+        const buscado = normalizar(nombreBuscado);
+        if (!buscado) return null;
+        let match = registros.find(r => normalizar(r[NOMBRE_COL]) === buscado);
+        if (!match) {
+            match = registros.find(r => {
+                const n = normalizar(r[NOMBRE_COL]);
+                return n.includes(buscado) || buscado.includes(n);
+            });
+        }
+        return match || null;
+    } catch (err) {
+        console.error("Error al buscar:", err);
+        throw err;
+    }
+}
+
+// --- LÓGICA PRINCIPAL ---
+const inputNombre  = document.getElementById("inputNombre");
+const btnBuscar    = document.getElementById("btnBuscar");
+const msgBusqueda  = document.getElementById("msgBusqueda");
+const resultado    = document.getElementById("resultado");
+const searchCard   = document.getElementById("searchCard");
+const btnOtra      = document.getElementById("btnOtra");
+const btnDescargar = document.getElementById("btnDescargar");
+
+let datosActuales = null;
+
+btnBuscar.addEventListener("click", async () => {
+    const nombre = inputNombre.value.trim();
+    if (!nombre) {
+        showMsg(msgBusqueda, "Por favor escribe tu nombre completo.", "err");
+        return;
+    }
+
+    btnBuscar.disabled = true;
+    btnBuscar.innerHTML = '<span class="loader"></span> Buscando...';
+    msgBusqueda.classList.add("hidden");
+
+    try {
+        const registro = await buscarInvitado(nombre);
+
+        if (!registro) {
+            showMsg(msgBusqueda, "No encontramos tu nombre en la lista. Verifica la ortografía.", "err");
+            return;
+        }
+
+        if (!validarConfirmacion(registro)) {
+            showMsg(msgBusqueda, "Tu registro no muestra una confirmación de asistencia.", "err");
+            return;
+        }
+
+        const nombreReal    = registro[NOMBRE_COL];
+        const llevaAcomp    = normalizar(registro[ACOMPANANTE_COL]).includes("si");
+        const nombreAcomp   = llevaAcomp ? (registro[NOMBRE_ACOMP_COL] || "Acompañante") : null;
+
+        datosActuales = { nombreReal, llevaAcomp, nombreAcomp };
+
+        document.getElementById("tNombre").textContent = nombreReal;
+        const rowAcomp = document.getElementById("rowAcompanantes");
+        
+        if (llevaAcomp && nombreAcomp) {
+            document.getElementById("tAcompanante").textContent = nombreAcomp;
+            rowAcomp.style.display = "flex";
+        } else {
+            rowAcomp.style.display = "none";
+        }
+
+        // 1. Limpiamos el contenedor del QR
+        const qrContainer = document.getElementById("qrCanvas");
+        qrContainer.innerHTML = "";
+
+        // 2. Generamos el QR con un pequeño retraso de seguridad
+        const qrData = `BODA-AC-${normalizar(nombreReal).replace(/\s/g,"-")}-2026`;
+        
+        await new Promise((resolve, reject) => {
+            let attempts = 0;
+            const checkQR = setInterval(() => {
+                if (typeof QRCode !== 'undefined') {
+                    clearInterval(checkQR);
+                    new QRCode(qrContainer, {
+                        text: qrData,
+                        width: 180,
+                        height: 180,
+                        colorDark : "#1B2A47",
+                        colorLight : "#FFFFFF",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                    resolve();
+                } else if (attempts > 30) {
+                    clearInterval(checkQR);
+                    reject(new Error("No se pudo cargar el generador de QR."));
+                }
+                attempts++;
+            }, 100);
+        });
+
+        searchCard.classList.add("hidden");
+        resultado.style.display = "block";
+        resultado.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    } catch (err) {
+        console.error(err);
+        showMsg(msgBusqueda, "Error: " + err.message, "err");
+    } finally {
+        btnBuscar.disabled = false;
+        btnBuscar.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Buscar mi boleto`;
+    }
+});
+
+inputNombre.addEventListener("keydown", e => {
+    if (e.key === "Enter") btnBuscar.click();
+});
+
+btnOtra.addEventListener("click", () => {
+    resultado.style.display = "none";
+    searchCard.classList.remove("hidden");
+    inputNombre.value = "";
+    msgBusqueda.classList.add("hidden");
+    datosActuales = null;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// --- GENERAR PDF ---
+btnDescargar.addEventListener("click", async () => {
+    if (!datosActuales) return;
+
+    btnDescargar.disabled = true;
+    btnDescargar.innerHTML = '<span class="loader"></span> Generando...';
+
+    try {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a5" });
+        const W = pdf.internal.pageSize.getWidth();
+        const H = pdf.internal.pageSize.getHeight();
+        const margin = 12;
+
+        const accentRGB   = [184, 79, 62];
+        const goldRGB     = [212, 175, 55];
+        const darkRGB     = [27, 42, 71];
+        const bgRGB       = [253, 249, 241];
+
+        pdf.setFillColor(...bgRGB);
+        pdf.rect(0, 0, W, H, "F");
+
+        pdf.setDrawColor(...goldRGB);
+        pdf.setLineWidth(0.6);
+        pdf.roundedRect(margin/2, margin/2, W - margin, H - margin, 3, 3);
+
+        pdf.setFillColor(...darkRGB);
+        pdf.roundedRect(margin/2, margin/2, W - margin, 32, 3, 3, "F");
+
+        pdf.setTextColor(...goldRGB);
+        pdf.setFont("times", "italic");
+        pdf.setFontSize(26);
+        pdf.text("Adriana & César", W/2, 20, { align: "center" });
+
+        pdf.setFont("helvetica", "normal");
+        pdf.setFontSize(8);
+        pdf.setTextColor(253, 249, 241);
+        pdf.text("PASE DE INVITADO  ·  14 · NOVIEMBRE · 2026", W/2, 28, { align: "center" });
+
+        let y = 50;
+        pdf.setTextColor(...accentRGB);
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(8);
+        pdf.text("INVITADO", margin, y);
+
+        pdf.setTextColor(...darkRGB);
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(14);
+        pdf.text(datosActuales.nombreReal, margin, y + 6);
+        y += 14;
+
+        pdf.setDrawColor(...goldRGB);
+        pdf.setLineWidth(0.3);
+        pdf.line(margin, y, W - margin, y);
+        y += 7;
+
+        const detalles = [
+            ["FECHA", "Sábado 14 de Noviembre, 2026"],
+            ["CEREMONIA", "4:00 PM  ·  Catedral San Bernardino"],
+            ["RECEPCIÓN", "5:30 PM  ·  Salón Bamboo Xochimilco"]
+        ];
+        
+        if (datosActuales.llevaAcomp && datosActuales.nombreAcomp) {
+            detalles.push(["ACOMPAÑANTE", datosActuales.nombreAcomp]);
+        }
+
+        detalles.forEach(([label, valor]) => {
+            pdf.setTextColor(...accentRGB);
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(8);
+            pdf.text(label, margin, y);
+
+            pdf.setTextColor(...darkRGB);
+            pdf.setFont("helvetica", "normal");
+            pdf.setFontSize(10);
+            const lines = pdf.splitTextToSize(valor, W - margin*2);
+            pdf.text(lines, margin, y + 5);
+            y += 5 + lines.length * 4.5 + 4;
+        });
+
+        // Obtener la imagen del QR generada por la librería de Google
+        const qrImg = document.querySelector("#qrCanvas img");
+        if (!qrImg) throw new Error("No se encontró la imagen del QR");
+        
+        const qrDataURL = qrImg.src;
+        const qrSize = 45;
+        const qrX = (W - qrSize) / 2;
+        const qrY = y + 4;
+
+        pdf.setDrawColor(...goldRGB);
+        pdf.setLineWidth(0.4);
+        pdf.roundedRect(qrX - 3, qrY - 3, qrSize + 6, qrSize + 6, 2, 2);
+        pdf.addImage(qrDataURL, "PNG", qrX, qrY, qrSize, qrSize);
+
+        pdf.setFont("helvetica", "normal");
+        pdf.setFontSize(7);
+        pdf.setTextColor(100, 100, 100);
+        pdf.text("Muestra este código en la entrada", W/2, qrY + qrSize + 6, { align: "center" });
+
+        pdf.setFontSize(7);
+        pdf.setTextColor(...accentRGB);
+        pdf.text("¡Gracias por acompañarnos en este día tan especial!", W/2, H - 10, { align: "center" });
+
+        const nombreArchivo = `Boleto_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.pdf`;
+        pdf.save(nombreArchivo);
+
+    } catch (err) {
+        console.error(err);
+        alert("Hubo un error al generar el PDF. Intenta de nuevo.");
+    } finally {
+        btnDescargar.disabled = false;
+        btnDescargar.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Descargar PDF`;
+    }
+});
+</script>
+</body>
+</html>
