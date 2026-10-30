@@ -327,7 +327,8 @@ btnBuscar.addEventListener("click", async () => {
         const qrContainer = document.getElementById("qrCanvas");
         qrContainer.innerHTML = "";
 
-        const qrData = `BODA-AC-${normalizar(nombreReal).replace(/\s/g,"-")}-2026`;
+        // AQUÍ ESTÁ EL CAMBIO: El QR solo guarda el nombre exacto
+        const qrData = `${nombreReal}`;
         
         await new Promise((resolve, reject) => {
             let attempts = 0;
@@ -392,25 +393,20 @@ btnOtra.addEventListener("click", () => {
 async function generarYDescargarImagen() {
     const ticket = document.getElementById("ticket");
     
-    // Le decimos a html2canvas que tome una foto del ticket
     const canvas = await html2canvas(ticket, {
-        scale: 2, // Mayor calidad
-        useCORS: true, // Para que permita cargar las fuentes e imágenes
-        backgroundColor: "#ffffff" // Fondo blanco para que no salga transparente
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff"
     });
 
-    // Convertimos la foto a formato JPG
     const imageData = canvas.toDataURL("image/jpeg", 0.95);
 
-    // Creamos un enlace invisible para forzar la descarga
     const link = document.createElement("a");
     link.href = imageData;
     
-    // Nombre del archivo
     const nombreArchivo = `Boleto_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.jpg`;
     link.download = nombreArchivo;
     
-    // Lo agregamos a la página, le damos clic y lo borramos
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
