@@ -248,25 +248,31 @@ function validarConfirmacion(registro) {
     return asist.includes("si") && !asist.includes("no");
 }
 
+// ESTA ES LA FUNCIÓN CORREGIDA CON MANEJO DE ERRORES DETALLADO
 async function buscarInvitado(nombreBuscado) {
     try {
-        const resp = await fetch(SHEETS_API_URL);
-        if (!resp.ok) throw new Error("Error al conectar con Google");
+        const url = SHEETS_API_URL + "?nombre=" + encodeURIComponent(nombreBuscado);
+        const resp = await fetch(url);
+        
+        if (!resp.ok) throw new Error("Error de red al conectar con Google.");
+        
         const text = await resp.text();
+        
+        // Detectar si Google nos pide iniciar sesión (script privado)
         if (text.includes("accounts.google.com") || text.includes("<!DOCTYPE html>")) {
-            throw new Error("El script de Google no tiene los permisos públicos correctos.");
+            throw new Error("El script de Google está privado. Cambia los permisos a 'Cualquier persona'.");
         }
+        
         const registros = JSON.parse(text);
-        const buscado = normalizar(nombreBuscado);
-        if (!buscado) return null;
-        let match = registros.find(r => normalizar(r[NOMBRE_COL]) === buscado);
-        if (!match) {
-            match = registros.find(r => {
-                const n = normalizar(r[NOMBRE_COL]);
-                return n.includes(buscado) || buscado.includes(n);
-            });
+        
+        // Si el backend nos devolvió un mensaje de error interno
+        if (registros.result === "error") {
+            throw new Error("Error en Google Sheets: " + registros.message);
         }
-        return match || null;
+        
+        if (!Array.isArray(registros) || registros.length === 0) return null;
+        return registros[0]; // Retornamos el primer resultado
+        
     } catch (err) {
         console.error("Error al buscar:", err);
         throw err;
@@ -327,7 +333,7 @@ btnBuscar.addEventListener("click", async () => {
         const qrContainer = document.getElementById("qrCanvas");
         qrContainer.innerHTML = "";
 
-        // AQUÍ ESTÁ EL CAMBIO: El QR solo guarda el nombre exacto
+        // El QR solo guarda el nombre exacto
         const qrData = `${nombreReal}`;
         
         await new Promise((resolve, reject) => {
@@ -367,6 +373,7 @@ btnBuscar.addEventListener("click", async () => {
 
     } catch (err) {
         console.error(err);
+        // Si falla algo en el proceso (internet, permisos), mostramos el error real
         showMsg(msgBusqueda, "Error: " + err.message, "err");
     } finally {
         btnBuscar.disabled = false;
