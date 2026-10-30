@@ -250,23 +250,18 @@ function validarConfirmacion(registro) {
 
 async function buscarInvitado(nombreBuscado) {
     try {
-        const resp = await fetch(SHEETS_API_URL);
+        const url = SHEETS_API_URL + "?nombre=" + encodeURIComponent(nombreBuscado);
+        const resp = await fetch(url);
         if (!resp.ok) throw new Error("Error al conectar con Google");
+        
         const text = await resp.text();
         if (text.includes("accounts.google.com") || text.includes("<!DOCTYPE html>")) {
             throw new Error("El script de Google no tiene los permisos públicos correctos.");
         }
+        
         const registros = JSON.parse(text);
-        const buscado = normalizar(nombreBuscado);
-        if (!buscado) return null;
-        let match = registros.find(r => normalizar(r[NOMBRE_COL]) === buscado);
-        if (!match) {
-            match = registros.find(r => {
-                const n = normalizar(r[NOMBRE_COL]);
-                return n.includes(buscado) || buscado.includes(n);
-            });
-        }
-        return match || null;
+        if (registros.length === 0) return null;
+        return registros[0]; // Retornamos el primer resultado
     } catch (err) {
         console.error("Error al buscar:", err);
         throw err;

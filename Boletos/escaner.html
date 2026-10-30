@@ -43,63 +43,52 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 30px 15px;
+        padding: 20px 15px;
     }
 
-    h1, h2, h3 {
-        font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif;
-        letter-spacing: 1px;
-    }
-
-    h1 { font-size: clamp(2.8rem, 8vw, 4rem); color: var(--accent); line-height: 1.05; }
-    h2 { font-size: 2.2rem; color: var(--accent); margin-bottom: 10px; }
-
-    .hero-names {
-        text-shadow: -0.4px -0.4px 0 var(--white), 0.4px -0.4px 0 var(--white), -0.4px  0.4px 0 var(--white), 0.4px  0.4px 0 var(--white);
-    }
-
+    h1, h2, h3 { font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif; letter-spacing: 1px; }
+    h1 { font-size: clamp(2.8rem, 8vw, 3.5rem); color: var(--accent); line-height: 1.05; }
+    .hero-names { text-shadow: -0.4px -0.4px 0 var(--white), 0.4px -0.4px 0 var(--white), -0.4px  0.4px 0 var(--white), 0.4px  0.4px 0 var(--white); }
     .subtitle { font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dark); opacity: 0.7; margin-bottom: 8px; }
     .hero-line { width: 50px; height: 1px; background-color: var(--gold); margin: 12px auto; opacity: 0.8; }
 
     .scanner-card {
         background: white;
         border-radius: 16px;
-        padding: 30px 20px;
+        padding: 20px;
         box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08);
         border: 1.5px solid var(--gold);
         width: 100%;
         max-width: 480px;
-        margin-top: 20px;
-        position: relative;
+        margin-top: 15px;
     }
 
-    /* Contenedor de la cámara */
-    #reader {
-        width: 100%;
-        border-radius: 12px;
-        overflow: hidden;
-        border: 2px solid var(--text-dark);
-        background: #000;
-        margin-bottom: 15px;
-    }
-
-    /* Ocultar el botón feo que pone la librería por defecto */
+    #reader { width: 100%; border-radius: 12px; overflow: hidden; border: 2px solid var(--text-dark); background: #000; margin-bottom: 15px; }
     #reader__dashboard_section_csr button { display: none; }
     #reader__dashboard_section_swaplink { display: none; }
     #reader__filescan_input { display: none; }
+
+    .manual-search {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    .manual-search input {
+        flex: 1; padding: 12px; border: 1px solid rgba(27,42,71,0.2); border-radius: 8px; font-size: 1rem;
+    }
+    .manual-search button {
+        background: var(--text-dark); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-weight: 700;
+    }
 
     .btn {
         display: inline-flex; align-items: center; justify-content: center; gap: 10px;
         background-color: var(--accent); color: white; padding: 14px 28px; border-radius: 6px;
         border: none; cursor: pointer; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase;
-        font-weight: 700; transition: background-color .3s, transform .2s; width: 100%; margin-top: 10px;
+        font-weight: 700; transition: background-color .3s; width: 100%; margin-top: 10px;
     }
+    .btn-dark { background-color: var(--text-dark); }
 
-    .btn:hover { background-color: #9A4132; transform: translateY(-2px); }
-    .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
-    .btn-outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
-
-    /* Pantalla de resultado (Válido / Inválido) */
+    /* Pantalla de resultado */
     #resultPanel {
         display: none;
         position: fixed;
@@ -114,56 +103,21 @@
         backdrop-filter: blur(5px);
     }
 
-    .result-icon {
-        font-size: 6rem;
-        margin-bottom: 10px;
-        line-height: 1;
-    }
-
-    .result-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
-
+    .result-icon { font-size: 6rem; margin-bottom: 10px; line-height: 1; }
+    .result-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
+    
     .result-details {
-        background: white;
-        padding: 20px 30px;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        margin-bottom: 30px;
-        border: 1px solid #eee;
-        width: 100%;
-        max-width: 400px;
+        background: white; padding: 20px 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        margin-bottom: 20px; border: 1px solid #eee; width: 100%; max-width: 400px;
     }
-
-    .result-row {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 10px;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
-    }
+    .result-row { display: flex; flex-direction: column; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
     .result-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-
-    .result-label {
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        color: #888;
-        letter-spacing: 1px;
-    }
-    .result-value {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: var(--text-dark);
-    }
+    .result-label { font-size: 0.8rem; text-transform: uppercase; color: #888; letter-spacing: 1px; }
+    .result-value { font-size: 1.2rem; font-weight: 700; color: var(--text-dark); }
 
     .success { color: #2e6b3e; }
     .error { color: var(--accent); }
-
-    .hidden { display: none !important; }
+    .warning { color: #d97706; } /* Naranja para doble pase */
 </style>
 </head>
 <body>
@@ -171,10 +125,15 @@
     <div class="subtitle">Check-In</div>
     <h1 class="hero-names">Adriana & César</h1>
     <div class="hero-line"></div>
-    <p style="font-size: 0.9rem; color: var(--text-dark); opacity: 0.7; margin-bottom: 15px;">Apunta la cámara al código QR del boleto</p>
+    <p id="offlineMsg" style="font-size: 0.8rem; color: var(--accent); font-weight: bold; display: none;">⚠️ Modo Offline activado (Usando memoria local)</p>
 
     <div class="scanner-card">
         <div id="reader"></div>
+        
+        <div class="manual-search">
+            <input type="text" id="manualInput" placeholder="Buscar por nombre...">
+            <button onclick="buscarManual()">🔍</button>
+        </div>
     </div>
 
     <!-- PANEL DE RESULTADO -->
@@ -191,157 +150,208 @@
                 <span class="result-label">Acompañante(s)</span>
                 <span class="result-value" id="resAcomp">—</span>
             </div>
+            <div class="result-row" id="resRowCheckin">
+                <span class="result-label">Estado</span>
+                <span class="result-value" id="resCheckinTime">—</span>
+            </div>
         </div>
 
         <button class="btn btn-dark" id="btnEscanearOtro">Escanear Siguiente</button>
     </div>
 
 <script>
-// --- CONFIGURACIÓN (Los mismos datos de tu hoja) ---
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-gPI3L3BDO5zpaBCi0wp61UxVkXqKl-eWned_BTFzckhN2F2kUt4rQ/exec";
-const NOMBRE_COL       = "Nombre";
-const ASISTENCIA_COL   = "Asistencia";
-const ACOMPANANTE_COL  = "Lleva acompañante";
-const NOMBRE_ACOMP_COL = "Nombre de acompañante";
-
 let html5QrCode;
 let escaneando = false;
+let invitadosCache = [];
 
-// Iniciar la cámara cuando carga la página
-document.addEventListener("DOMContentLoaded", () => {
+// --- SONIDOS (Web Audio API) ---
+function playSound(type) {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        
+        if(type === 'success') {
+            osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.5, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+            osc.start(); osc.stop(ctx.currentTime + 0.3);
+        } else if (type === 'warning') {
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(500, ctx.currentTime);
+            osc.frequency.setValueAtTime(400, ctx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.5, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+            osc.start(); osc.stop(ctx.currentTime + 0.4);
+        } else {
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, ctx.currentTime);
+            gain.gain.setValueAtTime(0.5, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+            osc.start(); osc.stop(ctx.currentTime + 0.5);
+        }
+    } catch(e) { console.log("Audio no soportado"); }
+}
+
+// --- INICIO Y MODO OFFLINE ---
+document.addEventListener("DOMContentLoaded", async () => {
+    // 1. Intentar descargar la lista completa para guardarla offline
+    try {
+        const resp = await fetch(SHEETS_API_URL + "?action=all");
+        if (resp.ok) {
+            const text = await resp.text();
+            if(!text.includes("<!DOCTYPE html>")) {
+                invitadosCache = JSON.parse(text);
+                localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
+                document.getElementById("offlineMsg").style.display = "none";
+            }
+        }
+    } catch (e) {
+        console.warn("Sin internet, usando caché local.");
+        document.getElementById("offlineMsg").style.display = "block";
+    }
+
+    // Si falló el fetch, cargar de la memoria del celular
+    if (invitadosCache.length === 0) {
+        const cached = localStorage.getItem("boda_invitados");
+        if (cached) invitadosCache = JSON.parse(cached);
+        if (invitadosCache.length > 0) document.getElementById("offlineMsg").style.display = "block";
+    }
+
     iniciarEscaner();
 });
+
+function iniciarEscaner() {
+    if (html5QrCode) return;
+    html5QrCode = new Html5Qrcode("reader");
+    html5QrCode.start(
+        { facingMode: "environment" }, 
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        onScanSuccess, () => {}
+    ).catch(err => {
+        alert("No se pudo acceder a la cámara. Revisa los permisos.");
+    });
+}
 
 function normalizar(s) {
     return (s || "").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
 }
 
-function iniciarEscaner() {
-    html5QrCode = new Html5Qrcode("reader");
-    
-    const config = { 
-        fps: 10, 
-        qrbox: { width: 250, height: 250 },
-        aspectRatio: 1.0
-    };
-
-    html5QrCode.start(
-        { facingMode: "environment" }, // Usar cámara trasera
-        config,
-        onScanSuccess,
-        onScanError
-    ).catch(err => {
-        console.error("Error al iniciar cámara:", err);
-        alert("No se pudo acceder a la cámara. Asegúrate de dar los permisos necesarios en tu navegador.");
-    });
-}
-
-async function onScanSuccess(decodedText, decodedResult) {
-    // Si ya estamos procesando uno, ignorar escaneos rápidos
+// --- PROCESAR BOLETO (Escaneado o Manual) ---
+async function procesarBoleto(textoEscaneado) {
     if (escaneando) return;
     escaneando = true;
 
-    // Vibración para avisar que leyó el código (si el celular lo soporta)
-    if (navigator.vibrate) navigator.vibrate(200);
+    let registro = invitadosCache.find(r => normalizar(r["Nombre"]) === normalizar(textoEscaneado));
 
-    try {
-        // 1. Buscar en Google Sheets (Método directo y robusto)
-        const resp = await fetch(SHEETS_API_URL);
-        if (!resp.ok) throw new Error("Error al conectar con la base de datos");
-        
-        const text = await resp.text();
-        
-        // Validar si Google nos devolvió un login en vez de datos
-        if (text.includes("accounts.google.com") || text.includes("<!DOCTYPE html>")) {
-            throw new Error("El script de Google está privado. Cambia los permisos a 'Cualquier persona'.");
-        }
-
-        const registros = JSON.parse(text);
-        const buscado = normalizar(decodedText);
-        
-        // Buscar coincidencia exacta o parcial
-        let match = registros.find(r => normalizar(r[NOMBRE_COL]) === buscado);
-        if (!match) {
-            match = registros.find(r => {
-                const n = normalizar(r[NOMBRE_COL]);
-                return n.includes(buscado) || buscado.includes(n);
-            });
-        }
-
-        mostrarResultado(match, decodedText);
-
-    } catch (err) {
-        console.error("Error al buscar:", err);
-        // Mostrar error en pantalla en lugar de alert
-        const panel = document.getElementById("resultPanel");
-        document.getElementById("resIcon").innerText = "⚠️";
-        document.getElementById("resTitle").innerText = "ERROR";
-        document.getElementById("resTitle").className = "result-title error";
-        document.getElementById("resNombre").innerText = err.message;
-        document.getElementById("resRowAcomp").style.display = "none";
-        panel.style.display = "flex";
-        escaneando = false; 
-    }
-}
-
-function onScanError(errorMessage) {
-    // Esta función se ejecuta muchas veces mientras busca un QR. La dejamos vacía.
-}
-
-function mostrarResultado(registro, textoEscaneado) {
-    // 2. Detener la cámara temporalmente
-    html5QrCode.stop().then(() => {
-        const panel = document.getElementById("resultPanel");
-        const icon = document.getElementById("resIcon");
-        const title = document.getElementById("resTitle");
-        const nombreEl = document.getElementById("resNombre");
-        const acompEl = document.getElementById("resAcomp");
-        const rowAcomp = document.getElementById("resRowAcomp");
-
-        // Verificar si existe y si su asistencia es válida
-        const esValido = registro && normalizar(registro[ASISTENCIA_COL]).includes("si") && !normalizar(registro[ASISTENCIA_COL]).includes("no");
-
-        if (esValido) {
-            // ES VÁLIDO
-            icon.innerText = "✅";
-            title.innerText = "VÁLIDO";
-            title.className = "result-title success";
-            
-            nombreEl.innerText = registro[NOMBRE_COL];
-            
-            const llevaAcomp = normalizar(registro[ACOMPANANTE_COL]).includes("si");
-            const nombreAcomp = registro[NOMBRE_ACOMP_COL];
-            
-            if (llevaAcomp && nombreAcomp) {
-                acompEl.innerText = nombreAcomp;
-                rowAcomp.style.display = "flex";
-            } else {
-                rowAcomp.style.display = "none";
+    // Si no está en la caché (ej. invitado nuevo de último minuto), buscar online
+    if (!registro && navigator.onLine) {
+        try {
+            const resp = await fetch(SHEETS_API_URL + "?nombre=" + encodeURIComponent(textoEscaneado));
+            const res = await resp.json();
+            if (res.length > 0) {
+                registro = res[0];
+                // Actualizar caché local
+                invitadosCache.push(registro);
+                localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
             }
+        } catch(e) { console.error("Error buscando online", e); }
+    }
 
+    mostrarResultado(registro, textoEscaneado);
+}
+
+async function onScanSuccess(decodedText) {
+    if (escaneando) return;
+    if (navigator.vibrate) navigator.vibrate(100);
+    await html5QrCode.pause(); // Pausar cámara
+    procesarBoleto(decodedText);
+}
+
+function buscarManual() {
+    const nombre = document.getElementById("manualInput").value.trim();
+    if (!nombre) return;
+    document.getElementById("manualInput").value = "";
+    if (html5QrCode) html5QrCode.pause();
+    procesarBoleto(nombre);
+}
+
+// --- MOSTRAR RESULTADO ---
+async function mostrarResultado(registro, textoEscaneado) {
+    const panel = document.getElementById("resultPanel");
+    const icon = document.getElementById("resIcon");
+    const title = document.getElementById("resTitle");
+    const nombreEl = document.getElementById("resNombre");
+    const acompEl = document.getElementById("resAcomp");
+    const rowAcomp = document.getElementById("resRowAcomp");
+    const checkinTimeEl = document.getElementById("resCheckinTime");
+    const rowCheckin = document.getElementById("resRowCheckin");
+
+    const esValido = registro && normalizar(registro["Asistencia"]).includes("si") && !normalizar(registro["Asistencia"]).includes("no");
+    const yaTieneCheckin = registro && registro["Check-in"] && registro["Check-in"].toString().trim() !== "";
+
+    if (esValido) {
+        nombreEl.innerText = registro["Nombre"];
+        
+        // Acompañantes
+        const llevaAcomp = normalizar(registro["Lleva acompañante"]).includes("si");
+        if (llevaAcomp && registro["Nombre de acompañante"]) {
+            acompEl.innerText = registro["Nombre de acompañante"];
+            rowAcomp.style.display = "flex";
         } else {
-            // NO VÁLIDO (No existe o no confirmó)
-            icon.innerText = "❌";
-            title.innerText = "INVÁLIDO";
-            title.className = "result-title error";
-            
-            nombreEl.innerText = registro ? registro[NOMBRE_COL] : `No encontrado: "${textoEscaneado}"`;
-            acompEl.innerText = "—";
             rowAcomp.style.display = "none";
         }
 
-        panel.style.display = "flex";
+        if (yaTieneCheckin) {
+            // DOBLE PASE
+            playSound('warning');
+            icon.innerText = "⚠️";
+            title.innerText = "YA REGISTRADO";
+            title.className = "result-title warning";
+            checkinTimeEl.innerText = "Entró a las: " + registro["Check-in"];
+            rowCheckin.style.display = "flex";
+        } else {
+            // PASE VÁLIDO - MARCAR CHECKIN
+            playSound('success');
+            icon.innerText = "✅";
+            title.innerText = "VÁLIDO";
+            title.className = "result-title success";
+            rowCheckin.style.display = "none";
 
-    }).catch(err => console.error("Error al detener cámara:", err));
+            // Actualizar localmente
+            const horaActual = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+            registro["Check-in"] = horaActual;
+            localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
+
+            // Enviar a Google Sheets (ignorar errores si estamos offline)
+            if (navigator.onLine) {
+                const formData = new FormData();
+                formData.append("action", "checkin");
+                formData.append("nombre", registro["Nombre"]);
+                fetch(SHEETS_API_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(e => console.log(e));
+            }
+        }
+    } else {
+        // INVÁLIDO
+        playSound('error');
+        icon.innerText = "❌";
+        title.innerText = "INVÁLIDO";
+        title.className = "result-title error";
+        nombreEl.innerText = registro ? registro["Nombre"] + " (No confirmó)" : `No encontrado: "${textoEscaneado}"`;
+        rowAcomp.style.display = "none";
+        rowCheckin.style.display = "none";
+    }
+
+    panel.style.display = "flex";
 }
 
-// Botones para escanear al siguiente
+// --- REINICIAR ---
 document.getElementById("btnEscanearOtro").addEventListener("click", () => {
     document.getElementById("resultPanel").style.display = "none";
     escaneando = false;
-    html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, onScanSuccess, onScanError);
+    if (html5QrCode) html5QrCode.resume();
 });
-
 </script>
 </body>
 </html>
