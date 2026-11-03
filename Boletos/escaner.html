@@ -3,94 +3,333 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Escáner - Adriana & César</title>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<title>Boleto Digital - Adriana & César</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
     @font-face { font-family: 'CommercialScriptBT'; src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype'); font-display: swap; }
-    :root { --bg-color: #FDF9F1; --text-dark: #1B2A47; --accent: #B84F3E; --accent-alt: #5B7040; --gold: #D4AF37; --blush: #FDECEF; --white: #FFFFFF; }
+    :root { 
+        --bg-color: #FDF9F1; 
+        --text-dark: #1B2A47; 
+        --accent: #B84F3E; 
+        --accent-alt: #5B7040; 
+        --gold: #D4AF37; 
+        --blush: #FDECEF; 
+        --white: #FFFFFF; 
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: var(--bg-color); color: var(--text-dark); text-align: center; font-family: 'Lato', sans-serif; font-weight: 300; font-size: 1.1rem; line-height: 1.7; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px 15px; }
+    body { background-color: var(--bg-color); color: var(--text-dark); text-align: center; font-family: 'Lato', sans-serif; font-weight: 300; font-size: 1.1rem; line-height: 1.7; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 30px 15px; }
     h1, h2, h3 { font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif; letter-spacing: 1px; }
-    h1 { font-size: clamp(2.8rem, 8vw, 3.5rem); color: var(--accent); line-height: 1.05; }
+    h1 { font-size: clamp(2.8rem, 8vw, 4rem); color: var(--accent); line-height: 1.05; }
+    h2 { font-size: 2.2rem; color: var(--accent); margin-bottom: 10px; }
     .hero-names { text-shadow: -0.4px -0.4px 0 var(--white), 0.4px -0.4px 0 var(--white), -0.4px  0.4px 0 var(--white), 0.4px  0.4px 0 var(--white); }
+    .tagline { font-family: 'CommercialScriptBT', 'Great Vibes', cursive; font-size: 1.5rem; color: var(--gold); margin-top: 5px; }
     .subtitle { font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dark); opacity: 0.7; margin-bottom: 8px; }
     .hero-line { width: 50px; height: 1px; background-color: var(--gold); margin: 12px auto; opacity: 0.8; }
-    .scanner-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08); border: 1.5px solid var(--gold); width: 100%; max-width: 480px; margin-top: 15px; }
-    #reader { width: 100%; border-radius: 12px; overflow: hidden; border: 2px solid var(--text-dark); background: #000; margin-bottom: 15px; }
-    #reader__dashboard_section_csr button { display: none; }
-    #reader__dashboard_section_swaplink { display: none; }
-    #reader__filescan_input { display: none; }
-    .manual-search { display: flex; gap: 10px; margin-top: 15px; }
-    .manual-search input { flex: 1; padding: 12px; border: 1px solid rgba(27,42,71,0.2); border-radius: 8px; font-size: 1rem; }
-    .manual-search button { background: var(--text-dark); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-weight: 700; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: var(--accent); color: white; padding: 14px 28px; border-radius: 6px; border: none; cursor: pointer; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: background-color .3s; width: 100%; margin-top: 10px; }
+    
+    .card { background: white; border-radius: 16px; padding: 35px 25px; box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08); border: 1.5px solid var(--gold); width: 100%; max-width: 440px; margin-top: 25px; }
+    .card::before { content: ''; display: block; height: 5px; margin: -35px -25px 25px -25px; border-radius: 16px 16px 0 0; background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold)); }
+    label { display: block; text-align: left; font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; color: var(--text-dark); }
+    input { width: 100%; padding: 14px 16px; border: 1px solid rgba(27, 42, 71, 0.2); border-radius: 10px; font-size: 1rem; font-family: 'Lato', sans-serif; transition: border-color .3s, box-shadow .3s; }
+    input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(184, 79, 62, 0.15); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: var(--accent); color: white; padding: 14px 28px; border-radius: 6px; border: none; cursor: pointer; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: background-color .3s, transform .2s; width: 100%; margin-top: 15px; }
+    .btn:hover { background-color: #9A4132; transform: translateY(-2px); }
+    .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
     .btn-dark { background-color: var(--text-dark); }
-    .btn-warning { background-color: #d97706; margin-top: 10px; }
-    #resultPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; backdrop-filter: blur(5px); }
-    .result-icon { font-size: 6rem; margin-bottom: 10px; line-height: 1; }
-    .result-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
-    .result-details { background: white; padding: 20px 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid #eee; width: 100%; max-width: 400px; }
-    .result-row { display: flex; flex-direction: column; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-    .result-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    .result-label { font-size: 0.8rem; text-transform: uppercase; color: #888; letter-spacing: 1px; }
-    .result-value { font-size: 1.2rem; font-weight: 700; color: var(--text-dark); }
-    .success { color: #2e6b3e; }
-    .error { color: var(--accent); }
-    .warning { color: #d97706; }
+    .btn-outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+    #resultado { display: none; margin-top: 25px; width: 100%; max-width: 440px; }
+
+    /* =========================================
+       DISEÑO PREMIUM DEL BOLETO (ESTILO WALLET)
+       ========================================= */
+    .ticket-wrapper { padding: 10px; } /* Espacio para la sombra */
+    
+    .ticket { 
+        background: #FFFFFF; 
+        border-radius: 16px; 
+        box-shadow: 0 20px 40px rgba(27, 42, 71, 0.15), 0 0 0 1px rgba(212, 175, 55, 0.3); 
+        position: relative; 
+        overflow: hidden;
+    }
+    
+    /* Cabecera Azul Marino */
+    .ticket-header { 
+        background: linear-gradient(135deg, #1B2A47 0%, #0F1829 100%); 
+        color: var(--white); 
+        padding: 30px 20px; 
+        text-align: center; 
+        position: relative; 
+    }
+    .ticket-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; width: 100%; height: 3px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .badge {
+        display: inline-block;
+        background: rgba(212, 175, 55, 0.15);
+        color: var(--gold);
+        border: 1px solid var(--gold);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+    .ticket-header h3 { 
+        font-size: 2.6rem; 
+        color: var(--white); 
+        line-height: 1; 
+        margin-bottom: 5px;
+    }
+    .ticket-header p { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.8; }
+
+    /* Cuerpo del boleto */
+    .ticket-body { padding: 25px; background: #FFFFFF; }
+    
+    /* Sección del nombre del invitado (Estilo Pase de Abordar) */
+    .guest-section {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .guest-section .label {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #888;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 5px;
+    }
+    .guest-section h4 {
+        font-size: 1.8rem;
+        color: var(--text-dark);
+        font-weight: 900;
+        text-transform: uppercase;
+        line-height: 1.1;
+        margin-bottom: 15px;
+        letter-spacing: -0.5px;
+    }
+
+    /* Caja de acompañantes */
+    .companion-box {
+        background: var(--bg-color);
+        padding: 12px 15px;
+        border-radius: 10px;
+        border: 1px dashed var(--gold);
+        text-align: left;
+        margin: 0 auto;
+        max-width: 90%;
+    }
+    .companion-box .label {
+        font-size: 0.65rem;
+        letter-spacing: 1.5px;
+        color: var(--accent-alt);
+        text-transform: uppercase;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 5px;
+        text-align: center;
+    }
+    .companion-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    }
+    .companion-list li {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 4px;
+    }
+    .companion-list li:last-child { margin-bottom: 0; }
+    .companion-list li::before {
+        content: '✦';
+        color: var(--gold);
+        margin-right: 8px;
+        font-size: 0.8rem;
+    }
+
+    /* Grid de Datos (Fecha, Lugar) */
+    .event-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        border-top: 1px solid #F0F0F0;
+        border-bottom: 1px solid #F0F0F0;
+        padding: 20px 0;
+        margin-bottom: 25px;
+    }
+    .grid-item { text-align: left; }
+    .grid-item.full-width { grid-column: span 2; text-align: center; }
+    .grid-item .label {
+        font-size: 0.65rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #999;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 2px;
+    }
+    .grid-item .value {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        line-height: 1.2;
+        display: block;
+    }
+    .grid-item .value small { display: block; font-weight: 400; font-size: 0.85rem; color: #555; margin-top: 2px; }
+
+    /* Sección del QR con recorte de ticket */
+    .qr-section {
+        position: relative;
+        text-align: center;
+        padding-top: 20px;
+    }
+    /* Los semicírculos recortados */
+    .qr-section::before, .qr-section::after {
+        content: '';
+        position: absolute;
+        top: -35px; /* Ajustado para alinearse con el borde */
+        width: 30px;
+        height: 30px;
+        background: var(--bg-color);
+        border-radius: 50%;
+        border: 1px solid #F0F0F0;
+        z-index: 10;
+    }
+    .qr-section::before { left: -40px; }
+    .qr-section::after { right: -40px; }
+    
+    .dashed-line {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        border-top: 2px dashed #E0E0E0;
+    }
+
+    .qr-box {
+        display: inline-block;
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid #F0F0F0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+    .qr-container { display: flex; flex-direction: column; align-items: center; min-height: 160px; justify-content: center; }
+    .qr-container img { display: block; border-radius: 4px; }
+    .qr-caption { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-top: 12px; font-weight: 700; }
+
+    /* Código de barras decorativo */
+    .barcode { display: flex; justify-content: center; height: 30px; gap: 2px; margin: 15px 0 5px; opacity: 0.5; }
+    .barcode span { background: #1B2A47; height: 100%; width: 2px; }
+    .barcode span:nth-child(3n) { width: 4px; }
+    .barcode span:nth-child(4n) { width: 1px; }
+
+    .msg { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; }
+    .msg-err { background: var(--blush); color: var(--accent); }
+    .loader { display: inline-block; width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.3); border-top-color: white; border-radius: 50%; animation: spin .8s linear infinite; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hidden { display: none !important; }
+    .footer { margin-top: 35px; font-size: 0.8rem; color: rgba(27,42,71,.6); letter-spacing: 1px; }
+    .footer a { color: var(--accent); text-decoration: none; font-weight: 700; }
+    .hint { font-size: 0.85rem; color: rgba(27,42,71,.65); margin-top: 12px; text-align: center; font-style: italic; }
 </style>
 </head>
 <body>
 
-    <div class="subtitle">Check-In Seguro</div>
+    <div class="subtitle">Boleto Digital</div>
     <h1 class="hero-names">Adriana & César</h1>
     <div class="hero-line"></div>
-    <p id="offlineMsg" style="font-size: 0.8rem; color: var(--accent); font-weight: bold; display: none;">⚠️ Modo Offline</p>
+    <p class="tagline">14 • Noviembre • 2026</p>
 
-    <div class="scanner-card">
-        <div id="reader"></div>
-        <div class="manual-search">
-            <input type="text" id="manualInput" placeholder="Buscar por nombre...">
-            <button onclick="buscarManual()">🔍</button>
+    <div class="card" id="searchCard">
+        <h2>Busca tu boleto</h2>
+        <p style="font-size:0.95rem; margin-bottom:20px;">Ingresa tu nombre completo tal como lo registraste.</p>
+        <label for="inputNombre">Nombre completo</label>
+        <input type="text" id="inputNombre" placeholder="Ej. Carolina Ivette Navarro" autocomplete="off">
+        <button class="btn" id="btnBuscar">Buscar mi boleto</button>
+        <p class="hint">Solo para invitados que confirmaron asistencia.</p>
+        <div id="msgBusqueda" class="msg hidden"></div>
+    </div>
+
+    <div id="resultado">
+        <div class="ticket-wrapper">
+            <!-- DISEÑO DEL BOLETO PREMIUM -->
+            <div class="ticket" id="ticket">
+                <div class="ticket-header">
+                    <div class="badge">Invitación de Boda</div>
+                    <h3>Adriana & César</h3>
+                    <p>Pase de Invitado</p>
+                </div>
+                <div class="ticket-body">
+                    
+                    <div class="guest-section">
+                        <span class="label">Invitado Principal</span>
+                        <h4 id="tNombre">—</h4>
+                        <div class="companion-box" id="rowAcompanantes" style="display:none;">
+                            <span class="label">Acompañante(s)</span>
+                            <ul class="companion-list" id="listaAcompanantes">
+                                <!-- Se llena dinámicamente -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="event-grid">
+                        <div class="grid-item">
+                            <span class="label">Fecha</span>
+                            <span class="value">Sábado<br>14 Nov 2026</span>
+                        </div>
+                        <div class="grid-item">
+                            <span class="label">Hora</span>
+                            <span class="value">4:00 PM</span>
+                        </div>
+                        <div class="grid-item full-width">
+                            <span class="label">Ceremonia</span>
+                            <span class="value">Catedral San Bernardino <small>4:00 PM</small></span>
+                        </div>
+                        <div class="grid-item full-width">
+                            <span class="label">Recepción</span>
+                            <span class="value">Salón Bamboo Xochimilco <small>5:30 PM</small></span>
+                        </div>
+                    </div>
+
+                    <div class="qr-section">
+                        <div class="dashed-line"></div>
+                        <div class="qr-box">
+                            <div class="qr-container">
+                                <div id="qrCanvas"></div>
+                                <span class="qr-caption">Escanea en la entrada</span>
+                            </div>
+                        </div>
+                        <div class="barcode">
+                            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+
+                    <div data-html2canvas-ignore="true" style="margin-top:20px;">
+                        <button class="btn btn-dark" id="btnDescargar">Guardar Pase</button>
+                        <button class="btn btn-outline" id="btnOtra">Buscar otro</button>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="resultPanel">
-        <div class="result-icon" id="resIcon">✅</div>
-        <div class="result-title" id="resTitle">VÁLIDO</div>
-        <div class="result-details">
-            <div class="result-row">
-                <span class="result-label">Invitado</span>
-                <span class="result-value" id="resNombre">—</span>
-            </div>
-            <div class="result-row" id="resRowAcomp">
-                <span class="result-label">Acompañante(s)</span>
-                <span class="result-value" id="resAcomp">—</span>
-            </div>
-            <div class="result-row" id="resRowCheckin">
-                <span class="result-label">Estado</span>
-                <span class="result-value" id="resCheckinTime">—</span>
-            </div>
-            <!-- FILA DE DEBUG (Para saber qué leyó la cámara) -->
-            <div class="result-row" id="resRowDebug" style="border:none; background:#f9f9f9; border-radius:8px; margin-top:10px; padding:10px;">
-                <span class="result-label">QR Escaneado:</span>
-                <span class="result-value" id="resDebugText" style="font-size:0.9rem; color:#666; word-break:break-all;">—</span>
-            </div>
-        </div>
-        
-        <button class="btn btn-warning hidden" id="btnForzar" onclick="forzarEntrada()">⚠️ Forzar Entrada</button>
-        <button class="btn btn-dark" id="btnEscanearOtro">Escanear Siguiente</button>
-    </div>
+    <p class="footer">Desarrollado con ♥ por <a href="https://wa.me/5215650146406" target="_blank">MZG Systems</a></p>
 
 <script>
+// --- CONFIGURACIÓN ---
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-gPI3L3BDO5zpaBCi0wp61UxVkXqKl-eWned_BTFzckhN2F2kUt4rQ/exec";
-const SECRET_KEY = "BodaAdrianaCesar2026"; 
-const CACHE_VERSION = "v3_fix_spaces"; // <--- IMPORTANTE: Esto borra el caché viejo de los celulares
-
-let html5QrCode;
-let escaneando = false;
-let invitadosCache = [];
-let registroTemporal = null;
+const NOMBRE_COL = "Nombre";
+const ASISTENCIA_COL = "Asistencia";
+const ACOMPANANTE_COL = "Lleva acompañante";
+const NOMBRE_ACOMP_COL = "Nombre de acompañante";
 
 function normalizar(s) {
     if (!s) return "";
@@ -101,222 +340,155 @@ function normalizar(s) {
     return str;
 }
 
-function playSound(type) {
-    try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
-        if(type === 'success') {
-            osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.5, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-            osc.start(); osc.stop(ctx.currentTime + 0.3);
-        } else if (type === 'warning') {
-            osc.type = 'triangle'; osc.frequency.setValueAtTime(500, ctx.currentTime);
-            osc.frequency.setValueAtTime(400, ctx.currentTime + 0.15);
-            gain.gain.setValueAtTime(0.5, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-            osc.start(); osc.stop(ctx.currentTime + 0.4);
-        } else {
-            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, ctx.currentTime);
-            gain.gain.setValueAtTime(0.5, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-            osc.start(); osc.stop(ctx.currentTime + 0.5);
-        }
-    } catch(e) {}
+function showMsg(el, text, type) {
+    el.textContent = text;
+    el.className = "msg " + (type === "ok" ? "msg-ok" : "msg-err");
+    el.classList.remove("hidden");
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-    // 1. Forzar limpieza de caché viejo
-    const cachedVersion = localStorage.getItem("boda_invitados_version");
-    if (cachedVersion !== CACHE_VERSION) {
-        localStorage.removeItem("boda_invitados");
-        localStorage.setItem("boda_invitados_version", CACHE_VERSION);
-    }
+function validarConfirmacion(registro) {
+    const asist = normalizar(registro[ASISTENCIA_COL]);
+    return asist.includes("si") && !asist.includes("no");
+}
 
-    // 2. Descargar datos frescos
+async function buscarInvitado(nombreBuscado) {
+    const url = SHEETS_API_URL + "?nombre=" + encodeURIComponent(nombreBuscado);
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error("Error de red.");
+    const registros = await resp.json();
+    if (registros.result === "error") throw new Error(registros.message);
+    if (!Array.isArray(registros) || registros.length === 0) return null;
+    return registros[0];
+}
+
+const inputNombre = document.getElementById("inputNombre");
+const btnBuscar = document.getElementById("btnBuscar");
+const msgBusqueda = document.getElementById("msgBusqueda");
+const resultado = document.getElementById("resultado");
+const searchCard = document.getElementById("searchCard");
+const btnOtra = document.getElementById("btnOtra");
+const btnDescargar = document.getElementById("btnDescargar");
+
+let datosActuales = null;
+
+btnBuscar.addEventListener("click", async () => {
+    const nombre = inputNombre.value.trim();
+    if (!nombre) { showMsg(msgBusqueda, "Escribe tu nombre.", "err"); return; }
+    btnBuscar.disabled = true;
+    btnBuscar.innerHTML = '<span class="loader"></span> Buscando...';
+    msgBusqueda.classList.add("hidden");
+
     try {
-        const resp = await fetch(SHEETS_API_URL + "?action=all&clave=" + SECRET_KEY);
-        if (resp.ok) {
-            const text = await resp.text();
-            if(!text.includes("<!DOCTYPE html>")) {
-                const data = JSON.parse(text);
-                if(data.result !== "error" && data.length > 0) {
-                    invitadosCache = data;
-                    localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
-                    document.getElementById("offlineMsg").style.display = "none";
+        const registro = await buscarInvitado(nombre);
+        if (!registro) { showMsg(msgBusqueda, "No encontramos tu nombre.", "err"); return; }
+        if (!validarConfirmacion(registro)) { showMsg(msgBusqueda, "No tienes confirmación.", "err"); return; }
+
+        const nombreReal = registro[NOMBRE_COL];
+        const llevaAcomp = normalizar(registro[ACOMPANANTE_COL]).includes("si");
+        const nombreAcomp = llevaAcomp ? (registro[NOMBRE_ACOMP_COL] || "Acompañante") : null;
+        
+        const qrData = registro["Token"] ? registro["Token"] : normalizar(nombreReal);
+
+        datosActuales = { nombreReal, llevaAcomp, nombreAcomp };
+
+        document.getElementById("tNombre").textContent = nombreReal;
+        
+        const rowAcomp = document.getElementById("rowAcompanantes");
+        const listaAcomp = document.getElementById("listaAcompanantes");
+        listaAcomp.innerHTML = ""; // Limpiar lista
+
+        if (llevaAcomp && nombreAcomp) {
+            // Separamos a los acompañantes por comas o "y" para hacer una lista bonita
+            let acompArray = nombreAcomp.split(/,| y /);
+            acompArray.forEach(function(nombre) {
+                if (nombre.trim() !== "") {
+                    let li = document.createElement("li");
+                    li.textContent = nombre.trim();
+                    listaAcomp.appendChild(li);
                 }
-            }
+            });
+            rowAcomp.style.display = "block";
+        } else { 
+            rowAcomp.style.display = "none"; 
         }
-    } catch (e) {
-        document.getElementById("offlineMsg").style.display = "block";
+
+        const qrContainer = document.getElementById("qrCanvas");
+        qrContainer.innerHTML = "";
+
+        // Esperar a que cargue el QR
+        await new Promise((resolve) => {
+            let attempts = 0;
+            const checkQR = setInterval(() => {
+                if (typeof QRCode !== 'undefined') {
+                    clearInterval(checkQR);
+                    new QRCode(qrContainer, {
+                        text: qrData,
+                        width: 160,
+                        height: 160,
+                        colorDark : "#1B2A47",
+                        colorLight : "#FFFFFF",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                    resolve();
+                } else if (attempts > 30) {
+                    clearInterval(checkQR);
+                    qrContainer.innerHTML = "<p style='color:red;font-size:12px;'>Error al cargar QR</p>";
+                    resolve();
+                }
+                attempts++;
+            }, 100);
+        });
+
+        searchCard.classList.add("hidden");
+        resultado.style.display = "block";
+        resultado.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        setTimeout(async () => { try { await generarYDescargarImagen(); } catch(e){} }, 1500);
+
+    } catch (err) {
+        showMsg(msgBusqueda, "Error: " + err.message, "err");
+    } finally {
+        btnBuscar.disabled = false;
+        btnBuscar.innerHTML = `Buscar mi boleto`;
     }
-    
-    if (invitadosCache.length === 0) {
-        const cached = localStorage.getItem("boda_invitados");
-        if (cached) invitadosCache = JSON.parse(cached);
-        if (invitadosCache.length > 0) document.getElementById("offlineMsg").style.display = "block";
-    }
-    
-    iniciarEscaner();
 });
 
-function iniciarEscaner() {
-    if (html5QrCode) return;
-    html5QrCode = new Html5Qrcode("reader");
-    html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, onScanSuccess, () => {}).catch(err => {
-        alert("No se pudo acceder a la cámara.");
-    });
-}
+btnOtra.addEventListener("click", () => {
+    resultado.style.display = "none";
+    searchCard.classList.remove("hidden");
+    inputNombre.value = "";
+    msgBusqueda.classList.add("hidden");
+    datosActuales = null;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
-async function procesarBoleto(textoEscaneado) {
-    if (escaneando) return;
-    escaneando = true;
+async function generarYDescargarImagen() {
+    const ticket = document.getElementById("ticket");
+    if (!document.querySelector("#qrCanvas img")) return;
 
-    let textoLimpio = textoEscaneado.toString().trim().toUpperCase();
+    const divBotones = document.querySelector('[data-html2canvas-ignore="true"]');
+    if(divBotones) divBotones.style.visibility = 'hidden';
 
-    // BUSCAMOS POR TOKEN O POR NOMBRE IGNORANDO ESPACIOS Y MAYÚSCULAS
-    let registro = invitadosCache.find(r => {
-        let tokenDb = r["Token"] ? r["Token"].toString().trim().toUpperCase() : "";
-        let nombreDb = r["Nombre"] ? normalizar(r["Nombre"]) : "";
-        let nombreEscaneado = normalizar(textoEscaneado);
-        
-        return (tokenDb !== "" && tokenDb === textoLimpio) || (nombreDb !== "" && nombreDb === nombreEscaneado);
-    });
-
-    if (!registro && navigator.onLine) {
-        try {
-            const resp = await fetch(SHEETS_API_URL + "?token=" + encodeURIComponent(textoEscaneado));
-            const res = await resp.json();
-            if (res.length > 0) {
-                registro = res[0];
-                invitadosCache.push(registro);
-                localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
-            }
-        } catch(e) {}
-    }
-    mostrarResultado(registro, textoEscaneado);
-}
-
-async function onScanSuccess(decodedText) {
-    if (escaneando) return;
-    if (navigator.vibrate) navigator.vibrate(100);
-    await html5QrCode.pause();
-    procesarBoleto(decodedText);
-}
-
-function buscarManual() {
-    const nombre = document.getElementById("manualInput").value.trim();
-    if (!nombre) return;
-    document.getElementById("manualInput").value = "";
-    if (html5QrCode) html5QrCode.pause();
+    await new Promise(r => setTimeout(r, 100));
     
-    let registro = invitadosCache.find(r => normalizar(r["Nombre"]) === normalizar(nombre));
-    mostrarResultado(registro, nombre);
-}
-
-async function mostrarResultado(registro, textoEscaneado) {
-    const panel = document.getElementById("resultPanel");
-    const icon = document.getElementById("resIcon");
-    const title = document.getElementById("resTitle");
-    const nombreEl = document.getElementById("resNombre");
-    const acompEl = document.getElementById("resAcomp");
-    const rowAcomp = document.getElementById("resRowAcomp");
-    const checkinTimeEl = document.getElementById("resCheckinTime");
-    const rowCheckin = document.getElementById("resRowCheckin");
-    const btnForzar = document.getElementById("btnForzar");
-    const debugEl = document.getElementById("resDebugText");
-
-    // Mostramos SIEMPRE qué texto se escaneó para depurar
-    debugEl.innerText = `"${textoEscaneado}"`;
+    // Importante: El fondo debe ser transparente o igual al color de fondo de la página para que los recortes se vean bien
+    const canvas = await html2canvas(ticket, { scale: 2.5, useCORS: true, backgroundColor: "#FDF9F1" });
     
-    registroTemporal = registro;
-    btnForzar.classList.add("hidden");
+    if(divBotones) divBotones.style.visibility = 'visible';
 
-    const esValido = registro && normalizar(registro["Asistencia"]).includes("si") && !normalizar(registro["Asistencia"]).includes("no");
-    const yaTieneCheckin = registro && registro["Check-in"] && registro["Check-in"].toString().trim() !== "";
-
-    if (esValido) {
-        nombreEl.innerText = registro["Nombre"];
-        const llevaAcomp = normalizar(registro["Lleva acompañante"]).includes("si");
-        if (llevaAcomp && registro["Nombre de acompañante"]) {
-            acompEl.innerText = registro["Nombre de acompañante"];
-            rowAcomp.style.display = "flex";
-        } else { rowAcomp.style.display = "none"; }
-
-        if (yaTieneCheckin) {
-            playSound('warning');
-            icon.innerText = "⚠️";
-            title.innerText = "YA REGISTRADO";
-            title.className = "result-title warning";
-            checkinTimeEl.innerText = "Entró: " + registro["Check-in"];
-            rowCheckin.style.display = "flex";
-            btnForzar.classList.remove("hidden"); 
-        } else {
-            playSound('success');
-            icon.innerText = "✅";
-            title.innerText = "VÁLIDO";
-            title.className = "result-title success";
-            rowCheckin.style.display = "none";
-
-            const horaActual = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-            registro["Check-in"] = horaActual;
-            localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
-
-            if (navigator.onLine) {
-                const formData = new FormData();
-                formData.append("action", "checkin");
-                formData.append("token", registro["Token"]);
-                fetch(SHEETS_API_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(e => console.log(e));
-            }
-        }
-    } else {
-        playSound('error');
-        icon.innerText = "❌";
-        title.innerText = "INVÁLIDO";
-        title.className = "result-title error";
-        nombreEl.innerText = registro ? registro["Nombre"] + " (No confirmó)" : "Código no reconocido";
-        rowAcomp.style.display = "none";
-        rowCheckin.style.display = "none";
-        
-        if (registro) btnForzar.classList.remove("hidden");
-    }
-    panel.style.display = "flex";
+    const imageData = canvas.toDataURL("image/jpeg", 0.95);
+    const link = document.createElement("a");
+    link.href = imageData;
+    link.download = `Pase_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
-async function forzarEntrada() {
-    if (!registroTemporal) return;
-    const btnForzar = document.getElementById("btnForzar");
-    btnForzar.innerText = "Forzando...";
-
-    const horaActual = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-    registroTemporal["Check-in"] = horaActual + " (Forzado)";
-    localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
-
-    if (navigator.onLine) {
-        const formData = new FormData();
-        formData.append("action", "checkin");
-        formData.append("token", registroTemporal["Token"]);
-        formData.append("forzar", "true");
-        await fetch(SHEETS_API_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(e => console.log(e));
-    }
-    
-    document.getElementById("resIcon").innerText = "✅";
-    document.getElementById("resTitle").innerText = "FORZADO";
-    document.getElementById("resTitle").className = "result-title success";
-    document.getElementById("resCheckinTime").innerText = "Entró: " + horaActual;
-    document.getElementById("resRowCheckin").style.display = "flex";
-    btnForzar.classList.add("hidden");
-    playSound('success');
-}
-
-document.getElementById("btnEscanearOtro").addEventListener("click", () => {
-    document.getElementById("resultPanel").style.display = "none";
-    escaneando = false;
-    registroTemporal = null;
-    if (html5QrCode) html5QrCode.resume();
+btnDescargar.addEventListener("click", async () => {
+    btnDescargar.innerHTML = 'Generando...';
+    await generarYDescargarImagen();
+    btnDescargar.innerHTML = 'Guardar Pase';
 });
 </script>
 </body>
