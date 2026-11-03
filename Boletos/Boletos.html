@@ -43,7 +43,7 @@
     /* =========================================
        DISEÑO PREMIUM DEL BOLETO (ESTILO WALLET)
        ========================================= */
-    .ticket-wrapper { padding: 10px; } /* Espacio para la sombra */
+    .ticket-wrapper { padding: 10px; }
     
     .ticket { 
         background: #FFFFFF; 
@@ -53,7 +53,6 @@
         overflow: hidden;
     }
     
-    /* Cabecera Azul Marino */
     .ticket-header { 
         background: linear-gradient(135deg, #1B2A47 0%, #0F1829 100%); 
         color: var(--white); 
@@ -88,10 +87,8 @@
     }
     .ticket-header p { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.8; }
 
-    /* Cuerpo del boleto */
     .ticket-body { padding: 25px; background: #FFFFFF; }
     
-    /* Sección del nombre del invitado (Estilo Pase de Abordar) */
     .guest-section {
         text-align: center;
         margin-bottom: 25px;
@@ -115,7 +112,6 @@
         letter-spacing: -0.5px;
     }
 
-    /* Caja de acompañantes */
     .companion-box {
         background: var(--bg-color);
         padding: 12px 15px;
@@ -155,7 +151,6 @@
         font-size: 0.8rem;
     }
 
-    /* Grid de Datos (Fecha, Lugar) */
     .event-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -185,17 +180,15 @@
     }
     .grid-item .value small { display: block; font-weight: 400; font-size: 0.85rem; color: #555; margin-top: 2px; }
 
-    /* Sección del QR con recorte de ticket */
     .qr-section {
         position: relative;
         text-align: center;
         padding-top: 20px;
     }
-    /* Los semicírculos recortados */
     .qr-section::before, .qr-section::after {
         content: '';
         position: absolute;
-        top: -35px; /* Ajustado para alinearse con el borde */
+        top: -35px; 
         width: 30px;
         height: 30px;
         background: var(--bg-color);
@@ -221,10 +214,13 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     }
     .qr-container { display: flex; flex-direction: column; align-items: center; min-height: 160px; justify-content: center; }
-    .qr-container img { display: block; border-radius: 4px; }
+    
+    /* TRUCO MAESTRO PARA HTML2CANVAS: Ocultar el canvas y mostrar solo la imagen */
+    #qrCanvas canvas { display: none !important; }
+    #qrCanvas img { display: block; border-radius: 4px; }
+    
     .qr-caption { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-top: 12px; font-weight: 700; }
 
-    /* Código de barras decorativo */
     .barcode { display: flex; justify-content: center; height: 30px; gap: 2px; margin: 15px 0 5px; opacity: 0.5; }
     .barcode span { background: #1B2A47; height: 100%; width: 2px; }
     .barcode span:nth-child(3n) { width: 4px; }
@@ -259,7 +255,6 @@
 
     <div id="resultado">
         <div class="ticket-wrapper">
-            <!-- DISEÑO DEL BOLETO PREMIUM -->
             <div class="ticket" id="ticket">
                 <div class="ticket-header">
                     <div class="badge">Invitación de Boda</div>
@@ -395,10 +390,9 @@ btnBuscar.addEventListener("click", async () => {
         
         const rowAcomp = document.getElementById("rowAcompanantes");
         const listaAcomp = document.getElementById("listaAcompanantes");
-        listaAcomp.innerHTML = ""; // Limpiar lista
+        listaAcomp.innerHTML = ""; 
 
         if (llevaAcomp && nombreAcomp) {
-            // Separamos a los acompañantes por comas o "y" para hacer una lista bonita
             let acompArray = nombreAcomp.split(/,| y /);
             acompArray.forEach(function(nombre) {
                 if (nombre.trim() !== "") {
@@ -415,7 +409,6 @@ btnBuscar.addEventListener("click", async () => {
         const qrContainer = document.getElementById("qrCanvas");
         qrContainer.innerHTML = "";
 
-        // Esperar a que cargue el QR
         await new Promise((resolve) => {
             let attempts = 0;
             const checkQR = setInterval(() => {
@@ -464,25 +457,51 @@ btnOtra.addEventListener("click", () => {
 
 async function generarYDescargarImagen() {
     const ticket = document.getElementById("ticket");
-    if (!document.querySelector("#qrCanvas img")) return;
+    const qrImg = document.querySelector("#qrCanvas img");
+    
+    // Verificamos que el QR exista
+    if (!qrImg) return;
+
+    // TRUCO: Esperamos a que la imagen del QR esté 100% cargada en memoria
+    await new Promise((resolve) => {
+        const tempImg = new Image();
+        tempImg.src = qrImg.src;
+        if (tempImg.complete) {
+            resolve();
+        } else {
+            tempImg.onload = resolve;
+        }
+    });
 
     const divBotones = document.querySelector('[data-html2canvas-ignore="true"]');
     if(divBotones) divBotones.style.visibility = 'hidden';
 
-    await new Promise(r => setTimeout(r, 100));
+    // Pequeña pausa extra
+    await new Promise(r => setTimeout(r, 300));
     
-    // Importante: El fondo debe ser transparente o igual al color de fondo de la página para que los recortes se vean bien
-    const canvas = await html2canvas(ticket, { scale: 2.5, useCORS: true, backgroundColor: "#FDF9F1" });
-    
-    if(divBotones) divBotones.style.visibility = 'visible';
+    try {
+        const canvas = await html2canvas(ticket, { 
+            scale: 2.5, 
+            useCORS: true, 
+            allowTaint: true,
+            backgroundColor: "#FDF9F1",
+            logging: false
+        });
+        
+        if(divBotones) divBotones.style.visibility = 'visible';
 
-    const imageData = canvas.toDataURL("image/jpeg", 0.95);
-    const link = document.createElement("a");
-    link.href = imageData;
-    link.download = `Pase_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+        const imageData = canvas.toDataURL("image/jpeg", 0.95);
+        const link = document.createElement("a");
+        link.href = imageData;
+        link.download = `Pase_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error("Error al generar la imagen:", error);
+        if(divBotones) divBotones.style.visibility = 'visible';
+        alert("Hubo un detalle al generar la imagen, pero el boleto se ve perfecto en pantalla.");
+    }
 }
 
 btnDescargar.addEventListener("click", async () => {
