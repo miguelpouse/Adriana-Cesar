@@ -71,21 +71,26 @@
                 <span class="result-label">Estado</span>
                 <span class="result-value" id="resCheckinTime">—</span>
             </div>
+            <!-- FILA DE DEBUG (Para saber qué leyó la cámara) -->
+            <div class="result-row" id="resRowDebug" style="border:none; background:#f9f9f9; border-radius:8px; margin-top:10px; padding:10px;">
+                <span class="result-label">QR Escaneado:</span>
+                <span class="result-value" id="resDebugText" style="font-size:0.9rem; color:#666; word-break:break-all;">—</span>
+            </div>
         </div>
         
-        <!-- Botón de Forzar Entrada (Solo aparece si es inválido o ya entró) -->
         <button class="btn btn-warning hidden" id="btnForzar" onclick="forzarEntrada()">⚠️ Forzar Entrada</button>
-        
         <button class="btn btn-dark" id="btnEscanearOtro">Escanear Siguiente</button>
     </div>
 
 <script>
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-gPI3L3BDO5zpaBCi0wp61UxVkXqKl-eWned_BTFzckhN2F2kUt4rQ/exec";
-const SECRET_KEY = "BodaAdrianaCesar2026"; // 🔑 Clave para descargar lista
+const SECRET_KEY = "BodaAdrianaCesar2026"; 
+const CACHE_VERSION = "v3_fix_spaces"; // <--- IMPORTANTE: Esto borra el caché viejo de los celulares
+
 let html5QrCode;
 let escaneando = false;
 let invitadosCache = [];
-let registroTemporal = null; // Para el botón de forzar
+let registroTemporal = null;
 
 function normalizar(s) {
     if (!s) return "";
@@ -124,13 +129,21 @@ function playSound(type) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+    // 1. Forzar limpieza de caché viejo
+    const cachedVersion = localStorage.getItem("boda_invitados_version");
+    if (cachedVersion !== CACHE_VERSION) {
+        localStorage.removeItem("boda_invitados");
+        localStorage.setItem("boda_invitados_version", CACHE_VERSION);
+    }
+
+    // 2. Descargar datos frescos
     try {
         const resp = await fetch(SHEETS_API_URL + "?action=all&clave=" + SECRET_KEY);
         if (resp.ok) {
             const text = await resp.text();
             if(!text.includes("<!DOCTYPE html>")) {
                 const data = JSON.parse(text);
-                if(data.result !== "error") {
+                if(data.result !== "error" && data.length > 0) {
                     invitadosCache = data;
                     localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
                     document.getElementById("offlineMsg").style.display = "none";
@@ -140,11 +153,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (e) {
         document.getElementById("offlineMsg").style.display = "block";
     }
+    
     if (invitadosCache.length === 0) {
         const cached = localStorage.getItem("boda_invitados");
         if (cached) invitadosCache = JSON.parse(cached);
         if (invitadosCache.length > 0) document.getElementById("offlineMsg").style.display = "block";
     }
+    
     iniciarEscaner();
 });
 
@@ -160,10 +175,17 @@ async function procesarBoleto(textoEscaneado) {
     if (escaneando) return;
     escaneando = true;
 
-    // 1. Buscamos el Token en la caché
-    let registro = invitadosCache.find(r => r["Token"] === textoEscaneado);
+    let textoLimpio = textoEscaneado.toString().trim().toUpperCase();
 
-    // Si no está en caché, buscar online
+    // BUSCAMOS POR TOKEN O POR NOMBRE IGNORANDO ESPACIOS Y MAYÚSCULAS
+    let registro = invitadosCache.find(r => {
+        let tokenDb = r["Token"] ? r["Token"].toString().trim().toUpperCase() : "";
+        let nombreDb = r["Nombre"] ? normalizar(r["Nombre"]) : "";
+        let nombreEscaneado = normalizar(textoEscaneado);
+        
+        return (tokenDb !== "" && tokenDb === textoLimpio) || (nombreDb !== "" && nombreDb === nombreEscaneado);
+    });
+
     if (!registro && navigator.onLine) {
         try {
             const resp = await fetch(SHEETS_API_URL + "?token=" + encodeURIComponent(textoEscaneado));
@@ -191,7 +213,6 @@ function buscarManual() {
     document.getElementById("manualInput").value = "";
     if (html5QrCode) html5QrCode.pause();
     
-    // Buscar por nombre en caché
     let registro = invitadosCache.find(r => normalizar(r["Nombre"]) === normalizar(nombre));
     mostrarResultado(registro, nombre);
 }
@@ -206,6 +227,10 @@ async function mostrarResultado(registro, textoEscaneado) {
     const checkinTimeEl = document.getElementById("resCheckinTime");
     const rowCheckin = document.getElementById("resRowCheckin");
     const btnForzar = document.getElementById("btnForzar");
+    const debugEl = document.getElementById("resDebugText");
+
+    // Mostramos SIEMPRE qué texto se escaneó para depurar
+    debugEl.innerText = `"${textoEscaneado}"`;
     
     registroTemporal = registro;
     btnForzar.classList.add("hidden");
@@ -228,7 +253,7 @@ async function mostrarResultado(registro, textoEscaneado) {
             title.className = "result-title warning";
             checkinTimeEl.innerText = "Entró: " + registro["Check-in"];
             rowCheckin.style.display = "flex";
-            btnForzar.classList.remove("hidden"); // Permitir forzar si se requiere
+            btnForzar.classList.remove("hidden"); 
         } else {
             playSound('success');
             icon.innerText = "✅";
@@ -256,13 +281,11 @@ async function mostrarResultado(registro, textoEscaneado) {
         rowAcomp.style.display = "none";
         rowCheckin.style.display = "none";
         
-        // Si el QR es falso pero el recepcionista lo reconoce, puede forzar
         if (registro) btnForzar.classList.remove("hidden");
     }
     panel.style.display = "flex";
 }
 
-// --- FORZAR ENTRADA (Mejora 5 aplicada aquí también) ---
 async function forzarEntrada() {
     if (!registroTemporal) return;
     const btnForzar = document.getElementById("btnForzar");
