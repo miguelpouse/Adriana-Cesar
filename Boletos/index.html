@@ -9,147 +9,59 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
-<!-- Librería del QR -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<!-- Librería para capturar la pantalla y hacer la imagen -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <style>
-    @font-face {
-        font-family: 'CommercialScriptBT';
-        src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype');
-        font-display: swap;
-    }
-
-    :root {
-        --bg-color: #FDF9F1;
-        --text-dark: #1B2A47;
-        --accent: #B84F3E;
-        --accent-alt: #5B7040;
-        --gold: #D4AF37;
-        --blush: #FDECEF;
-        --white: #FFFFFF;
-    }
-
+    /* ... (Aquí va todo tu CSS exactamente igual, no lo toqué) ... */
+    @font-face { font-family: 'CommercialScriptBT'; src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype'); font-display: swap; }
+    :root { --bg-color: #FDF9F1; --text-dark: #1B2A47; --accent: #B84F3E; --accent-alt: #5B7040; --gold: #D4AF37; --blush: #FDECEF; --white: #FFFFFF; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-        background-color: var(--bg-color);
-        color: var(--text-dark);
-        text-align: center;
-        font-family: 'Lato', sans-serif;
-        font-weight: 300;
-        font-size: 1.1rem;
-        line-height: 1.7;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 30px 15px;
-    }
-
-    h1, h2, h3 {
-        font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif;
-        letter-spacing: 1px;
-    }
-
+    body { background-color: var(--bg-color); color: var(--text-dark); text-align: center; font-family: 'Lato', sans-serif; font-weight: 300; font-size: 1.1rem; line-height: 1.7; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 30px 15px; }
+    h1, h2, h3 { font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif; letter-spacing: 1px; }
     h1 { font-size: clamp(2.8rem, 8vw, 4rem); color: var(--accent); line-height: 1.05; }
     h2 { font-size: 2.2rem; color: var(--accent); margin-bottom: 10px; }
-
-    .hero-names {
-        text-shadow: -0.4px -0.4px 0 var(--white), 0.4px -0.4px 0 var(--white), -0.4px  0.4px 0 var(--white), 0.4px  0.4px 0 var(--white);
-    }
-
+    .hero-names { text-shadow: -0.4px -0.4px 0 var(--white), 0.4px -0.4px 0 var(--white), -0.4px  0.4px 0 var(--white), 0.4px  0.4px 0 var(--white); }
     .tagline { font-family: 'CommercialScriptBT', 'Great Vibes', cursive; font-size: 1.5rem; color: var(--gold); margin-top: 5px; }
     .subtitle { font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dark); opacity: 0.7; margin-bottom: 8px; }
     .hero-line { width: 50px; height: 1px; background-color: var(--gold); margin: 12px auto; opacity: 0.8; }
-
-    .card {
-        background: white;
-        border-radius: 16px;
-        padding: 35px 25px;
-        box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08);
-        border: 1.5px solid var(--gold);
-        width: 100%;
-        max-width: 480px;
-        margin-top: 25px;
-    }
-
-    .card::before {
-        content: '';
-        display: block;
-        height: 5px;
-        margin: -35px -25px 25px -25px;
-        border-radius: 16px 16px 0 0;
-        background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold));
-    }
-
+    .card { background: white; border-radius: 16px; padding: 35px 25px; box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08); border: 1.5px solid var(--gold); width: 100%; max-width: 480px; margin-top: 25px; }
+    .card::before { content: ''; display: block; height: 5px; margin: -35px -25px 25px -25px; border-radius: 16px 16px 0 0; background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold)); }
     label { display: block; text-align: left; font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; color: var(--text-dark); }
-
-    input {
-        width: 100%;
-        padding: 14px 16px;
-        border: 1px solid rgba(27, 42, 71, 0.2);
-        border-radius: 10px;
-        font-size: 1rem;
-        font-family: 'Lato', sans-serif;
-        transition: border-color .3s, box-shadow .3s;
-    }
-
+    input { width: 100%; padding: 14px 16px; border: 1px solid rgba(27, 42, 71, 0.2); border-radius: 10px; font-size: 1rem; font-family: 'Lato', sans-serif; transition: border-color .3s, box-shadow .3s; }
     input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(184, 79, 62, 0.15); }
-
-    .btn {
-        display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-        background-color: var(--accent); color: white; padding: 14px 28px; border-radius: 6px;
-        border: none; cursor: pointer; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase;
-        font-weight: 700; transition: background-color .3s, transform .2s; width: 100%; margin-top: 15px;
-    }
-
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: var(--accent); color: white; padding: 14px 28px; border-radius: 6px; border: none; cursor: pointer; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: background-color .3s, transform .2s; width: 100%; margin-top: 15px; }
     .btn:hover { background-color: #9A4132; transform: translateY(-2px); }
     .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
     .btn-dark { background-color: var(--text-dark); }
     .btn-dark:hover { background-color: #0F1829; }
     .btn-outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
     .btn-outline:hover { background: var(--blush); }
-
     #resultado { display: none; margin-top: 25px; width: 100%; max-width: 480px; }
-
-    .ticket {
-        background: white; border: 1.5px solid var(--gold); border-radius: 16px;
-        overflow: hidden; box-shadow: 0 15px 35px rgba(27, 42, 71, 0.12); position: relative;
-    }
-
+    .ticket { background: white; border: 1.5px solid var(--gold); border-radius: 16px; overflow: hidden; box-shadow: 0 15px 35px rgba(27, 42, 71, 0.12); position: relative; }
     .ticket-header { background: linear-gradient(135deg, var(--text-dark), #0F1829); color: var(--white); padding: 25px 20px 20px; text-align: center; position: relative; }
     .ticket-header h3 { font-size: 2rem; color: var(--gold); line-height: 1; }
     .ticket-header p { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; opacity: .85; margin-top: 6px; }
-
     .ticket-divider { position: relative; height: 20px; background: white; }
     .ticket-divider::before, .ticket-divider::after { content: ''; position: absolute; top: -10px; width: 20px; height: 20px; background: var(--bg-color); border-radius: 50%; border: 1.5px solid var(--gold); }
     .ticket-divider::before { left: -11px; }
     .ticket-divider::after { right: -11px; }
-
     .ticket-body { padding: 5px 25px 30px; }
     .ticket-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px dashed rgba(27, 42, 71, 0.15); gap: 15px; }
     .ticket-row:last-of-type { border-bottom: none; }
     .ticket-label { font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-alt); font-weight: 700; flex-shrink: 0; padding-top: 3px; }
     .ticket-value { font-weight: 700; color: var(--text-dark); font-size: 1rem; text-align: right; word-break: break-word; }
-
     .qr-container { display: flex; flex-direction: column; align-items: center; margin: 20px 0 10px; }
     .qr-container img { border: 1.5px solid var(--gold); border-radius: 10px; padding: 10px; background: white; }
     .qr-caption { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dark); opacity: .7; margin-top: 10px; }
-
     .msg { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; }
     .msg-err { background: var(--blush); color: var(--accent); }
     .msg-ok  { background: #EEF3E6; color: var(--accent-alt); }
-
     .loader { display: inline-block; width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.3); border-top-color: white; border-radius: 50%; animation: spin .8s linear infinite; vertical-align: middle; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .hidden { display: none !important; }
-
     .footer { margin-top: 35px; font-size: 0.8rem; color: rgba(27,42,71,.6); letter-spacing: 1px; }
     .footer a { color: var(--accent); text-decoration: none; font-weight: 700; }
-
     .hint { font-size: 0.85rem; color: rgba(27,42,71,.65); margin-top: 12px; text-align: center; font-style: italic; }
 </style>
 </head>
@@ -174,7 +86,6 @@
     </div>
 
     <div id="resultado">
-        <!-- AQUI EMPIEZA LA TARJETA QUE SE VA A CONVERTIR EN IMAGEN -->
         <div class="ticket" id="ticket">
             <div class="ticket-header">
                 <h3>Adriana & César</h3>
@@ -208,7 +119,6 @@
                     <span class="qr-caption">Muestra este código en la entrada</span>
                 </div>
 
-                <!-- Estos botones NO saldrán en la foto, los ocultamos con data-html2canvas-ignore -->
                 <div data-html2canvas-ignore="true">
                     <button class="btn btn-dark" id="btnDescargar">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -220,21 +130,23 @@
         </div>
     </div>
 
-    <p class="footer">
-        Desarrollado con ♥ por <a href="https://wa.me/5215650146406" target="_blank">MZG Systems</a>
-    </p>
+    <p class="footer">Desarrollado con ♥ por <a href="https://wa.me/5215650146406" target="_blank">MZG Systems</a></p>
 
 <script>
-// --- CONFIGURACIÓN ---
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-gPI3L3BDO5zpaBCi0wp61UxVkXqKl-eWned_BTFzckhN2F2kUt4rQ/exec";
 const NOMBRE_COL       = "Nombre";
 const ASISTENCIA_COL   = "Asistencia";
 const ACOMPANANTE_COL  = "Lleva acompañante";
 const NOMBRE_ACOMP_COL = "Nombre de acompañante";
 
-// --- FUNCIONES ---
+// FUNCIÓN DE NORMALIZACIÓN A PRUEBA DE FALLOS
 function normalizar(s) {
-    return (s || "").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").trim();
+    if (!s) return "";
+    let str = s.toString().toLowerCase();
+    str = str.replace(/[áàäâ]/g, "a").replace(/[éèëê]/g, "e").replace(/[íìïî]/g, "i")
+             .replace(/[óòöô]/g, "o").replace(/[úùüû]/g, "u").replace(/ñ/g, "n")
+             .replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+    return str;
 }
 
 function showMsg(el, text, type) {
@@ -248,38 +160,28 @@ function validarConfirmacion(registro) {
     return asist.includes("si") && !asist.includes("no");
 }
 
-// ESTA ES LA FUNCIÓN CORREGIDA CON MANEJO DE ERRORES DETALLADO
 async function buscarInvitado(nombreBuscado) {
     try {
         const url = SHEETS_API_URL + "?nombre=" + encodeURIComponent(nombreBuscado);
         const resp = await fetch(url);
-        
         if (!resp.ok) throw new Error("Error de red al conectar con Google.");
         
         const text = await resp.text();
-        
-        // Detectar si Google nos pide iniciar sesión (script privado)
         if (text.includes("accounts.google.com") || text.includes("<!DOCTYPE html>")) {
             throw new Error("El script de Google está privado. Cambia los permisos a 'Cualquier persona'.");
         }
         
         const registros = JSON.parse(text);
-        
-        // Si el backend nos devolvió un mensaje de error interno
-        if (registros.result === "error") {
-            throw new Error("Error en Google Sheets: " + registros.message);
-        }
+        if (registros.result === "error") throw new Error("Error en Google Sheets: " + registros.message);
         
         if (!Array.isArray(registros) || registros.length === 0) return null;
-        return registros[0]; // Retornamos el primer resultado
-        
+        return registros[0];
     } catch (err) {
         console.error("Error al buscar:", err);
         throw err;
     }
 }
 
-// --- LÓGICA PRINCIPAL ---
 const inputNombre  = document.getElementById("inputNombre");
 const btnBuscar    = document.getElementById("btnBuscar");
 const msgBusqueda  = document.getElementById("msgBusqueda");
@@ -333,8 +235,8 @@ btnBuscar.addEventListener("click", async () => {
         const qrContainer = document.getElementById("qrCanvas");
         qrContainer.innerHTML = "";
 
-        // El QR solo guarda el nombre exacto
-        const qrData = `${nombreReal}`;
+        // ¡AQUÍ ESTÁ LA MAGIA! El QR se genera con el nombre normalizado (sin acentos)
+        const qrData = normalizar(nombreReal);
         
         await new Promise((resolve, reject) => {
             let attempts = 0;
@@ -362,18 +264,16 @@ btnBuscar.addEventListener("click", async () => {
         resultado.style.display = "block";
         resultado.scrollIntoView({ behavior: "smooth", block: "start" });
 
-        // --- DESCARGA AUTOMÁTICA EN IMAGEN ---
         setTimeout(async () => {
             try {
                 await generarYDescargarImagen();
             } catch (e) {
-                console.warn("El navegador bloqueó la descarga automática de imagen.");
+                console.warn("El navegador bloqueó la descarga automática.");
             }
         }, 1000);
 
     } catch (err) {
         console.error(err);
-        // Si falla algo en el proceso (internet, permisos), mostramos el error real
         showMsg(msgBusqueda, "Error: " + err.message, "err");
     } finally {
         btnBuscar.disabled = false;
@@ -396,36 +296,23 @@ btnOtra.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-// --- FUNCIÓN PARA CREAR Y DESCARGAR LA IMAGEN ---
 async function generarYDescargarImagen() {
     const ticket = document.getElementById("ticket");
-    
-    const canvas = await html2canvas(ticket, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff"
-    });
-
+    const canvas = await html2canvas(ticket, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
     const imageData = canvas.toDataURL("image/jpeg", 0.95);
-
     const link = document.createElement("a");
     link.href = imageData;
-    
     const nombreArchivo = `Boleto_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.jpg`;
     link.download = nombreArchivo;
-    
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 }
 
-// Evento para el botón manual
 btnDescargar.addEventListener("click", async () => {
     if (!datosActuales) return;
-
     btnDescargar.disabled = true;
     btnDescargar.innerHTML = '<span class="loader"></span> Generando...';
-
     try {
         await generarYDescargarImagen();
     } catch (err) {
