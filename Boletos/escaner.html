@@ -9,131 +9,36 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
-<!-- Librería para leer el QR con la cámara -->
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 <style>
-    @font-face {
-        font-family: 'CommercialScriptBT';
-        src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype');
-        font-display: swap;
-    }
-
-    :root {
-        --bg-color: #FDF9F1;
-        --text-dark: #1B2A47;
-        --accent: #B84F3E;
-        --accent-alt: #5B7040;
-        --gold: #D4AF37;
-        --blush: #FDECEF;
-        --white: #FFFFFF;
-    }
-
+    @font-face { font-family: 'CommercialScriptBT'; src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype'); font-display: swap; }
+    :root { --bg-color: #FDF9F1; --text-dark: #1B2A47; --accent: #B84F3E; --accent-alt: #5B7040; --gold: #D4AF37; --blush: #FDECEF; --white: #FFFFFF; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-        background-color: var(--bg-color);
-        color: var(--text-dark);
-        text-align: center;
-        font-family: 'Lato', sans-serif;
-        font-weight: 300;
-        font-size: 1.1rem;
-        line-height: 1.7;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px 15px;
-    }
-
-    h1, h2, h3 {
-        font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif;
-        letter-spacing: 1px;
-    }
-
+    body { background-color: var(--bg-color); color: var(--text-dark); text-align: center; font-family: 'Lato', sans-serif; font-weight: 300; font-size: 1.1rem; line-height: 1.7; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px 15px; }
+    h1, h2, h3 { font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif; letter-spacing: 1px; }
     h1 { font-size: clamp(2.8rem, 8vw, 3.5rem); color: var(--accent); line-height: 1.05; }
-
-    .hero-names {
-        text-shadow: -0.4px -0.4px 0 var(--white), 0.4px -0.4px 0 var(--white), -0.4px  0.4px 0 var(--white), 0.4px  0.4px 0 var(--white);
-    }
-
+    .hero-names { text-shadow: -0.4px -0.4px 0 var(--white), 0.4px -0.4px 0 var(--white), -0.4px  0.4px 0 var(--white), 0.4px  0.4px 0 var(--white); }
     .subtitle { font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dark); opacity: 0.7; margin-bottom: 8px; }
     .hero-line { width: 50px; height: 1px; background-color: var(--gold); margin: 12px auto; opacity: 0.8; }
-
-    .scanner-card {
-        background: white;
-        border-radius: 16px;
-        padding: 20px;
-        box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08);
-        border: 1.5px solid var(--gold);
-        width: 100%;
-        max-width: 480px;
-        margin-top: 15px;
-    }
-
-    /* Contenedor de la cámara */
-    #reader {
-        width: 100%;
-        border-radius: 12px;
-        overflow: hidden;
-        border: 2px solid var(--text-dark);
-        background: #000;
-        margin-bottom: 15px;
-    }
-
-    /* Ocultar botones por defecto de la librería */
+    .scanner-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08); border: 1.5px solid var(--gold); width: 100%; max-width: 480px; margin-top: 15px; }
+    #reader { width: 100%; border-radius: 12px; overflow: hidden; border: 2px solid var(--text-dark); background: #000; margin-bottom: 15px; }
     #reader__dashboard_section_csr button { display: none; }
     #reader__dashboard_section_swaplink { display: none; }
     #reader__filescan_input { display: none; }
-
-    .manual-search {
-        display: flex;
-        gap: 10px;
-        margin-top: 15px;
-    }
-    .manual-search input {
-        flex: 1; padding: 12px; border: 1px solid rgba(27,42,71,0.2); border-radius: 8px; font-size: 1rem;
-    }
-    .manual-search button {
-        background: var(--text-dark); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-weight: 700;
-    }
-
-    .btn {
-        display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-        background-color: var(--accent); color: white; padding: 14px 28px; border-radius: 6px;
-        border: none; cursor: pointer; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase;
-        font-weight: 700; transition: background-color .3s; width: 100%; margin-top: 10px;
-    }
+    .manual-search { display: flex; gap: 10px; margin-top: 15px; }
+    .manual-search input { flex: 1; padding: 12px; border: 1px solid rgba(27,42,71,0.2); border-radius: 8px; font-size: 1rem; }
+    .manual-search button { background: var(--text-dark); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-weight: 700; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: var(--accent); color: white; padding: 14px 28px; border-radius: 6px; border: none; cursor: pointer; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: background-color .3s; width: 100%; margin-top: 10px; }
     .btn-dark { background-color: var(--text-dark); }
-    .btn-warning { background-color: #d97706; margin-top: 10px; }
-
-    /* Pantalla de resultado (Válido / Inválido) */
-    #resultPanel {
-        display: none;
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(255, 255, 255, 0.95);
-        z-index: 1000;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        text-align: center;
-        backdrop-filter: blur(5px);
-    }
-
+    #resultPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; backdrop-filter: blur(5px); }
     .result-icon { font-size: 6rem; margin-bottom: 10px; line-height: 1; }
     .result-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
-    
-    .result-details {
-        background: white; padding: 20px 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        margin-bottom: 20px; border: 1px solid #eee; width: 100%; max-width: 400px;
-    }
+    .result-details { background: white; padding: 20px 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid #eee; width: 100%; max-width: 400px; }
     .result-row { display: flex; flex-direction: column; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
     .result-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .result-label { font-size: 0.8rem; text-transform: uppercase; color: #888; letter-spacing: 1px; }
     .result-value { font-size: 1.2rem; font-weight: 700; color: var(--text-dark); }
-
     .success { color: #2e6b3e; }
     .error { color: var(--accent); }
     .warning { color: #d97706; }
@@ -154,7 +59,6 @@
         </div>
     </div>
 
-    <!-- PANEL DE RESULTADO -->
     <div id="resultPanel">
         <div class="result-icon" id="resIcon">✅</div>
         <div class="result-title" id="resTitle">VÁLIDO</div>
@@ -172,28 +76,24 @@
                 <span class="result-label">Estado</span>
                 <span class="result-value" id="resCheckinTime">—</span>
             </div>
-            <!-- FILA DE DEBUG (Para saber qué leyó la cámara) -->
             <div class="result-row" id="resRowDebug" style="border:none; background:#f9f9f9; border-radius:8px; margin-top:10px; padding:10px;">
                 <span class="result-label">QR Escaneado:</span>
                 <span class="result-value" id="resDebugText" style="font-size:0.9rem; color:#666; word-break:break-all;">—</span>
             </div>
         </div>
         
-        <button class="btn btn-warning hidden" id="btnForzar" onclick="forzarEntrada()">⚠️ Forzar Entrada</button>
         <button class="btn btn-dark" id="btnEscanearOtro">Escanear Siguiente</button>
     </div>
 
 <script>
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-gPI3L3BDO5zpaBCi0wp61UxVkXqKl-eWned_BTFzckhN2F2kUt4rQ/exec";
 const SECRET_KEY = "BodaAdrianaCesar2026"; 
-const CACHE_VERSION = "v4_tokens_final"; // Al cambiar esto, forzamos la descarga de la lista nueva en los celulares
+const CACHE_VERSION = "v5_sin_forzar"; // Actualizado para limpiar caché
 
 let html5QrCode;
 let escaneando = false;
 let invitadosCache = [];
-let registroTemporal = null;
 
-// FUNCIÓN DE NORMALIZACIÓN A PRUEBA DE FALLOS
 function normalizar(s) {
     if (!s) return "";
     let str = s.toString().toLowerCase();
@@ -231,14 +131,12 @@ function playSound(type) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // 1. Forzar limpieza de caché viejo
     const cachedVersion = localStorage.getItem("boda_invitados_version");
     if (cachedVersion !== CACHE_VERSION) {
         localStorage.removeItem("boda_invitados");
         localStorage.setItem("boda_invitados_version", CACHE_VERSION);
     }
 
-    // 2. Descargar datos frescos
     try {
         const resp = await fetch(SHEETS_API_URL + "?action=all&clave=" + SECRET_KEY);
         if (resp.ok) {
@@ -256,7 +154,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("offlineMsg").style.display = "block";
     }
     
-    // 3. Si falló el fetch, usar la caché (ya actualizada)
     if (invitadosCache.length === 0) {
         const cached = localStorage.getItem("boda_invitados");
         if (cached) invitadosCache = JSON.parse(cached);
@@ -270,7 +167,7 @@ function iniciarEscaner() {
     if (html5QrCode) return;
     html5QrCode = new Html5Qrcode("reader");
     html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, onScanSuccess, () => {}).catch(err => {
-        alert("No se pudo acceder a la cámara. Revisa los permisos de tu navegador.");
+        alert("No se pudo acceder a la cámara.");
     });
 }
 
@@ -280,7 +177,6 @@ async function procesarBoleto(textoEscaneado) {
 
     let textoLimpio = textoEscaneado.toString().trim().toUpperCase();
 
-    // BUSCAMOS POR TOKEN O POR NOMBRE IGNORANDO ESPACIOS Y MAYÚSCULAS
     let registro = invitadosCache.find(r => {
         let tokenDb = r["Token"] ? r["Token"].toString().trim().toUpperCase() : "";
         let nombreDb = r["Nombre"] ? normalizar(r["Nombre"]) : "";
@@ -289,7 +185,6 @@ async function procesarBoleto(textoEscaneado) {
         return (tokenDb !== "" && tokenDb === textoLimpio) || (nombreDb !== "" && nombreDb === nombreEscaneado);
     });
 
-    // Si no está en caché, buscar online
     if (!registro && navigator.onLine) {
         try {
             const resp = await fetch(SHEETS_API_URL + "?token=" + encodeURIComponent(textoEscaneado));
@@ -330,15 +225,10 @@ async function mostrarResultado(registro, textoEscaneado) {
     const rowAcomp = document.getElementById("resRowAcomp");
     const checkinTimeEl = document.getElementById("resCheckinTime");
     const rowCheckin = document.getElementById("resRowCheckin");
-    const btnForzar = document.getElementById("btnForzar");
     const debugEl = document.getElementById("resDebugText");
 
-    // Mostramos SIEMPRE qué texto se escaneó para depurar
     debugEl.innerText = `"${textoEscaneado}"`;
     
-    registroTemporal = registro;
-    btnForzar.classList.add("hidden");
-
     const esValido = registro && normalizar(registro["Asistencia"]).includes("si") && !normalizar(registro["Asistencia"]).includes("no");
     const yaTieneCheckin = registro && registro["Check-in"] && registro["Check-in"].toString().trim() !== "";
 
@@ -357,7 +247,6 @@ async function mostrarResultado(registro, textoEscaneado) {
             title.className = "result-title warning";
             checkinTimeEl.innerText = "Entró: " + registro["Check-in"];
             rowCheckin.style.display = "flex";
-            btnForzar.classList.remove("hidden"); 
         } else {
             playSound('success');
             icon.innerText = "✅";
@@ -384,42 +273,13 @@ async function mostrarResultado(registro, textoEscaneado) {
         nombreEl.innerText = registro ? registro["Nombre"] + " (No confirmó)" : "Código no reconocido";
         rowAcomp.style.display = "none";
         rowCheckin.style.display = "none";
-        
-        if (registro) btnForzar.classList.remove("hidden");
     }
     panel.style.display = "flex";
-}
-
-async function forzarEntrada() {
-    if (!registroTemporal) return;
-    const btnForzar = document.getElementById("btnForzar");
-    btnForzar.innerText = "Forzando...";
-
-    const horaActual = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-    registroTemporal["Check-in"] = horaActual + " (Forzado)";
-    localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
-
-    if (navigator.onLine) {
-        const formData = new FormData();
-        formData.append("action", "checkin");
-        formData.append("token", registroTemporal["Token"]);
-        formData.append("forzar", "true");
-        await fetch(SHEETS_API_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(e => console.log(e));
-    }
-    
-    document.getElementById("resIcon").innerText = "✅";
-    document.getElementById("resTitle").innerText = "FORZADO";
-    document.getElementById("resTitle").className = "result-title success";
-    document.getElementById("resCheckinTime").innerText = "Entró: " + horaActual;
-    document.getElementById("resRowCheckin").style.display = "flex";
-    btnForzar.classList.add("hidden");
-    playSound('success');
 }
 
 document.getElementById("btnEscanearOtro").addEventListener("click", () => {
     document.getElementById("resultPanel").style.display = "none";
     escaneando = false;
-    registroTemporal = null;
     if (html5QrCode) html5QrCode.resume();
 });
 </script>

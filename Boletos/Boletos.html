@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Boleto Digital - Adriana & César</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<!-- Librería del QR -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- NUEVA LIBRERÍA PARA CAPTURA DE PANTALLA EN MÓVILES -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+
 <style>
     @font-face { font-family: 'CommercialScriptBT'; src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype'); font-display: swap; }
     :root { 
@@ -93,6 +96,15 @@
         text-align: center;
         margin-bottom: 25px;
     }
+    
+    /* RAMO DE FLORES COMO IMAGEN */
+    .floral-bouquet {
+        display: block;
+        margin: 0 auto 10px auto;
+        width: 120px;
+        height: 70px;
+    }
+
     .guest-section .label {
         font-size: 0.7rem;
         letter-spacing: 2px;
@@ -215,16 +227,11 @@
     }
     .qr-container { display: flex; flex-direction: column; align-items: center; min-height: 160px; justify-content: center; }
     
-    /* TRUCO MAESTRO PARA HTML2CANVAS: Ocultar el canvas y mostrar solo la imagen */
+    /* Ocultamos el canvas y mostramos solo la imagen */
     #qrCanvas canvas { display: none !important; }
     #qrCanvas img { display: block; border-radius: 4px; }
     
     .qr-caption { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-top: 12px; font-weight: 700; }
-
-    .barcode { display: flex; justify-content: center; height: 30px; gap: 2px; margin: 15px 0 5px; opacity: 0.5; }
-    .barcode span { background: #1B2A47; height: 100%; width: 2px; }
-    .barcode span:nth-child(3n) { width: 4px; }
-    .barcode span:nth-child(4n) { width: 1px; }
 
     .msg { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; }
     .msg-err { background: var(--blush); color: var(--accent); }
@@ -264,6 +271,9 @@
                 <div class="ticket-body">
                     
                     <div class="guest-section">
+                        <!-- RAMO DE FLORES -->
+                        <img class="floral-bouquet" width="120" height="70" src="data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 100 70' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50,70 Q50,50 35,35 M50,70 Q50,50 65,35 M50,70 Q50,45 50,25' stroke='%235B7040' stroke-width='1.5' fill='none'/%3E%3Cpath d='M45,55 Q35,55 30,62 Q38,64 45,55' fill='%235B7040'/%3E%3Cpath d='M55,55 Q65,55 70,62 Q62,64 55,55' fill='%235B7040'/%3E%3Cpath d='M47,45 Q38,40 32,42 Q38,48 47,45' fill='%235B7040'/%3E%3Cpath d='M53,45 Q62,40 68,42 Q62,48 53,45' fill='%235B7040'/%3E%3Ccircle cx='35' cy='32' r='7' fill='%23B84F3E'/%3E%3Ccircle cx='65' cy='32' r='7' fill='%23B84F3E'/%3E%3Ccircle cx='50' cy='22' r='8' fill='%23B84F3E'/%3E%3Ccircle cx='35' cy='32' r='2.5' fill='%23D4AF37'/%3E%3Ccircle cx='65' cy='32' r='2.5' fill='%23D4AF37'/%3E%3Ccircle cx='50' cy='22' r='3' fill='%23D4AF37'/%3E%3Ccircle cx='43' cy='40' r='3.5' fill='%23FDF9F1' stroke='%23D4AF37' stroke-width='1'/%3E%3Ccircle cx='57' cy='40' r='3.5' fill='%23FDF9F1' stroke='%23D4AF37' stroke-width='1'/%3E%3Ccircle cx='50' cy='35' r='3' fill='%23FDF9F1' stroke='%23D4AF37' stroke-width='1'/%3E%3C/svg%3E" alt="Ramo">
+
                         <span class="label">Invitado Principal</span>
                         <h4 id="tNombre">—</h4>
                         <div class="companion-box" id="rowAcompanantes" style="display:none;">
@@ -301,9 +311,6 @@
                                 <span class="qr-caption">Escanea en la entrada</span>
                             </div>
                         </div>
-                        <div class="barcode">
-                            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-                        </div>
                     </div>
 
                     <div data-html2canvas-ignore="true" style="margin-top:20px;">
@@ -319,7 +326,6 @@
     <p class="footer">Desarrollado con ♥ por <a href="https://wa.me/5215650146406" target="_blank">MZG Systems</a></p>
 
 <script>
-// --- CONFIGURACIÓN ---
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-gPI3L3BDO5zpaBCi0wp61UxVkXqKl-eWned_BTFzckhN2F2kUt4rQ/exec";
 const NOMBRE_COL = "Nombre";
 const ASISTENCIA_COL = "Asistencia";
@@ -455,52 +461,67 @@ btnOtra.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
+// --- CAPTURA CON HTML-TO-IMAGE (LA SOLUCIÓN DEFINITIVA) ---
 async function generarYDescargarImagen() {
     const ticket = document.getElementById("ticket");
-    const qrImg = document.querySelector("#qrCanvas img");
+    const qrContainer = document.getElementById("qrCanvas");
     
-    // Verificamos que el QR exista
-    if (!qrImg) return;
+    // 1. Extraer el QR generado por la librería
+    const qrImg = qrContainer.querySelector("img");
+    const qrCanvas = qrContainer.querySelector("canvas");
+    let qrSrc = "";
+    
+    if (qrImg && qrImg.src) {
+        qrSrc = qrImg.src;
+    } else if (qrCanvas) {
+        qrSrc = qrCanvas.toDataURL("image/png");
+    }
 
-    // TRUCO: Esperamos a que la imagen del QR esté 100% cargada en memoria
-    await new Promise((resolve) => {
-        const tempImg = new Image();
-        tempImg.src = qrImg.src;
-        if (tempImg.complete) {
-            resolve();
-        } else {
-            tempImg.onload = resolve;
-        }
-    });
+    if (!qrSrc) {
+        alert("El código QR no está listo. Por favor espera un segundo e intenta de nuevo.");
+        return;
+    }
+
+    // Guardamos el HTML original para no romper la vista
+    const originalHTML = qrContainer.innerHTML;
+    // Reemplazamos el canvas por una imagen pura y dura
+    qrContainer.innerHTML = `<img src="${qrSrc}" style="width:160px; height:160px; display:block;">`;
 
     const divBotones = document.querySelector('[data-html2canvas-ignore="true"]');
     if(divBotones) divBotones.style.visibility = 'hidden';
 
-    // Pequeña pausa extra
-    await new Promise(r => setTimeout(r, 300));
+    // 2. Asegurarnos de que TODAS las imágenes (QR y Ramo) estén descargadas
+    const imagenes = ticket.querySelectorAll('img');
+    await Promise.all(Array.from(imagenes).map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => { img.onload = resolve; img.onerror = resolve; });
+    }));
+
+    // 3. Pequeña pausa para que el navegador pinte todo
+    await new Promise(r => setTimeout(r, 500));
     
     try {
-        const canvas = await html2canvas(ticket, { 
-            scale: 2.5, 
-            useCORS: true, 
-            allowTaint: true,
-            backgroundColor: "#FDF9F1",
-            logging: false
+        // 4. Usar html-to-image para la captura final
+        const dataUrl = await htmlToImage.toJpeg(ticket, {
+            quality: 0.95,
+            backgroundColor: '#FDF9F1',
+            pixelRatio: 2 // Alta definición pero sin agotar la memoria del celular
         });
-        
-        if(divBotones) divBotones.style.visibility = 'visible';
 
-        const imageData = canvas.toDataURL("image/jpeg", 0.95);
+        // 5. Descargar la imagen
         const link = document.createElement("a");
-        link.href = imageData;
+        link.href = dataUrl;
         link.download = `Pase_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.jpg`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
     } catch (error) {
         console.error("Error al generar la imagen:", error);
+        alert("Hubo un error al generar la imagen, pero el boleto se ve perfecto en pantalla.");
+    } finally {
         if(divBotones) divBotones.style.visibility = 'visible';
-        alert("Hubo un detalle al generar la imagen, pero el boleto se ve perfecto en pantalla.");
+        qrContainer.innerHTML = originalHTML; // Restaurar el QR visualmente
     }
 }
 
