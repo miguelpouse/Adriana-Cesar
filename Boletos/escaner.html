@@ -3,14 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Escáner de Boletos - Adriana & César</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Escáner - Adriana & César</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
 <style>
     @font-face { font-family: 'CommercialScriptBT'; src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype'); font-display: swap; }
     :root { --bg-color: #FDF9F1; --text-dark: #1B2A47; --accent: #B84F3E; --accent-alt: #5B7040; --gold: #D4AF37; --blush: #FDECEF; --white: #FFFFFF; }
@@ -31,6 +26,7 @@
     .manual-search button { background: var(--text-dark); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-weight: 700; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: var(--accent); color: white; padding: 14px 28px; border-radius: 6px; border: none; cursor: pointer; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: background-color .3s; width: 100%; margin-top: 10px; }
     .btn-dark { background-color: var(--text-dark); }
+    .btn-warning { background-color: #d97706; margin-top: 10px; }
     #resultPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; backdrop-filter: blur(5px); }
     .result-icon { font-size: 6rem; margin-bottom: 10px; line-height: 1; }
     .result-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
@@ -46,10 +42,10 @@
 </head>
 <body>
 
-    <div class="subtitle">Check-In</div>
+    <div class="subtitle">Check-In Seguro</div>
     <h1 class="hero-names">Adriana & César</h1>
     <div class="hero-line"></div>
-    <p id="offlineMsg" style="font-size: 0.8rem; color: var(--accent); font-weight: bold; display: none;">⚠️ Modo Offline activado (Usando memoria local)</p>
+    <p id="offlineMsg" style="font-size: 0.8rem; color: var(--accent); font-weight: bold; display: none;">⚠️ Modo Offline</p>
 
     <div class="scanner-card">
         <div id="reader"></div>
@@ -64,7 +60,7 @@
         <div class="result-title" id="resTitle">VÁLIDO</div>
         <div class="result-details">
             <div class="result-row">
-                <span class="result-label">Invitado Principal</span>
+                <span class="result-label">Invitado</span>
                 <span class="result-value" id="resNombre">—</span>
             </div>
             <div class="result-row" id="resRowAcomp">
@@ -76,16 +72,21 @@
                 <span class="result-value" id="resCheckinTime">—</span>
             </div>
         </div>
+        
+        <!-- Botón de Forzar Entrada (Solo aparece si es inválido o ya entró) -->
+        <button class="btn btn-warning hidden" id="btnForzar" onclick="forzarEntrada()">⚠️ Forzar Entrada</button>
+        
         <button class="btn btn-dark" id="btnEscanearOtro">Escanear Siguiente</button>
     </div>
 
 <script>
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-gPI3L3BDO5zpaBCi0wp61UxVkXqKl-eWned_BTFzckhN2F2kUt4rQ/exec";
+const SECRET_KEY = "BodaAdrianaCesar2026"; // 🔑 Clave para descargar lista
 let html5QrCode;
 let escaneando = false;
 let invitadosCache = [];
+let registroTemporal = null; // Para el botón de forzar
 
-// FUNCIÓN DE NORMALIZACIÓN A PRUEBA DE FALLOS
 function normalizar(s) {
     if (!s) return "";
     let str = s.toString().toLowerCase();
@@ -124,13 +125,16 @@ function playSound(type) {
 
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const resp = await fetch(SHEETS_API_URL + "?action=all");
+        const resp = await fetch(SHEETS_API_URL + "?action=all&clave=" + SECRET_KEY);
         if (resp.ok) {
             const text = await resp.text();
             if(!text.includes("<!DOCTYPE html>")) {
-                invitadosCache = JSON.parse(text);
-                localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
-                document.getElementById("offlineMsg").style.display = "none";
+                const data = JSON.parse(text);
+                if(data.result !== "error") {
+                    invitadosCache = data;
+                    localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
+                    document.getElementById("offlineMsg").style.display = "none";
+                }
             }
         }
     } catch (e) {
@@ -156,12 +160,13 @@ async function procesarBoleto(textoEscaneado) {
     if (escaneando) return;
     escaneando = true;
 
-    // Como el QR ya viene normalizado (sin acentos), esto hará match perfecto
-    let registro = invitadosCache.find(r => normalizar(r["Nombre"]) === normalizar(textoEscaneado));
+    // 1. Buscamos el Token en la caché
+    let registro = invitadosCache.find(r => r["Token"] === textoEscaneado);
 
+    // Si no está en caché, buscar online
     if (!registro && navigator.onLine) {
         try {
-            const resp = await fetch(SHEETS_API_URL + "?nombre=" + encodeURIComponent(textoEscaneado));
+            const resp = await fetch(SHEETS_API_URL + "?token=" + encodeURIComponent(textoEscaneado));
             const res = await resp.json();
             if (res.length > 0) {
                 registro = res[0];
@@ -185,7 +190,10 @@ function buscarManual() {
     if (!nombre) return;
     document.getElementById("manualInput").value = "";
     if (html5QrCode) html5QrCode.pause();
-    procesarBoleto(nombre);
+    
+    // Buscar por nombre en caché
+    let registro = invitadosCache.find(r => normalizar(r["Nombre"]) === normalizar(nombre));
+    mostrarResultado(registro, nombre);
 }
 
 async function mostrarResultado(registro, textoEscaneado) {
@@ -197,6 +205,10 @@ async function mostrarResultado(registro, textoEscaneado) {
     const rowAcomp = document.getElementById("resRowAcomp");
     const checkinTimeEl = document.getElementById("resCheckinTime");
     const rowCheckin = document.getElementById("resRowCheckin");
+    const btnForzar = document.getElementById("btnForzar");
+    
+    registroTemporal = registro;
+    btnForzar.classList.add("hidden");
 
     const esValido = registro && normalizar(registro["Asistencia"]).includes("si") && !normalizar(registro["Asistencia"]).includes("no");
     const yaTieneCheckin = registro && registro["Check-in"] && registro["Check-in"].toString().trim() !== "";
@@ -207,17 +219,16 @@ async function mostrarResultado(registro, textoEscaneado) {
         if (llevaAcomp && registro["Nombre de acompañante"]) {
             acompEl.innerText = registro["Nombre de acompañante"];
             rowAcomp.style.display = "flex";
-        } else {
-            rowAcomp.style.display = "none";
-        }
+        } else { rowAcomp.style.display = "none"; }
 
         if (yaTieneCheckin) {
             playSound('warning');
             icon.innerText = "⚠️";
             title.innerText = "YA REGISTRADO";
             title.className = "result-title warning";
-            checkinTimeEl.innerText = "Entró a las: " + registro["Check-in"];
+            checkinTimeEl.innerText = "Entró: " + registro["Check-in"];
             rowCheckin.style.display = "flex";
+            btnForzar.classList.remove("hidden"); // Permitir forzar si se requiere
         } else {
             playSound('success');
             icon.innerText = "✅";
@@ -232,7 +243,7 @@ async function mostrarResultado(registro, textoEscaneado) {
             if (navigator.onLine) {
                 const formData = new FormData();
                 formData.append("action", "checkin");
-                formData.append("nombre", registro["Nombre"]);
+                formData.append("token", registro["Token"]);
                 fetch(SHEETS_API_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(e => console.log(e));
             }
         }
@@ -241,16 +252,47 @@ async function mostrarResultado(registro, textoEscaneado) {
         icon.innerText = "❌";
         title.innerText = "INVÁLIDO";
         title.className = "result-title error";
-        nombreEl.innerText = registro ? registro["Nombre"] + " (No confirmó)" : `No encontrado: "${textoEscaneado}"`;
+        nombreEl.innerText = registro ? registro["Nombre"] + " (No confirmó)" : "Código no reconocido";
         rowAcomp.style.display = "none";
         rowCheckin.style.display = "none";
+        
+        // Si el QR es falso pero el recepcionista lo reconoce, puede forzar
+        if (registro) btnForzar.classList.remove("hidden");
     }
     panel.style.display = "flex";
+}
+
+// --- FORZAR ENTRADA (Mejora 5 aplicada aquí también) ---
+async function forzarEntrada() {
+    if (!registroTemporal) return;
+    const btnForzar = document.getElementById("btnForzar");
+    btnForzar.innerText = "Forzando...";
+
+    const horaActual = new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+    registroTemporal["Check-in"] = horaActual + " (Forzado)";
+    localStorage.setItem("boda_invitados", JSON.stringify(invitadosCache));
+
+    if (navigator.onLine) {
+        const formData = new FormData();
+        formData.append("action", "checkin");
+        formData.append("token", registroTemporal["Token"]);
+        formData.append("forzar", "true");
+        await fetch(SHEETS_API_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(e => console.log(e));
+    }
+    
+    document.getElementById("resIcon").innerText = "✅";
+    document.getElementById("resTitle").innerText = "FORZADO";
+    document.getElementById("resTitle").className = "result-title success";
+    document.getElementById("resCheckinTime").innerText = "Entró: " + horaActual;
+    document.getElementById("resRowCheckin").style.display = "flex";
+    btnForzar.classList.add("hidden");
+    playSound('success');
 }
 
 document.getElementById("btnEscanearOtro").addEventListener("click", () => {
     document.getElementById("resultPanel").style.display = "none";
     escaneando = false;
+    registroTemporal = null;
     if (html5QrCode) html5QrCode.resume();
 });
 </script>
