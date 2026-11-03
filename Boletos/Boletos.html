@@ -9,7 +9,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
     @font-face { font-family: 'CommercialScriptBT'; src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype'); font-display: swap; }
-    :root { --bg-color: #FDF9F1; --text-dark: #1B2A47; --accent: #B84F3E; --accent-alt: #5B7040; --gold: #D4AF37; --blush: #FDECEF; --white: #FFFFFF; }
+    :root { 
+        --bg-color: #FDF9F1; 
+        --text-dark: #1B2A47; 
+        --accent: #B84F3E; 
+        --accent-alt: #5B7040; 
+        --gold: #D4AF37; 
+        --blush: #FDECEF; 
+        --white: #FFFFFF; 
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background-color: var(--bg-color); color: var(--text-dark); text-align: center; font-family: 'Lato', sans-serif; font-weight: 300; font-size: 1.1rem; line-height: 1.7; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 30px 15px; }
     h1, h2, h3 { font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif; letter-spacing: 1px; }
@@ -20,7 +28,7 @@
     .subtitle { font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dark); opacity: 0.7; margin-bottom: 8px; }
     .hero-line { width: 50px; height: 1px; background-color: var(--gold); margin: 12px auto; opacity: 0.8; }
     
-    .card { background: white; border-radius: 16px; padding: 35px 25px; box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08); border: 1.5px solid var(--gold); width: 100%; max-width: 480px; margin-top: 25px; }
+    .card { background: white; border-radius: 16px; padding: 35px 25px; box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08); border: 1.5px solid var(--gold); width: 100%; max-width: 440px; margin-top: 25px; }
     .card::before { content: ''; display: block; height: 5px; margin: -35px -25px 25px -25px; border-radius: 16px 16px 0 0; background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold)); }
     label { display: block; text-align: left; font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; color: var(--text-dark); }
     input { width: 100%; padding: 14px 16px; border: 1px solid rgba(27, 42, 71, 0.2); border-radius: 10px; font-size: 1rem; font-family: 'Lato', sans-serif; transition: border-color .3s, box-shadow .3s; }
@@ -29,104 +37,133 @@
     .btn:hover { background-color: #9A4132; transform: translateY(-2px); }
     .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
     .btn-dark { background-color: var(--text-dark); }
-    .btn-dark:hover { background-color: #0F1829; }
     .btn-outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
-    .btn-outline:hover { background: var(--blush); }
-    #resultado { display: none; margin-top: 25px; width: 100%; max-width: 480px; }
+    #resultado { display: none; margin-top: 25px; width: 100%; max-width: 440px; }
 
     /* =========================================
-       DISEÑO DEL BOLETO TIPO TICKETMASTER / WALLET 
+       DISEÑO PREMIUM DEL BOLETO (ESTILO WALLET)
        ========================================= */
+    .ticket-wrapper { padding: 10px; } /* Espacio para la sombra */
+    
     .ticket { 
-        background: white; 
-        border-radius: 20px; 
-        box-shadow: 0 15px 40px rgba(27, 42, 71, 0.15); 
+        background: #FFFFFF; 
+        border-radius: 16px; 
+        box-shadow: 0 20px 40px rgba(27, 42, 71, 0.15), 0 0 0 1px rgba(212, 175, 55, 0.3); 
         position: relative; 
-        border: 1px solid #eaeaea;
         overflow: hidden;
     }
     
-    /* Cabecera del boleto */
+    /* Cabecera Azul Marino */
     .ticket-header { 
-        background: linear-gradient(135deg, var(--text-dark), #0F1829); 
+        background: linear-gradient(135deg, #1B2A47 0%, #0F1829 100%); 
         color: var(--white); 
-        padding: 30px 20px 25px; 
+        padding: 30px 20px; 
         text-align: center; 
         position: relative; 
     }
     .ticket-header::after {
         content: '';
         position: absolute;
-        bottom: -1px; left: 0; width: 100%; height: 4px;
+        bottom: 0; left: 0; width: 100%; height: 3px;
         background: linear-gradient(90deg, transparent, var(--gold), transparent);
     }
-    .ticket-header p.event-type {
-        font-size: 0.7rem;
-        letter-spacing: 4px;
-        text-transform: uppercase;
+    .badge {
+        display: inline-block;
+        background: rgba(212, 175, 55, 0.15);
         color: var(--gold);
-        margin-bottom: 8px;
+        border: 1px solid var(--gold);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
         font-weight: 700;
+        margin-bottom: 12px;
     }
     .ticket-header h3 { 
-        font-size: 2.5rem; 
+        font-size: 2.6rem; 
         color: var(--white); 
         line-height: 1; 
         margin-bottom: 5px;
     }
+    .ticket-header p { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; opacity: 0.8; }
 
     /* Cuerpo del boleto */
-    .ticket-body { padding: 25px 25px 15px; background: white; }
+    .ticket-body { padding: 25px; background: #FFFFFF; }
     
-    .attendee-section {
+    /* Sección del nombre del invitado (Estilo Pase de Abordar) */
+    .guest-section {
         text-align: center;
         margin-bottom: 25px;
     }
-    .attendee-section .label {
-        font-size: 0.65rem;
+    .guest-section .label {
+        font-size: 0.7rem;
         letter-spacing: 2px;
         text-transform: uppercase;
         color: #888;
         font-weight: 700;
         display: block;
-        margin-bottom: 4px;
+        margin-bottom: 5px;
     }
-    .attendee-section h4 {
-        font-size: 1.6rem;
+    .guest-section h4 {
+        font-size: 1.8rem;
         color: var(--text-dark);
         font-weight: 900;
         text-transform: uppercase;
-        line-height: 1.2;
-        margin-bottom: 10px;
+        line-height: 1.1;
+        margin-bottom: 15px;
+        letter-spacing: -0.5px;
     }
+
+    /* Caja de acompañantes */
     .companion-box {
         background: var(--bg-color);
-        padding: 10px 15px;
-        border-radius: 8px;
-        display: inline-block;
+        padding: 12px 15px;
+        border-radius: 10px;
+        border: 1px dashed var(--gold);
+        text-align: left;
         margin: 0 auto;
-        border: 1px dashed rgba(212, 175, 55, 0.5);
+        max-width: 90%;
     }
     .companion-box .label {
-        font-size: 0.6rem;
-        letter-spacing: 1px;
+        font-size: 0.65rem;
+        letter-spacing: 1.5px;
         color: var(--accent-alt);
         text-transform: uppercase;
         font-weight: 700;
         display: block;
-        margin-bottom: 2px;
+        margin-bottom: 5px;
+        text-align: center;
     }
-    .companion-box span { font-size: 1rem; font-weight: 700; color: var(--text-dark); }
+    .companion-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    }
+    .companion-list li {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 4px;
+    }
+    .companion-list li:last-child { margin-bottom: 0; }
+    .companion-list li::before {
+        content: '✦';
+        color: var(--gold);
+        margin-right: 8px;
+        font-size: 0.8rem;
+    }
 
-    /* Grid de detalles (Fecha, hora, lugar) */
+    /* Grid de Datos (Fecha, Lugar) */
     .event-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 15px;
-        border-top: 1px solid #f0f0f0;
-        border-bottom: 1px solid #f0f0f0;
+        border-top: 1px solid #F0F0F0;
+        border-bottom: 1px solid #F0F0F0;
         padding: 20px 0;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
     .grid-item { text-align: left; }
     .grid-item.full-width { grid-column: span 2; text-align: center; }
@@ -146,45 +183,49 @@
         line-height: 1.2;
         display: block;
     }
+    .grid-item .value small { display: block; font-weight: 400; font-size: 0.85rem; color: #555; margin-top: 2px; }
 
-    /* Sección del QR (Estilo talón desprendible) */
+    /* Sección del QR con recorte de ticket */
     .qr-section {
         position: relative;
-        padding: 20px 0 10px;
         text-align: center;
+        padding-top: 20px;
     }
+    /* Los semicírculos recortados */
     .qr-section::before, .qr-section::after {
         content: '';
         position: absolute;
-        top: 0;
-        width: 24px;
-        height: 24px;
+        top: -35px; /* Ajustado para alinearse con el borde */
+        width: 30px;
+        height: 30px;
         background: var(--bg-color);
         border-radius: 50%;
-        border: 1px solid #eaeaea;
+        border: 1px solid #F0F0F0;
+        z-index: 10;
     }
-    .qr-section::before { left: -37px; border-left-color: transparent; border-top-color: transparent; border-bottom-color: transparent; transform: rotate(45deg); }
-    .qr-section::after { right: -37px; border-right-color: transparent; border-top-color: transparent; border-bottom-color: transparent; transform: rotate(-45deg); }
+    .qr-section::before { left: -40px; }
+    .qr-section::after { right: -40px; }
     
     .dashed-line {
         position: absolute;
-        top: 0; left: 25px; right: 25px;
-        border-top: 2px dashed #e0e0e0;
+        top: 0; left: 0; right: 0;
+        border-top: 2px dashed #E0E0E0;
     }
 
-    .qr-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 15px;
-        min-height: 180px;
-        justify-content: center;
+    .qr-box {
+        display: inline-block;
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid #F0F0F0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     }
-    .qr-container img { border-radius: 8px; display: block; margin: 0 auto; }
-    .qr-caption { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-top: 10px; font-weight: 700; }
+    .qr-container { display: flex; flex-direction: column; align-items: center; min-height: 160px; justify-content: center; }
+    .qr-container img { display: block; border-radius: 4px; }
+    .qr-caption { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-top: 12px; font-weight: 700; }
 
     /* Código de barras decorativo */
-    .barcode { display: flex; justify-content: center; height: 30px; gap: 2px; margin: 15px 0 10px; opacity: 0.6; }
+    .barcode { display: flex; justify-content: center; height: 30px; gap: 2px; margin: 15px 0 5px; opacity: 0.5; }
     .barcode span { background: #1B2A47; height: 100%; width: 2px; }
     .barcode span:nth-child(3n) { width: 4px; }
     .barcode span:nth-child(4n) { width: 1px; }
@@ -217,61 +258,67 @@
     </div>
 
     <div id="resultado">
-        <!-- INICIO DEL NUEVO DISEÑO DEL TICKET -->
-        <div class="ticket" id="ticket">
-            <div class="ticket-header">
-                <p class="event-type">Invitación de Boda</p>
-                <h3>Adriana & César</h3>
-            </div>
-            <div class="ticket-body">
-                
-                <div class="attendee-section">
-                    <span class="label">Invitado Especial</span>
-                    <h4 id="tNombre">—</h4>
-                    <div class="companion-box" id="rowAcompanantes" style="display:none;">
-                        <span class="label">Acompañante(s)</span>
-                        <span id="tAcompanante">—</span>
-                    </div>
+        <div class="ticket-wrapper">
+            <!-- DISEÑO DEL BOLETO PREMIUM -->
+            <div class="ticket" id="ticket">
+                <div class="ticket-header">
+                    <div class="badge">Invitación de Boda</div>
+                    <h3>Adriana & César</h3>
+                    <p>Pase de Invitado</p>
                 </div>
+                <div class="ticket-body">
+                    
+                    <div class="guest-section">
+                        <span class="label">Invitado Principal</span>
+                        <h4 id="tNombre">—</h4>
+                        <div class="companion-box" id="rowAcompanantes" style="display:none;">
+                            <span class="label">Acompañante(s)</span>
+                            <ul class="companion-list" id="listaAcompanantes">
+                                <!-- Se llena dinámicamente -->
+                            </ul>
+                        </div>
+                    </div>
 
-                <div class="event-grid">
-                    <div class="grid-item">
-                        <span class="label">Fecha</span>
-                        <span class="value">Sáb, 14 Nov 2026</span>
+                    <div class="event-grid">
+                        <div class="grid-item">
+                            <span class="label">Fecha</span>
+                            <span class="value">Sábado<br>14 Nov 2026</span>
+                        </div>
+                        <div class="grid-item">
+                            <span class="label">Hora</span>
+                            <span class="value">4:00 PM</span>
+                        </div>
+                        <div class="grid-item full-width">
+                            <span class="label">Ceremonia</span>
+                            <span class="value">Catedral San Bernardino <small>4:00 PM</small></span>
+                        </div>
+                        <div class="grid-item full-width">
+                            <span class="label">Recepción</span>
+                            <span class="value">Salón Bamboo Xochimilco <small>5:30 PM</small></span>
+                        </div>
                     </div>
-                    <div class="grid-item">
-                        <span class="label">Hora</span>
-                        <span class="value">4:00 PM</span>
+
+                    <div class="qr-section">
+                        <div class="dashed-line"></div>
+                        <div class="qr-box">
+                            <div class="qr-container">
+                                <div id="qrCanvas"></div>
+                                <span class="qr-caption">Escanea en la entrada</span>
+                            </div>
+                        </div>
+                        <div class="barcode">
+                            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                        </div>
                     </div>
-                    <div class="grid-item full-width">
-                        <span class="label">Ceremonia</span>
-                        <span class="value">Catedral San Bernardino</span>
+
+                    <div data-html2canvas-ignore="true" style="margin-top:20px;">
+                        <button class="btn btn-dark" id="btnDescargar">Guardar Pase</button>
+                        <button class="btn btn-outline" id="btnOtra">Buscar otro</button>
                     </div>
-                    <div class="grid-item full-width">
-                        <span class="label">Recepción</span>
-                        <span class="value">Salón Bamboo Xochimilco</span>
-                    </div>
+
                 </div>
-
-                <div class="qr-section">
-                    <div class="dashed-line"></div>
-                    <div class="qr-container">
-                        <div id="qrCanvas"></div>
-                        <span class="qr-caption">Escanea en la entrada</span>
-                    </div>
-                    <div class="barcode">
-                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-                    </div>
-                </div>
-
-                <div data-html2canvas-ignore="true" style="margin-top:10px; padding-bottom:15px;">
-                    <button class="btn btn-dark" id="btnDescargar">Guardar Pase</button>
-                    <button class="btn btn-outline" id="btnOtra">Buscar otro</button>
-                </div>
-
             </div>
         </div>
-        <!-- FIN DEL NUEVO DISEÑO DEL TICKET -->
     </div>
 
     <p class="footer">Desarrollado con ♥ por <a href="https://wa.me/5215650146406" target="_blank">MZG Systems</a></p>
@@ -345,10 +392,21 @@ btnBuscar.addEventListener("click", async () => {
         datosActuales = { nombreReal, llevaAcomp, nombreAcomp };
 
         document.getElementById("tNombre").textContent = nombreReal;
-        const rowAcomp = document.getElementById("rowAcompanantes");
         
+        const rowAcomp = document.getElementById("rowAcompanantes");
+        const listaAcomp = document.getElementById("listaAcompanantes");
+        listaAcomp.innerHTML = ""; // Limpiar lista
+
         if (llevaAcomp && nombreAcomp) {
-            document.getElementById("tAcompanante").textContent = nombreAcomp;
+            // Separamos a los acompañantes por comas o "y" para hacer una lista bonita
+            let acompArray = nombreAcomp.split(/,| y /);
+            acompArray.forEach(function(nombre) {
+                if (nombre.trim() !== "") {
+                    let li = document.createElement("li");
+                    li.textContent = nombre.trim();
+                    listaAcomp.appendChild(li);
+                }
+            });
             rowAcomp.style.display = "block";
         } else { 
             rowAcomp.style.display = "none"; 
@@ -408,13 +466,12 @@ async function generarYDescargarImagen() {
     const ticket = document.getElementById("ticket");
     if (!document.querySelector("#qrCanvas img")) return;
 
-    // Ocultamos el botón temporalmente para que salga limpio en la foto
     const divBotones = document.querySelector('[data-html2canvas-ignore="true"]');
     if(divBotones) divBotones.style.visibility = 'hidden';
 
-    // Le damos un momento al navegador para procesar los cambios
     await new Promise(r => setTimeout(r, 100));
     
+    // Importante: El fondo debe ser transparente o igual al color de fondo de la página para que los recortes se vean bien
     const canvas = await html2canvas(ticket, { scale: 2.5, useCORS: true, backgroundColor: "#FDF9F1" });
     
     if(divBotones) divBotones.style.visibility = 'visible';
