@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Boleto Digital - Adriana & César</title>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
@@ -34,22 +34,160 @@
     .btn-outline:hover { background: var(--blush); }
     #resultado { display: none; margin-top: 25px; width: 100%; max-width: 480px; }
 
-    .ticket { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 40px rgba(27, 42, 71, 0.15); position: relative; border: 1px solid #eee; }
-    .ticket-header { background: linear-gradient(135deg, var(--text-dark), #0F1829); color: var(--white); padding: 35px 20px 30px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; position: relative; }
-    .ticket-header::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 100%; height: 20px; background-image: radial-gradient(circle, var(--bg-color) 10px, transparent 11px); background-size: 20px 20px; background-position: 0 0; }
-    .ticket-header h3 { font-size: 2.2rem; color: var(--gold); line-height: 1; margin-bottom: 5px; }
-    .ticket-header p { font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase; opacity: .85; }
-    .ticket-body { padding: 20px 30px 30px; background: white; }
-    .ticket-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
-    .ticket-row:last-of-type { border-bottom: none; }
-    .ticket-label { font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; color: #888; font-weight: 700; }
-    .ticket-value { font-weight: 700; color: var(--text-dark); font-size: 1.1rem; text-align: right; }
-    .qr-container { display: flex; flex-direction: column; align-items: center; margin: 25px 0 15px; min-height: 200px; justify-content: center; }
-    .qr-container img { border-radius: 10px; display: block; margin: 0 auto; }
-    .barcode { display: flex; justify-content: center; height: 40px; gap: 2px; margin-top: 15px; opacity: 0.8; }
+    /* =========================================
+       DISEÑO DEL BOLETO TIPO TICKETMASTER / WALLET 
+       ========================================= */
+    .ticket { 
+        background: white; 
+        border-radius: 20px; 
+        box-shadow: 0 15px 40px rgba(27, 42, 71, 0.15); 
+        position: relative; 
+        border: 1px solid #eaeaea;
+        overflow: hidden;
+    }
+    
+    /* Cabecera del boleto */
+    .ticket-header { 
+        background: linear-gradient(135deg, var(--text-dark), #0F1829); 
+        color: var(--white); 
+        padding: 30px 20px 25px; 
+        text-align: center; 
+        position: relative; 
+    }
+    .ticket-header::after {
+        content: '';
+        position: absolute;
+        bottom: -1px; left: 0; width: 100%; height: 4px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .ticket-header p.event-type {
+        font-size: 0.7rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+    .ticket-header h3 { 
+        font-size: 2.5rem; 
+        color: var(--white); 
+        line-height: 1; 
+        margin-bottom: 5px;
+    }
+
+    /* Cuerpo del boleto */
+    .ticket-body { padding: 25px 25px 15px; background: white; }
+    
+    .attendee-section {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .attendee-section .label {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #888;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 4px;
+    }
+    .attendee-section h4 {
+        font-size: 1.6rem;
+        color: var(--text-dark);
+        font-weight: 900;
+        text-transform: uppercase;
+        line-height: 1.2;
+        margin-bottom: 10px;
+    }
+    .companion-box {
+        background: var(--bg-color);
+        padding: 10px 15px;
+        border-radius: 8px;
+        display: inline-block;
+        margin: 0 auto;
+        border: 1px dashed rgba(212, 175, 55, 0.5);
+    }
+    .companion-box .label {
+        font-size: 0.6rem;
+        letter-spacing: 1px;
+        color: var(--accent-alt);
+        text-transform: uppercase;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 2px;
+    }
+    .companion-box span { font-size: 1rem; font-weight: 700; color: var(--text-dark); }
+
+    /* Grid de detalles (Fecha, hora, lugar) */
+    .event-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        border-top: 1px solid #f0f0f0;
+        border-bottom: 1px solid #f0f0f0;
+        padding: 20px 0;
+        margin-bottom: 20px;
+    }
+    .grid-item { text-align: left; }
+    .grid-item.full-width { grid-column: span 2; text-align: center; }
+    .grid-item .label {
+        font-size: 0.65rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #999;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 2px;
+    }
+    .grid-item .value {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        line-height: 1.2;
+        display: block;
+    }
+
+    /* Sección del QR (Estilo talón desprendible) */
+    .qr-section {
+        position: relative;
+        padding: 20px 0 10px;
+        text-align: center;
+    }
+    .qr-section::before, .qr-section::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 24px;
+        height: 24px;
+        background: var(--bg-color);
+        border-radius: 50%;
+        border: 1px solid #eaeaea;
+    }
+    .qr-section::before { left: -37px; border-left-color: transparent; border-top-color: transparent; border-bottom-color: transparent; transform: rotate(45deg); }
+    .qr-section::after { right: -37px; border-right-color: transparent; border-top-color: transparent; border-bottom-color: transparent; transform: rotate(-45deg); }
+    
+    .dashed-line {
+        position: absolute;
+        top: 0; left: 25px; right: 25px;
+        border-top: 2px dashed #e0e0e0;
+    }
+
+    .qr-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 15px;
+        min-height: 180px;
+        justify-content: center;
+    }
+    .qr-container img { border-radius: 8px; display: block; margin: 0 auto; }
+    .qr-caption { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-top: 10px; font-weight: 700; }
+
+    /* Código de barras decorativo */
+    .barcode { display: flex; justify-content: center; height: 30px; gap: 2px; margin: 15px 0 10px; opacity: 0.6; }
     .barcode span { background: #1B2A47; height: 100%; width: 2px; }
-    .barcode span:nth-child(even) { width: 4px; }
-    .qr-caption { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-top: 10px; text-align: center; }
+    .barcode span:nth-child(3n) { width: 4px; }
+    .barcode span:nth-child(4n) { width: 1px; }
 
     .msg { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; }
     .msg-err { background: var(--blush); color: var(--accent); }
@@ -79,43 +217,61 @@
     </div>
 
     <div id="resultado">
+        <!-- INICIO DEL NUEVO DISEÑO DEL TICKET -->
         <div class="ticket" id="ticket">
             <div class="ticket-header">
+                <p class="event-type">Invitación de Boda</p>
                 <h3>Adriana & César</h3>
-                <p>Pase de Invitado</p>
             </div>
             <div class="ticket-body">
-                <div class="ticket-row">
-                    <span class="ticket-label">Invitado</span>
-                    <span class="ticket-value" id="tNombre">—</span>
-                </div>
-                <div class="ticket-row">
-                    <span class="ticket-label">Fecha</span>
-                    <span class="ticket-value">Sáb 14 · Nov · 2026</span>
-                </div>
-                <div class="ticket-row">
-                    <span class="ticket-label">Lugar</span>
-                    <span class="ticket-value">Salón Bamboo</span>
-                </div>
-                <div class="ticket-row" id="rowAcompanantes">
-                    <span class="ticket-label">Acompañante</span>
-                    <span class="ticket-value" id="tAcompanante">—</span>
-                </div>
-
-                <div class="qr-container">
-                    <div id="qrCanvas"></div>
-                    <div class="barcode">
-                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                
+                <div class="attendee-section">
+                    <span class="label">Invitado Especial</span>
+                    <h4 id="tNombre">—</h4>
+                    <div class="companion-box" id="rowAcompanantes" style="display:none;">
+                        <span class="label">Acompañante(s)</span>
+                        <span id="tAcompanante">—</span>
                     </div>
-                    <span class="qr-caption">Muestra este código en la entrada</span>
                 </div>
 
-                <div data-html2canvas-ignore="true" style="margin-top:20px;">
+                <div class="event-grid">
+                    <div class="grid-item">
+                        <span class="label">Fecha</span>
+                        <span class="value">Sáb, 14 Nov 2026</span>
+                    </div>
+                    <div class="grid-item">
+                        <span class="label">Hora</span>
+                        <span class="value">4:00 PM</span>
+                    </div>
+                    <div class="grid-item full-width">
+                        <span class="label">Ceremonia</span>
+                        <span class="value">Catedral San Bernardino</span>
+                    </div>
+                    <div class="grid-item full-width">
+                        <span class="label">Recepción</span>
+                        <span class="value">Salón Bamboo Xochimilco</span>
+                    </div>
+                </div>
+
+                <div class="qr-section">
+                    <div class="dashed-line"></div>
+                    <div class="qr-container">
+                        <div id="qrCanvas"></div>
+                        <span class="qr-caption">Escanea en la entrada</span>
+                    </div>
+                    <div class="barcode">
+                        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+
+                <div data-html2canvas-ignore="true" style="margin-top:10px; padding-bottom:15px;">
                     <button class="btn btn-dark" id="btnDescargar">Guardar Pase</button>
                     <button class="btn btn-outline" id="btnOtra">Buscar otro</button>
                 </div>
+
             </div>
         </div>
+        <!-- FIN DEL NUEVO DISEÑO DEL TICKET -->
     </div>
 
     <p class="footer">Desarrollado con ♥ por <a href="https://wa.me/5215650146406" target="_blank">MZG Systems</a></p>
@@ -184,7 +340,6 @@ btnBuscar.addEventListener("click", async () => {
         const llevaAcomp = normalizar(registro[ACOMPANANTE_COL]).includes("si");
         const nombreAcomp = llevaAcomp ? (registro[NOMBRE_ACOMP_COL] || "Acompañante") : null;
         
-        // Usamos el Token. Si por alguna razón no existe, usamos el nombre normalizado
         const qrData = registro["Token"] ? registro["Token"] : normalizar(nombreReal);
 
         datosActuales = { nombreReal, llevaAcomp, nombreAcomp };
@@ -194,22 +349,24 @@ btnBuscar.addEventListener("click", async () => {
         
         if (llevaAcomp && nombreAcomp) {
             document.getElementById("tAcompanante").textContent = nombreAcomp;
-            rowAcomp.style.display = "flex";
-        } else { rowAcomp.style.display = "none"; }
+            rowAcomp.style.display = "block";
+        } else { 
+            rowAcomp.style.display = "none"; 
+        }
 
         const qrContainer = document.getElementById("qrCanvas");
-        qrContainer.innerHTML = ""; // Limpiamos el contenedor
+        qrContainer.innerHTML = "";
 
-        // AQUI ESTA LA MAGIA: Esperamos a que la libreria QR esté lista (hasta 3 segundos)
-        await new Promise((resolve, reject) => {
+        // Esperar a que cargue el QR
+        await new Promise((resolve) => {
             let attempts = 0;
             const checkQR = setInterval(() => {
                 if (typeof QRCode !== 'undefined') {
                     clearInterval(checkQR);
                     new QRCode(qrContainer, {
                         text: qrData,
-                        width: 180,
-                        height: 180,
+                        width: 160,
+                        height: 160,
                         colorDark : "#1B2A47",
                         colorLight : "#FFFFFF",
                         correctLevel : QRCode.CorrectLevel.H
@@ -217,8 +374,7 @@ btnBuscar.addEventListener("click", async () => {
                     resolve();
                 } else if (attempts > 30) {
                     clearInterval(checkQR);
-                    // Si falla, mostramos un mensaje de error pero no rompemos la app
-                    qrContainer.innerHTML = "<p style='color:red;font-size:12px;'>Error al cargar QR. Revisa tu internet.</p>";
+                    qrContainer.innerHTML = "<p style='color:red;font-size:12px;'>Error al cargar QR</p>";
                     resolve();
                 }
                 attempts++;
@@ -250,14 +406,23 @@ btnOtra.addEventListener("click", () => {
 
 async function generarYDescargarImagen() {
     const ticket = document.getElementById("ticket");
-    // Validar que el QR esté dibujado antes de tomar la foto
     if (!document.querySelector("#qrCanvas img")) return;
 
-    const canvas = await html2canvas(ticket, { scale: 2, useCORS: true, backgroundColor: null });
-    const imageData = canvas.toDataURL("image/png");
+    // Ocultamos el botón temporalmente para que salga limpio en la foto
+    const divBotones = document.querySelector('[data-html2canvas-ignore="true"]');
+    if(divBotones) divBotones.style.visibility = 'hidden';
+
+    // Le damos un momento al navegador para procesar los cambios
+    await new Promise(r => setTimeout(r, 100));
+    
+    const canvas = await html2canvas(ticket, { scale: 2.5, useCORS: true, backgroundColor: "#FDF9F1" });
+    
+    if(divBotones) divBotones.style.visibility = 'visible';
+
+    const imageData = canvas.toDataURL("image/jpeg", 0.95);
     const link = document.createElement("a");
     link.href = imageData;
-    link.download = `Pase_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.png`;
+    link.download = `Pase_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.jpg`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
