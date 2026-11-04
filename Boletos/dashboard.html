@@ -3,19 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - Adriana & César</title>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-<!-- Librerías para generar el PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+<title>Dashboard Premium - Adriana & César</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<!-- Librerías -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
 <style>
     @font-face { font-family: 'CommercialScriptBT'; src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype'); font-display: swap; }
     :root { --bg-color: #FDF9F1; --text-dark: #1B2A47; --accent: #B84F3E; --accent-alt: #5B7040; --gold: #D4AF37; --blush: #FDECEF; --white: #FFFFFF; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background-color: var(--bg-color); color: var(--text-dark); text-align: center; font-family: 'Lato', sans-serif; padding: 30px 15px; min-height: 100vh; }
-    h1 { font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif; font-size: 3rem; color: var(--accent); margin-bottom: 5px; }
-    .container { max-width: 800px; margin: 0 auto; }
+    h1 { font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif; font-size: 3.5rem; color: var(--accent); margin-bottom: 0; line-height: 1; }
+    .container { max-width: 900px; margin: 0 auto; }
     
     /* Login */
     #loginBox { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(27,42,71,0.1); max-width: 400px; margin: 50px auto; border: 1.5px solid var(--gold); }
@@ -24,33 +25,45 @@
     
     /* Dashboard */
     #dashboardContent { display: none; }
-    
-    /* Top Bar (Botones de acción) */
-    .top-bar { display: flex; justify-content: space-between; margin-bottom: 20px; }
+    .top-bar { display: flex; justify-content: space-between; margin-bottom: 20px; align-items: center; }
     .btn-action { padding: 10px 20px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; color: white; display: flex; align-items: center; gap: 8px; transition: transform 0.2s; }
     .btn-action:hover { transform: translateY(-2px); }
     .btn-pdf { background-color: var(--accent-alt); }
     .btn-logout { background-color: var(--accent); }
 
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 30px; }
-    .stat-card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-bottom: 4px solid var(--gold); }
-    .stat-card h3 { font-size: 0.9rem; text-transform: uppercase; color: #888; margin-bottom: 10px; letter-spacing: 1px; }
-    .stat-card .number { font-size: 3rem; font-weight: 900; color: var(--text-dark); line-height: 1; }
+    /* Grid de estadísticas */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
+    .stat-card { background: white; padding: 20px 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-bottom: 4px solid var(--gold); }
+    .stat-card h3 { font-size: 0.75rem; text-transform: uppercase; color: #888; margin-bottom: 5px; letter-spacing: 1px; }
+    .stat-card .number { font-size: 2.5rem; font-weight: 900; color: var(--text-dark); line-height: 1; }
     
-    .progress-container { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-bottom: 30px; text-align: left; }
-    .progress-bar { width: 100%; height: 20px; background: #eee; border-radius: 10px; overflow: hidden; margin-top: 10px; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-alt)); width: 0%; transition: width 1s ease; }
+    /* Sección de gráfico y feed */
+    .middle-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+    .chart-container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; height: 250px; }
+    .feed-container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: left; height: 250px; overflow-y: auto; }
+    .feed-container h3 { font-size: 1rem; color: var(--accent-alt); margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .feed-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 0.9rem; animation: fadeIn 0.5s ease; }
+    .feed-item:last-child { border-bottom: none; }
+    .feed-item .name { font-weight: 700; }
+    .feed-item .time { font-size: 0.75rem; background: #EEF3E6; color: var(--accent-alt); padding: 2px 8px; border-radius: 10px; font-weight: bold; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+    /* Tabs y Listas */
+    .list-container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: left; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; }
+    .tab-btn { padding: 10px 20px; background: none; border: none; font-size: 1rem; font-weight: 700; color: #888; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.3s; }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-content { display: none; max-height: 400px; overflow-y: auto; }
+    .tab-content.active { display: block; }
     
-    .list-container { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: left; }
-    .list-container h3 { font-size: 1.2rem; margin-bottom: 15px; color: var(--accent); border-bottom: 1px solid #eee; padding-bottom: 10px; }
     .guest-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #eee; font-size: 1rem; }
     .guest-item:last-child { border-bottom: none; }
     .guest-item .name { font-weight: 700; }
-    .guest-item .status { color: #d97706; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; }
-    .guest-item .status.in { color: #2e6b3e; }
-    
+    .guest-item .status { font-weight: bold; font-size: 0.85rem; text-transform: uppercase; }
+    .status.waiting { color: #d97706; }
+    .status.in { color: #2e6b3e; }
+
     #errorBox { display: none; background: #ffcccc; color: #cc0000; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; }
-    
     .footer-text { margin-top: 20px; font-size: 0.8rem; color: #999; }
 </style>
 </head>
@@ -60,7 +73,6 @@
         <h1>Adriana & César</h1>
         <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: #666; margin-bottom: 20px;">Panel de Control en Vivo</p>
 
-        <!-- MENSAJE DE ERROR -->
         <div id="errorBox"></div>
 
         <!-- LOGIN -->
@@ -73,11 +85,10 @@
         <!-- DASHBOARD -->
         <div id="dashboardContent">
             
-            <!-- BARRA DE BOTONES (No saldrá en el PDF) -->
             <div class="top-bar" id="actionButtons">
                 <button class="btn-action btn-pdf" onclick="descargarPDF()">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Descargar Resumen PDF
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Descargar Reporte PDF
                 </button>
                 <button class="btn-action btn-logout" onclick="cerrarSesion()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -96,7 +107,7 @@
                 </div>
                 <div class="stat-card">
                     <h3>Personas Adentro</h3>
-                    <div class="number" id="statDentro">0</div>
+                    <div class="number" id="statDentro" style="color: var(--accent-alt);">0</div>
                 </div>
                 <div class="stat-card" style="border-bottom-color: var(--accent);">
                     <h3>Por Llegar</h3>
@@ -104,16 +115,29 @@
                 </div>
             </div>
 
-            <div class="progress-container">
-                <h3 style="font-size: 0.9rem; text-transform: uppercase; color: #888;">Progreso de Entrada</h3>
-                <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
-                <p style="text-align: right; font-size: 0.8rem; margin-top: 5px; font-weight: bold;" id="progressText">0%</p>
+            <div class="middle-section">
+                <div class="chart-container">
+                    <canvas id="myChart"></canvas>
+                </div>
+                <div class="feed-container">
+                    <h3>Últimos ingresos</h3>
+                    <div id="liveFeed">
+                        <p style="color:#888; font-size:0.9rem;">Esperando ingresos...</p>
+                    </div>
+                </div>
             </div>
 
             <div class="list-container">
-                <h3>Lista de Espera (Aún no llegan)</h3>
-                <div id="listaEspera" style="max-height: 400px; overflow-y: auto;">
-                    <!-- Se llena con JS -->
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('tabWait', this)">Aún no llegan (<span id="countWait">0</span>)</button>
+                    <button class="tab-btn" onclick="switchTab('tabIn', this)">Ya están adentro (<span id="countIn">0</span>)</button>
+                </div>
+                
+                <div id="tabWait" class="tab-content active">
+                    <div id="listaEspera"></div>
+                </div>
+                <div id="tabIn" class="tab-content">
+                    <div id="listaAdentro"></div>
                 </div>
             </div>
             
@@ -126,7 +150,10 @@ const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-
 const SECRET_KEY = "BodaAdrianaCesar2026"; 
 const PASSWORD = "boda2026"; // 🔑 CAMBIA ESTA CONTRASEÑA
 
-// --- MANEJO DE SESIÓN ---
+let myChart = null;
+let globalData = [];
+
+// --- SESIÓN ---
 document.addEventListener("DOMContentLoaded", () => {
     if (localStorage.getItem("dashboardAuth") === "true") {
         mostrarDashboard();
@@ -136,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function login() {
     const pass = document.getElementById("passInput").value;
     if (pass === PASSWORD) {
-        localStorage.setItem("dashboardAuth", "true"); // Guarda la sesión
+        localStorage.setItem("dashboardAuth", "true");
         mostrarDashboard();
     } else {
         alert("Contraseña incorrecta");
@@ -147,7 +174,6 @@ function mostrarDashboard() {
     document.getElementById("loginBox").style.display = "none";
     document.getElementById("dashboardContent").style.display = "block";
     cargarDashboard();
-    // ACTUALIZACIÓN CADA 10 SEGUNDOS
     setInterval(cargarDashboard, 10000); 
 }
 
@@ -156,10 +182,11 @@ function cerrarSesion() {
     window.location.reload();
 }
 
-function mostrarError(msg) {
-    const errorBox = document.getElementById("errorBox");
-    errorBox.innerText = "⚠️ " + msg;
-    errorBox.style.display = "block";
+function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
 }
 
 function normalizar(s) {
@@ -175,40 +202,33 @@ async function cargarDashboard() {
     try {
         const url = SHEETS_API_URL + "?action=all&clave=" + SECRET_KEY + "&t=" + new Date().getTime();
         const resp = await fetch(url);
-        
-        if (!resp.ok) throw new Error("Error HTTP " + resp.status);
+        if (!resp.ok) throw new Error("Error HTTP");
         
         const text = await resp.text();
-        
         if (text.includes("accounts.google.com") || text.includes("<!DOCTYPE html>")) {
-            throw new Error("El Apps Script no es público. Ve a Implementar -> Gestionar Implementaciones.");
+            throw new Error("El Apps Script no es público.");
         }
 
         const data = JSON.parse(text);
-
-        if (data.result === "error") throw new Error("Error del servidor: " + data.message);
-        if (!Array.isArray(data) || data.length === 0) {
-            mostrarError("La hoja de Google está vacía.");
-            return;
-        }
+        if (data.result === "error") throw new Error(data.message);
 
         document.getElementById("errorBox").style.display = "none";
+        globalData = data;
 
         let totalConfirmados = 0;
         let totalPases = 0;
         let adentro = 0;
         let faltantes = [];
+        let llegaron = [];
 
         data.forEach(r => {
             const asistencia = normalizar(r["Asistencia"]);
-            
             if (asistencia.includes("si") && !asistencia.includes("no")) {
                 totalConfirmados++;
                 
                 let pases = 1;
                 const lleva = normalizar(r["Lleva acompañante"]);
                 const acomp = r["Nombre de acompañante"] || "";
-                
                 if (lleva.includes("si") && acomp) {
                     pases += acomp.split(/,| y /).filter(n => n.trim() !== "").length;
                 }
@@ -217,95 +237,195 @@ async function cargarDashboard() {
                 const checkin = r["Check-in"] ? r["Check-in"].toString().trim() : "";
                 if (checkin !== "") {
                     adentro += pases;
+                    llegaron.push({ nombre: r["Nombre"] || "Sin nombre", pases: pases, hora: checkin });
                 } else {
                     faltantes.push({ nombre: r["Nombre"] || "Sin nombre", pases: pases });
                 }
             }
         });
 
+        // Actualizar números
         document.getElementById("statTotal").innerText = totalConfirmados;
         document.getElementById("statPases").innerText = totalPases;
         document.getElementById("statDentro").innerText = adentro;
         document.getElementById("statFaltan").innerText = totalPases - adentro;
 
-        const pct = totalPases > 0 ? Math.round((adentro / totalPases) * 100) : 0;
-        document.getElementById("progressBar").style.width = pct + "%";
-        document.getElementById("progressText").innerText = pct + "%";
+        // Actualizar Gráfico
+        actualizarGrafico(adentro, totalPases - adentro);
 
-        const lista = document.getElementById("listaEspera");
-        lista.innerHTML = "";
-        if (faltantes.length === 0) {
-            lista.innerHTML = "<p style='text-align:center; color:#888;'>¡Todos han llegado!</p>";
-        } else {
-            faltantes.sort((a,b) => b.pases - a.pases);
-            faltantes.forEach(f => {
-                lista.innerHTML += `
-                    <div class="guest-item">
-                        <span class="name">${f.nombre}</span>
-                        <span class="status">Faltan ${f.pases} pases</span>
-                    </div>
-                `;
+        // Actualizar Listas (Tabs)
+        document.getElementById("countWait").innerText = faltantes.length;
+        document.getElementById("countIn").innerText = llegaron.length;
+
+        const listaW = document.getElementById("listaEspera");
+        listaW.innerHTML = "";
+        if (faltantes.length === 0) listaW.innerHTML = "<p style='color:#888;text-align:center;'>¡Todos han llegado!</p>";
+        else {
+            faltantes.sort((a,b) => b.pases - a.pases).forEach(f => {
+                listaW.innerHTML += `<div class="guest-item"><span class="name">${f.nombre}</span><span class="status waiting">Faltan ${f.pases} pases</span></div>`;
             });
         }
 
-        // Actualizar hora del último refresco
+        const listaI = document.getElementById("listaAdentro");
+        listaI.innerHTML = "";
+        if (llegaron.length === 0) listaI.innerHTML = "<p style='color:#888;text-align:center;'>Nadie ha entrado aún.</p>";
+        else {
+            llegaron.sort((a,b) => new Date(b.hora) - new Date(a.hora)).forEach(l => {
+                listaI.innerHTML += `<div class="guest-item"><span class="name">${l.nombre}</span><span class="status in">Ingresó: ${l.hora}</span></div>`;
+            });
+        }
+
+        // Actualizar Live Feed (Últimos 3 ingresos)
+        const feed = document.getElementById("liveFeed");
+        feed.innerHTML = "";
+        if (llegaron.length === 0) {
+            feed.innerHTML = "<p style='color:#888; font-size:0.9rem;'>Esperando ingresos...</p>";
+        } else {
+            llegaron.slice(0, 3).forEach(l => {
+                feed.innerHTML += `<div class="feed-item"><span class="name">${l.nombre}</span><span class="time">${l.hora}</span></div>`;
+            });
+        }
+
         const now = new Date();
         document.getElementById("lastUpdate").innerText = "Última actualización: " + now.toLocaleTimeString('es-MX');
 
     } catch (e) {
-        console.error("Error cargando dashboard:", e);
-        mostrarError(e.message);
+        console.error(e);
+        document.getElementById("errorBox").innerText = "⚠️ " + e.message;
+        document.getElementById("errorBox").style.display = "block";
     }
 }
 
-// --- DESCARGAR PDF ---
-async function descargarPDF() {
-    const elem = document.getElementById('dashboardContent');
-    const btnPdf = document.querySelector('.btn-pdf');
+// --- GRÁFICO ---
+function actualizarGrafico(dentro, faltan) {
+    const ctx = document.getElementById('myChart').getContext('2d');
     
-    // 1. Mostrar estado de carga
-    const originalText = btnPdf.innerHTML;
-    btnPdf.innerHTML = "Generando...";
-    btnPdf.disabled = true;
-
-    // 2. Ocultar los botones temporalmente para que no salgan en el PDF
-    const topBar = document.getElementById('actionButtons');
-    topBar.style.display = 'none';
-
-    try {
-        // 3. Generar la imagen del Dashboard (usando html-to-image para mayor compatibilidad)
-        const dataUrl = await htmlToImage.toPng(elem, { 
-            backgroundColor: '#FDF9F1',
-            pixelRatio: 2 
+    if (myChart) {
+        myChart.data.datasets[0].data = [dentro, faltan];
+        myChart.update();
+    } else {
+        myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Adentro', 'Por llegar'],
+                datasets: [{
+                    data: [dentro, faltan],
+                    backgroundColor: ['#5B7040', '#FDF9F1'],
+                    borderColor: ['#5B7040', '#D4AF37'],
+                    borderWidth: 2,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { family: 'Lato', size: 12, weight: 'bold' } } },
+                    title: { display: true, text: 'Estado de Ingreso', font: { family: 'Lato', size: 14, weight: 'bold' }, color: '#1B2A47' }
+                }
+            }
         });
-        
-        // 4. Crear el PDF
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgProps = pdf.getImageProperties(dataUrl);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-        // Si es muy largo, ajustar al alto de la hoja para que no se corte
-        if (pdfHeight > pdf.internal.pageSize.getHeight()) {
-            const ratio = pdf.internal.pageSize.getHeight() / imgProps.height;
-            const newWidth = imgProps.width * ratio;
-            pdf.addImage(dataUrl, 'PNG', (pdfWidth - newWidth) / 2, 0, newWidth, pdf.internal.pageSize.getHeight());
-        } else {
-            pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        }
-
-        pdf.save('Resumen_Boda_Adriana_Cesar.pdf');
-
-    } catch (err) {
-        console.error("Error generando PDF:", err);
-        alert("Hubo un error al generar el PDF.");
-    } finally {
-        // 5. Restaurar la vista normal
-        topBar.style.display = 'flex';
-        btnPdf.innerHTML = originalText;
-        btnPdf.disabled = false;
     }
+}
+
+// --- GENERAR PDF PROFESIONAL ---
+async function descargarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'letter');
+    const pageWidth = doc.internal.pageSize.getWidth();
+    
+    // 1. Encabezado
+    doc.setFont("times", "italic");
+    doc.setFontSize(32);
+    doc.setTextColor(184, 79, 62); // Terracota
+    doc.text("Adriana & César", pageWidth / 2, 20, { align: "center" });
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    const fecha = new Date().toLocaleString('es-MX');
+    doc.text(`Reporte generado el: ${fecha}`, pageWidth / 2, 28, { align: "center" });
+    
+    doc.setDrawColor(212, 175, 55); // Dorado
+    doc.setLineWidth(0.5);
+    doc.line(20, 32, pageWidth - 20, 32);
+
+    // 2. Resumen de estadísticas
+    doc.setFontSize(14);
+    doc.setTextColor(27, 42, 71); // Azul marino
+    doc.setFont("helvetica", "bold");
+    doc.text("Resumen General", 20, 45);
+
+    // Obtener datos de la pantalla
+    const totalPases = document.getElementById("statPases").innerText;
+    const adentro = document.getElementById("statDentro").innerText;
+    const faltan = document.getElementById("statFaltan").innerText;
+
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text(`• Pases emitidos en total: ${totalPases}`, 25, 55);
+    doc.text(`• Personas que ya ingresaron: ${adentro}`, 25, 62);
+    doc.text(`• Personas por llegar: ${faltan}`, 25, 69);
+
+    // 3. Tabla de "Aún no llegan"
+    doc.setFont("helvetica", "bold");
+    doc.text("Lista de Espera (Aún no llegan)", 20, 85);
+    
+    let faltantesData = [];
+    globalData.forEach(r => {
+        const asist = normalizar(r["Asistencia"]);
+        if (asist.includes("si") && !asist.includes("no") && (!r["Check-in"] || r["Check-in"].toString().trim() === "")) {
+            let pases = 1;
+            if (normalizar(r["Lleva acompañante"]).includes("si") && r["Nombre de acompañante"]) {
+                pases += r["Nombre de acompañante"].split(/,| y /).filter(n => n.trim() !== "").length;
+            }
+            faltantesData.push([r["Nombre"] || "Sin nombre", pases.toString()]);
+        }
+    });
+
+    doc.autoTable({
+        startY: 90,
+        head: [['Nombre del Invitado', 'Pases']],
+        body: faltantesData,
+        theme: 'striped',
+        headStyles: { fillColor: [184, 79, 62], fontStyle: 'bold' },
+        styles: { font: 'helvetica', fontSize: 10 }
+    });
+
+    // 4. Tabla de "Ya llegaron" (Si hay espacio o en la siguiente página)
+    let finalY = doc.lastAutoTable.finalY + 15;
+    if (finalY > 240) {
+        doc.addPage();
+        finalY = 20;
+    }
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Registro de Ingresos", 20, finalY);
+
+    let llegaronData = [];
+    globalData.forEach(r => {
+        const asist = normalizar(r["Asistencia"]);
+        if (asist.includes("si") && !asist.includes("no") && r["Check-in"] && r["Check-in"].toString().trim() !== "") {
+            let pases = 1;
+            if (normalizar(r["Lleva acompañante"]).includes("si") && r["Nombre de acompañante"]) {
+                pases += r["Nombre de acompañante"].split(/,| y /).filter(n => n.trim() !== "").length;
+            }
+            llegaronData.push([r["Nombre"] || "Sin nombre", pases.toString(), r["Check-in"].toString()]);
+        }
+    });
+
+    doc.autoTable({
+        startY: finalY + 5,
+        head: [['Nombre del Invitado', 'Pases', 'Hora de Ingreso']],
+        body: llegaronData,
+        theme: 'grid',
+        headStyles: { fillColor: [91, 112, 64], fontStyle: 'bold' }, // Verde Olivo
+        styles: { font: 'helvetica', fontSize: 10 }
+    });
+
+    // 5. Guardar
+    doc.save('Reporte_Boda_Adriana_Cesar.pdf');
 }
 </script>
 </body>
