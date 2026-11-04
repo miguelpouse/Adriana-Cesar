@@ -374,6 +374,7 @@ const resultado = document.getElementById("resultado");
 const searchCard = document.getElementById("searchCard");
 const btnOtra = document.getElementById("btnOtra");
 const btnDescargar = document.getElementById("btnDescargar");
+const btnCompartir = document.getElementById("btnCompartir");
 
 let datosActuales = null;
 
@@ -466,74 +467,100 @@ btnOtra.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-// --- CAPTURA CON HTML-TO-IMAGE (LA SOLUCIÓN DEFINITIVA) ---
-async function generarYDescargarImagen() {
+// --- FUNCIÓN MAESTRA PARA GENERAR LA IMAGEN (La usan Descargar y WhatsApp) ---
+async function obtenerImagenBlob() {
     const ticket = document.getElementById("ticket");
     const qrContainer = document.getElementById("qrCanvas");
     
-    // 1. Extraer el QR generado por la librería
+    // 1. Extraer el QR
     const qrImg = qrContainer.querySelector("img");
     const qrCanvas = qrContainer.querySelector("canvas");
     let qrSrc = "";
     
-    if (qrImg && qrImg.src) {
-        qrSrc = qrImg.src;
-    } else if (qrCanvas) {
-        qrSrc = qrCanvas.toDataURL("image/png");
-    }
+    if (qrImg && qrImg.src) qrSrc = qrImg.src;
+    else if (qrCanvas) qrSrc = qrCanvas.toDataURL("image/png");
 
-    if (!qrSrc) {
-        alert("El código QR no está listo. Por favor espera un segundo e intenta de nuevo.");
-        return;
-    }
+    if (!qrSrc) throw new Error("El código QR no está listo.");
 
-    // Guardamos el HTML original para no romper la vista
     const originalHTML = qrContainer.innerHTML;
-    // Reemplazamos el canvas por una imagen pura y dura
     qrContainer.innerHTML = `<img src="${qrSrc}" style="width:160px; height:160px; display:block;">`;
 
     const divBotones = document.querySelector('[data-html2canvas-ignore="true"]');
     if(divBotones) divBotones.style.visibility = 'hidden';
 
-    // 2. Asegurarnos de que TODAS las imágenes (QR y Ramo) estén descargadas
     const imagenes = ticket.querySelectorAll('img');
     await Promise.all(Array.from(imagenes).map(img => {
         if (img.complete) return Promise.resolve();
         return new Promise(resolve => { img.onload = resolve; img.onerror = resolve; });
     }));
 
-    // 3. Pequeña pausa para que el navegador pinte todo
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 300));
     
     try {
-        // 4. Usar html-to-image para la captura final
-        const dataUrl = await htmlToImage.toJpeg(ticket, {
+        // Generamos un archivo (Blob)
+        const blob = await htmlToImage.toBlob(ticket, {
             quality: 0.95,
             backgroundColor: '#FDF9F1',
-            pixelRatio: 2 // Alta definición pero sin agotar la memoria del celular
+            pixelRatio: 2 
         });
+        return blob;
+    } finally {
+        if(divBotones) divBotones.style.visibility = 'visible';
+        qrContainer.innerHTML = originalHTML;
+    }
+}
 
-        // 5. Descargar la imagen
+// --- BOTÓN DESCARGAR ---
+btnDescargar.addEventListener("click", async () => {
+    btnDescargar.innerHTML = '<span class="loader"></span> Generando...';
+    try {
+        const blob = await obtenerImagenBlob();
         const link = document.createElement("a");
-        link.href = dataUrl;
+        link.href = URL.createObjectURL(blob);
         link.download = `Pase_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.jpg`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
     } catch (error) {
-        console.error("Error al generar la imagen:", error);
-        alert("Hubo un error al generar la imagen, pero el boleto se ve perfecto en pantalla.");
+        alert("Hubo un error al generar la imagen.");
     } finally {
-        if(divBotones) divBotones.style.visibility = 'visible';
-        qrContainer.innerHTML = originalHTML; // Restaurar el QR visualmente
+        btnDescargar.innerHTML = 'Guardar Pase';
     }
-}
+});
 
-btnDescargar.addEventListener("click", async () => {
-    btnDescargar.innerHTML = 'Generando...';
-    await generarYDescargarImagen();
-    btnDescargar.innerHTML = 'Guardar Pase';
+// --- BOTÓN COMPARTIR POR WHATSAPP ---
+btnCompartir.addEventListener("click", async () => {
+    btnCompartir.innerHTML = '<span class="loader"></span> Preparando...';
+    try {
+        const blob = await obtenerImagenBlob();
+        const file = new File([blob], `Boleto_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.jpg`, { type: "image/jpeg" });
+
+        // Verificamos si el celular soporta compartir archivos nativamente
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                files: [file],
+                title: 'Mi Boleto - Adriana & César',
+                text: '¡Aquí está mi boleto para la boda!'
+            });
+        } else {
+            // Si estamos en PC o navegador viejo, descargamos y abrimos WhatsApp Web
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Boleto_${normalizar(datosActuales.nombreReal).replace(/\s/g,"_")}.jpg`;
+            link.click();
+            
+            setTimeout(() => {
+                window.open(`https://wa.me/?text=¡Aquí está mi boleto para la boda de Adriana y César! (Adjunto imagen)`, '_blank');
+            }, 800);
+        }
+    } catch (e) {
+        console.error(e);
+        if(e.name !== 'AbortError') alert("No se pudo compartir la imagen.");
+    } finally {
+        btnCompartir.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="margin-right:5px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654z"/></svg>
+            Compartir por WhatsApp`;
+    }
 });
 </script>
 </body>
