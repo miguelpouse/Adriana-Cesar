@@ -3,14 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Escáner de Boletos - Adriana & César</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Escáner - Adriana & César</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
 <style>
     @font-face { font-family: 'CommercialScriptBT'; src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype'); font-display: swap; }
     :root { --bg-color: #FDF9F1; --text-dark: #1B2A47; --accent: #B84F3E; --accent-alt: #5B7040; --gold: #D4AF37; --blush: #FDECEF; --white: #FFFFFF; }
@@ -23,17 +18,16 @@
     .hero-line { width: 50px; height: 1px; background-color: var(--gold); margin: 12px auto; opacity: 0.8; }
     .scanner-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(27, 42, 71, 0.08); border: 1.5px solid var(--gold); width: 100%; max-width: 480px; margin-top: 15px; }
     #reader { width: 100%; border-radius: 12px; overflow: hidden; border: 2px solid var(--text-dark); background: #000; margin-bottom: 15px; }
-    #reader__dashboard_section_csr button { display: none; }
-    #reader__dashboard_section_swaplink { display: none; }
-    #reader__filescan_input { display: none; }
+    #reader__dashboard_section_csr button, #reader__dashboard_section_swaplink, #reader__filescan_input { display: none; }
     .manual-search { display: flex; gap: 10px; margin-top: 15px; }
     .manual-search input { flex: 1; padding: 12px; border: 1px solid rgba(27,42,71,0.2); border-radius: 8px; font-size: 1rem; }
     .manual-search button { background: var(--text-dark); color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-weight: 700; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background-color: var(--accent); color: white; padding: 14px 28px; border-radius: 6px; border: none; cursor: pointer; font-size: 0.95rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; transition: background-color .3s; width: 100%; margin-top: 10px; }
     .btn-dark { background-color: var(--text-dark); }
     #resultPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; backdrop-filter: blur(5px); }
-    .result-icon { font-size: 6rem; margin-bottom: 10px; line-height: 1; }
-    .result-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
+    .result-icon { font-size: 5rem; margin-bottom: 5px; line-height: 1; }
+    .result-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; }
+    .result-pases { font-size: 1.2rem; font-weight: 700; color: var(--accent-alt); margin-bottom: 15px; text-transform: uppercase; background: #EEF3E6; display: inline-block; padding: 5px 15px; border-radius: 20px; }
     .result-details { background: white; padding: 20px 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid #eee; width: 100%; max-width: 400px; }
     .result-row { display: flex; flex-direction: column; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
     .result-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -42,6 +36,7 @@
     .success { color: #2e6b3e; }
     .error { color: var(--accent); }
     .warning { color: #d97706; }
+    .sync-status { font-size: 0.8rem; color: var(--accent); font-weight: bold; display: none; }
 </style>
 </head>
 <body>
@@ -49,7 +44,8 @@
     <div class="subtitle">Check-In Seguro</div>
     <h1 class="hero-names">Adriana & César</h1>
     <div class="hero-line"></div>
-    <p id="offlineMsg" style="font-size: 0.8rem; color: var(--accent); font-weight: bold; display: none;">⚠️ Modo Offline (Usando memoria local)</p>
+    <p id="offlineMsg" class="sync-status">⚠️ Modo Offline</p>
+    <p id="syncMsg" class="sync-status">🔄 Sincronizando datos...</p>
 
     <div class="scanner-card">
         <div id="reader"></div>
@@ -62,6 +58,7 @@
     <div id="resultPanel">
         <div class="result-icon" id="resIcon">✅</div>
         <div class="result-title" id="resTitle">VÁLIDO</div>
+        <div class="result-pases" id="resPases">PASE PARA 1 PERSONA</div>
         
         <div class="result-details">
             <div class="result-row">
@@ -76,10 +73,6 @@
                 <span class="result-label">Estado</span>
                 <span class="result-value" id="resCheckinTime">—</span>
             </div>
-            <div class="result-row" id="resRowDebug" style="border:none; background:#f9f9f9; border-radius:8px; margin-top:10px; padding:10px;">
-                <span class="result-label">QR Escaneado:</span>
-                <span class="result-value" id="resDebugText" style="font-size:0.9rem; color:#666; word-break:break-all;">—</span>
-            </div>
         </div>
         
         <button class="btn btn-dark" id="btnEscanearOtro">Escanear Siguiente</button>
@@ -88,18 +81,17 @@
 <script>
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-gPI3L3BDO5zpaBCi0wp61UxVkXqKl-eWned_BTFzckhN2F2kUt4rQ/exec";
 const SECRET_KEY = "BodaAdrianaCesar2026"; 
-const CACHE_VERSION = "v5_sin_forzar"; // Actualizado para limpiar caché
+const CACHE_VERSION = "v6_sync_final"; 
 
 let html5QrCode;
 let escaneando = false;
 let invitadosCache = [];
+let pendingCheckins = []; // Cola offline
 
 function normalizar(s) {
     if (!s) return "";
     let str = s.toString().toLowerCase();
-    str = str.replace(/[áàäâ]/g, "a").replace(/[éèëê]/g, "e").replace(/[íìïî]/g, "i")
-             .replace(/[óòöô]/g, "o").replace(/[úùüû]/g, "u").replace(/ñ/g, "n")
-             .replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+    str = str.replace(/[áàäâ]/g, "a").replace(/[éèëê]/g, "e").replace(/[íìïî]/g, "i").replace(/[óòöô]/g, "o").replace(/[úùüû]/g, "u").replace(/ñ/g, "n").replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
     return str;
 }
 
@@ -110,25 +102,52 @@ function playSound(type) {
         const gain = ctx.createGain();
         osc.connect(gain); gain.connect(ctx.destination);
         if(type === 'success') {
-            osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
-            gain.gain.setValueAtTime(0.5, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(800, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.5, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
             osc.start(); osc.stop(ctx.currentTime + 0.3);
         } else if (type === 'warning') {
-            osc.type = 'triangle'; osc.frequency.setValueAtTime(500, ctx.currentTime);
-            osc.frequency.setValueAtTime(400, ctx.currentTime + 0.15);
-            gain.gain.setValueAtTime(0.5, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(500, ctx.currentTime); osc.frequency.setValueAtTime(400, ctx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.5, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
             osc.start(); osc.stop(ctx.currentTime + 0.4);
         } else {
             osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, ctx.currentTime);
-            gain.gain.setValueAtTime(0.5, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+            gain.gain.setValueAtTime(0.5, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
             osc.start(); osc.stop(ctx.currentTime + 0.5);
         }
     } catch(e) {}
 }
+
+// --- LÓGICA DE SINCRONIZACIÓN OFFLINE ---
+function addPendingCheckin(token) {
+    if (!pendingCheckins.some(p => p.token === token)) {
+        pendingCheckins.push({ token: token, time: new Date().toLocaleString('es-MX') });
+        localStorage.setItem("boda_pending_checkins", JSON.stringify(pendingCheckins));
+    }
+}
+
+async function syncPending() {
+    if (!navigator.onLine || pendingCheckins.length === 0) return;
+    
+    document.getElementById("syncMsg").style.display = "block";
+    try {
+        const formData = new FormData();
+        formData.append("action", "sync_batch");
+        formData.append("batch", JSON.stringify(pendingCheckins));
+        
+        await fetch(SHEETS_API_URL, { method: 'POST', body: formData, mode: 'no-cors' });
+        
+        pendingCheckins = [];
+        localStorage.removeItem("boda_pending_checkins");
+        document.getElementById("syncMsg").style.display = "none";
+        document.getElementById("offlineMsg").style.display = "none";
+    } catch (e) {
+        console.log("Fallo al sincronizar, se reintentará luego.");
+        document.getElementById("syncMsg").style.display = "none";
+    }
+}
+
+window.addEventListener('online', syncPending);
+setInterval(syncPending, 30000); // Intenta sincronizar cada 30 segundos
 
 document.addEventListener("DOMContentLoaded", async () => {
     const cachedVersion = localStorage.getItem("boda_invitados_version");
@@ -136,6 +155,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         localStorage.removeItem("boda_invitados");
         localStorage.setItem("boda_invitados_version", CACHE_VERSION);
     }
+
+    const savedPending = localStorage.getItem("boda_pending_checkins");
+    if (savedPending) pendingCheckins = JSON.parse(savedPending);
 
     try {
         const resp = await fetch(SHEETS_API_URL + "?action=all&clave=" + SECRET_KEY);
@@ -160,6 +182,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (invitadosCache.length > 0) document.getElementById("offlineMsg").style.display = "block";
     }
     
+    syncPending(); // Intentar sincronizar pendientes al arrancar
     iniciarEscaner();
 });
 
@@ -181,7 +204,6 @@ async function procesarBoleto(textoEscaneado) {
         let tokenDb = r["Token"] ? r["Token"].toString().trim().toUpperCase() : "";
         let nombreDb = r["Nombre"] ? normalizar(r["Nombre"]) : "";
         let nombreEscaneado = normalizar(textoEscaneado);
-        
         return (tokenDb !== "" && tokenDb === textoLimpio) || (nombreDb !== "" && nombreDb === nombreEscaneado);
     });
 
@@ -211,7 +233,6 @@ function buscarManual() {
     if (!nombre) return;
     document.getElementById("manualInput").value = "";
     if (html5QrCode) html5QrCode.pause();
-    
     let registro = invitadosCache.find(r => normalizar(r["Nombre"]) === normalizar(nombre));
     mostrarResultado(registro, nombre);
 }
@@ -220,25 +241,36 @@ async function mostrarResultado(registro, textoEscaneado) {
     const panel = document.getElementById("resultPanel");
     const icon = document.getElementById("resIcon");
     const title = document.getElementById("resTitle");
+    const pasesEl = document.getElementById("resPases");
     const nombreEl = document.getElementById("resNombre");
     const acompEl = document.getElementById("resAcomp");
     const rowAcomp = document.getElementById("resRowAcomp");
     const checkinTimeEl = document.getElementById("resCheckinTime");
     const rowCheckin = document.getElementById("resRowCheckin");
-    const debugEl = document.getElementById("resDebugText");
 
-    debugEl.innerText = `"${textoEscaneado}"`;
-    
     const esValido = registro && normalizar(registro["Asistencia"]).includes("si") && !normalizar(registro["Asistencia"]).includes("no");
     const yaTieneCheckin = registro && registro["Check-in"] && registro["Check-in"].toString().trim() !== "";
 
     if (esValido) {
         nombreEl.innerText = registro["Nombre"];
+        
+        // CONTEO DE ACOMPAÑANTES Y PASES TOTALES
+        let totalPases = 1;
         const llevaAcomp = normalizar(registro["Lleva acompañante"]).includes("si");
-        if (llevaAcomp && registro["Nombre de acompañante"]) {
-            acompEl.innerText = registro["Nombre de acompañante"];
+        const acompTexto = registro["Nombre de acompañante"] || "";
+        
+        if (llevaAcomp && acompTexto) {
+            acompEl.innerText = acompTexto;
             rowAcomp.style.display = "flex";
-        } else { rowAcomp.style.display = "none"; }
+            // Contar nombres separados por comas
+            let acompList = acompTexto.split(/,| y /).filter(n => n.trim() !== "");
+            totalPases += acompList.length;
+        } else {
+            rowAcomp.style.display = "none";
+        }
+
+        pasesEl.innerText = totalPases === 1 ? "PASE PARA 1 PERSONA" : `PASE PARA ${totalPases} PERSONAS`;
+        pasesEl.style.display = "block";
 
         if (yaTieneCheckin) {
             playSound('warning');
@@ -262,7 +294,11 @@ async function mostrarResultado(registro, textoEscaneado) {
                 const formData = new FormData();
                 formData.append("action", "checkin");
                 formData.append("token", registro["Token"]);
-                fetch(SHEETS_API_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(e => console.log(e));
+                fetch(SHEETS_API_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(e => {
+                    addPendingCheckin(registro["Token"]); // Guardar si falla la red
+                });
+            } else {
+                addPendingCheckin(registro["Token"]); // Guardar si no hay red
             }
         }
     } else {
@@ -273,6 +309,7 @@ async function mostrarResultado(registro, textoEscaneado) {
         nombreEl.innerText = registro ? registro["Nombre"] + " (No confirmó)" : "Código no reconocido";
         rowAcomp.style.display = "none";
         rowCheckin.style.display = "none";
+        pasesEl.style.display = "none";
     }
     panel.style.display = "flex";
 }
