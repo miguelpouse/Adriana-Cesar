@@ -12,59 +12,94 @@
 
 <style>
     @font-face { font-family: 'CommercialScriptBT'; src: url('https://static.wfonts.com/data/2015/06/05/commercialscriptbt/CommercialScriptBT.ttf') format('truetype'); font-display: swap; }
-    :root { --bg-color: #FDF9F1; --text-dark: #1B2A47; --accent: #B84F3E; --accent-alt: #5B7040; --gold: #D4AF37; --blush: #FDECEF; --white: #FFFFFF; }
+    :root { 
+        --bg-color: #FDF9F1; 
+        --text-dark: #1B2A47; 
+        --accent: #B84F3E; 
+        --accent-alt: #5B7040; 
+        --gold: #D4AF37; 
+        --blush: #FDECEF; 
+        --white: #FFFFFF; 
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: var(--bg-color); color: var(--text-dark); text-align: center; font-family: 'Lato', sans-serif; padding: 30px 15px; min-height: 100vh; }
+    body { 
+        background-color: var(--bg-color); 
+        color: var(--text-dark); 
+        text-align: center; 
+        font-family: 'Lato', sans-serif; 
+        padding: 30px 15px; 
+        min-height: 100vh; 
+        background-image: radial-gradient(circle at top right, rgba(212, 175, 55, 0.05), transparent 40%),
+                          radial-gradient(circle at bottom left, rgba(184, 79, 62, 0.05), transparent 40%);
+    }
     h1 { font-family: 'CommercialScriptBT', 'Great Vibes', cursive, serif; font-size: 3.5rem; color: var(--accent); margin-bottom: 0; line-height: 1; }
     .container { max-width: 900px; margin: 0 auto; }
     
     /* Login */
-    #loginBox { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(27,42,71,0.1); max-width: 400px; margin: 50px auto; border: 1.5px solid var(--gold); }
-    #loginBox input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; text-align: center; }
-    #loginBox button { width: 100%; padding: 15px; background: var(--text-dark); color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
+    #loginBox { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 40px; border-radius: 16px; box-shadow: 0 15px 35px rgba(27,42,71,0.1); max-width: 400px; margin: 50px auto; border: 1px solid rgba(212, 175, 55, 0.4); }
+    #loginBox input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; text-align: center; background: rgba(255,255,255,0.9); }
+    #loginBox button { width: 100%; padding: 15px; background: var(--text-dark); color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: background 0.3s; }
+    #loginBox button:hover { background: #0F1829; }
     
-    /* Dashboard */
+    /* Dashboard Header */
     #dashboardContent { display: none; }
-    .top-bar { display: flex; justify-content: space-between; margin-bottom: 20px; align-items: center; }
-    .btn-action { padding: 10px 20px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; color: white; display: flex; align-items: center; gap: 8px; transition: transform 0.2s; }
-    .btn-action:hover { transform: translateY(-2px); }
+    .live-indicator { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; color: var(--accent-alt); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; background: #EEF3E6; padding: 4px 12px; border-radius: 20px; }
+    .live-dot { width: 8px; height: 8px; background: #2e6b3e; border-radius: 50%; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(46, 107, 62, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(46, 107, 62, 0); } 100% { box-shadow: 0 0 0 0 rgba(46, 107, 62, 0); } }
+
+    .top-bar { display: flex; justify-content: space-between; margin-bottom: 25px; align-items: center; }
+    .btn-action { padding: 12px 22px; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; color: white; display: flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .btn-action:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
     .btn-pdf { background-color: var(--accent-alt); }
     .btn-logout { background-color: var(--accent); }
 
     /* Grid de estadísticas */
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
-    .stat-card { background: white; padding: 20px 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-bottom: 4px solid var(--gold); transition: all 0.3s ease; }
-    .stat-card h3 { font-size: 0.75rem; text-transform: uppercase; color: #888; margin-bottom: 5px; letter-spacing: 1px; }
-    .stat-card .number { font-size: 2.5rem; font-weight: 900; color: var(--text-dark); line-height: 1; transition: color 0.3s; }
+    .stat-card { background: white; padding: 20px 15px; border-radius: 12px; box-shadow: 0 8px 20px rgba(27,42,71,0.06); border-top: 4px solid var(--gold); position: relative; overflow: hidden; }
+    .stat-card h3 { font-size: 0.75rem; text-transform: uppercase; color: #888; margin-bottom: 5px; letter-spacing: 1px; font-weight: 700; }
+    .stat-card .number { font-size: 2.8rem; font-weight: 900; color: var(--text-dark); line-height: 1; }
     
+    .stat-card:nth-child(1) { border-top-color: var(--gold); }
+    .stat-card:nth-child(2) { border-top-color: var(--text-dark); }
+    .stat-card:nth-child(3) { border-top-color: var(--accent-alt); }
+    .stat-card:nth-child(4) { border-top-color: var(--accent); }
+
     /* Sección de gráfico y feed */
     .middle-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
-    .chart-container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; height: 250px; }
-    .feed-container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: left; height: 250px; overflow-y: auto; }
-    .feed-container h3 { font-size: 1rem; color: var(--accent-alt); margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-    .feed-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 0.9rem; animation: fadeIn 0.5s ease; }
+    .chart-container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 8px 20px rgba(27,42,71,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; height: 260px; }
+    .feed-container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 8px 20px rgba(27,42,71,0.06); text-align: left; height: 260px; overflow-y: auto; }
+    .feed-container h3 { font-size: 1rem; color: var(--accent-alt); margin-bottom: 15px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .feed-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #eee; font-size: 0.9rem; animation: slideIn 0.4s ease; }
     .feed-item:last-child { border-bottom: none; }
-    .feed-item .name { font-weight: 700; }
-    .feed-item .time { font-size: 0.75rem; background: #EEF3E6; color: var(--accent-alt); padding: 2px 8px; border-radius: 10px; font-weight: bold; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+    .feed-item .name { font-weight: 700; color: var(--text-dark); }
+    .feed-item .time { font-size: 0.75rem; background: #EEF3E6; color: var(--accent-alt); padding: 3px 10px; border-radius: 12px; font-weight: bold; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
 
     /* Tabs y Listas */
-    .list-container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: left; }
-    .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; }
-    .tab-btn { padding: 10px 20px; background: none; border: none; font-size: 1rem; font-weight: 700; color: #888; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.3s; }
-    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-    .tab-content { display: none; max-height: 400px; overflow-y: auto; }
+    .list-container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 8px 20px rgba(27,42,71,0.06); text-align: left; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; background: #f4f4f4; padding: 5px; border-radius: 10px; width: fit-content; }
+    .tab-btn { padding: 10px 20px; background: none; border: none; font-size: 0.95rem; font-weight: 700; color: #888; cursor: pointer; border-radius: 8px; transition: all 0.3s; }
+    .tab-btn.active { background: white; color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .tab-content { display: none; max-height: 400px; overflow-y: auto; padding-right: 5px; }
     .tab-content.active { display: block; }
     
-    .guest-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #eee; font-size: 1rem; }
+    .guest-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 1rem; }
     .guest-item:last-child { border-bottom: none; }
-    .guest-item .name { font-weight: 700; }
-    .guest-item .status { font-weight: bold; font-size: 0.85rem; text-transform: uppercase; }
-    .status.waiting { color: #d97706; }
-    .status.in { color: #2e6b3e; }
+    .guest-item .name { font-weight: 700; color: var(--text-dark); }
+    .guest-item .status { font-weight: bold; font-size: 0.8rem; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; }
+    .status.waiting { color: var(--accent); background: var(--blush); }
+    .status.in { color: var(--accent-alt); background: #EEF3E6; }
 
-    #errorBox { display: none; background: #ffcccc; color: #cc0000; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; }
+    #errorBox { display: none; background: var(--blush); color: var(--accent); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; border: 1px solid rgba(184,79,62,0.2); }
     .footer-text { margin-top: 20px; font-size: 0.8rem; color: #999; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .stats-grid { grid-template-columns: 1fr 1fr; }
+        .middle-section { grid-template-columns: 1fr; }
+        .top-bar { flex-direction: column; gap: 10px; }
+        .btn-action { width: 100%; justify-content: center; }
+    }
 </style>
 </head>
 <body>
@@ -77,7 +112,7 @@
 
         <!-- LOGIN -->
         <div id="loginBox">
-            <h2 style="margin-bottom: 20px;">Ingresar</h2>
+            <h2 style="margin-bottom: 20px; font-family: 'CommercialScriptBT', serif; font-size: 2rem; color: var(--accent);">Ingresar</h2>
             <input type="password" id="passInput" placeholder="Contraseña del evento" onkeypress="if(event.key==='Enter') login()">
             <button onclick="login()">Entrar</button>
         </div>
@@ -85,6 +120,8 @@
         <!-- DASHBOARD -->
         <div id="dashboardContent">
             
+            <div class="live-indicator"><div class="live-dot"></div> En vivo</div>
+
             <div class="top-bar" id="actionButtons">
                 <button class="btn-action btn-pdf" onclick="descargarPDF()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
@@ -109,7 +146,7 @@
                     <h3>Personas Adentro</h3>
                     <div class="number" id="statDentro" style="color: var(--accent-alt);">0</div>
                 </div>
-                <div class="stat-card" style="border-bottom-color: var(--accent);">
+                <div class="stat-card">
                     <h3>Por Llegar</h3>
                     <div class="number" id="statFaltan" style="color: var(--accent);">0</div>
                 </div>
@@ -120,9 +157,13 @@
                     <canvas id="myChart"></canvas>
                 </div>
                 <div class="feed-container" id="feedContainer">
-                    <h3>Últimos ingresos</h3>
+                    <h3>
+                        <!-- NUEVO ICONO (Persona con check) -->
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                        Últimas llegadas
+                    </h3>
                     <div id="liveFeed">
-                        <p style="color:#888; font-size:0.9rem;">Esperando ingresos...</p>
+                        <p style="color:#888; font-size:0.9rem;">Esperando llegadas...</p>
                     </div>
                 </div>
             </div>
@@ -148,11 +189,11 @@
 <script>
 const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbzi70YReZnI0ImM-gPI3L3BDO5zpaBCi0wp61UxVkXqKl-eWned_BTFzckhN2F2kUt4rQ/exec";
 const SECRET_KEY = "BodaAdrianaCesar2026"; 
-const PASSWORD = "boda2026"; // 🔑 CONTRASEÑA DEL DASHBOARD
+const PASSWORD = "boda2026"; // 🔑 CONTRASEÑA
 
 let myChart = null;
 let globalData = [];
-let lastDataString = ""; // Para evitar parpadeos si no hay datos nuevos
+let lastDataString = ""; 
 
 document.addEventListener("DOMContentLoaded", () => {
     if (localStorage.getItem("dashboardAuth") === "true") {
@@ -198,6 +239,16 @@ function normalizar(s) {
     return str;
 }
 
+function obtenerAcompanantes(r) {
+    const lleva = normalizar(r["Lleva acompañante"]);
+    const acomp = r["Nombre de acompañante"] || "";
+    if (lleva.includes("si") && acomp) {
+        let list = acomp.split(/,| y /).filter(n => n.trim() !== "").map(n => n.trim());
+        return list;
+    }
+    return [];
+}
+
 async function cargarDashboard() {
     try {
         const url = SHEETS_API_URL + "?action=all&clave=" + SECRET_KEY + "&t=" + new Date().getTime();
@@ -214,8 +265,6 @@ async function cargarDashboard() {
 
         document.getElementById("errorBox").style.display = "none";
         
-        // --- TRUCO ANTI-PARPADEO: Comparar datos ---
-        // Si los datos son exactamente iguales a los anteriores, no hacemos nada visualmente
         const dataString = JSON.stringify(data);
         if (dataString === lastDataString) {
             const now = new Date();
@@ -236,45 +285,36 @@ async function cargarDashboard() {
             if (asistencia.includes("si") && !asistencia.includes("no")) {
                 totalConfirmados++;
                 
-                let pases = 1;
-                const lleva = normalizar(r["Lleva acompañante"]);
-                const acomp = r["Nombre de acompañante"] || "";
-                if (lleva.includes("si") && acomp) {
-                    pases += acomp.split(/,| y /).filter(n => n.trim() !== "").length;
-                }
+                const acompList = obtenerAcompanantes(r);
+                let pases = 1 + acompList.length;
                 totalPases += pases;
 
                 const checkin = r["Check-in"] ? r["Check-in"].toString().trim() : "";
                 if (checkin !== "") {
                     adentro += pases;
-                    llegaron.push({ nombre: r["Nombre"] || "Sin nombre", pases: pases, hora: checkin });
+                    llegaron.push({ nombre: r["Nombre"] || "Sin nombre", acomp: acompList, pases: pases, hora: checkin });
                 } else {
-                    faltantes.push({ nombre: r["Nombre"] || "Sin nombre", pases: pases });
+                    faltantes.push({ nombre: r["Nombre"] || "Sin nombre", acomp: acompList, pases: pases });
                 }
             }
         });
 
-        // Actualizar números con una pequeña transición
         document.getElementById("statTotal").innerText = totalConfirmados;
         document.getElementById("statPases").innerText = totalPases;
         document.getElementById("statDentro").innerText = adentro;
         document.getElementById("statFaltan").innerText = totalPases - adentro;
 
-        // Actualizar Gráfico de forma fluida
         actualizarGrafico(adentro, totalPases - adentro);
 
-        // --- ACTUALIZAR LISTAS SIN PERDER EL SCROLL ---
         document.getElementById("countWait").innerText = faltantes.length;
         document.getElementById("countIn").innerText = llegaron.length;
 
         const listaW = document.getElementById("listaEspera");
         const listaI = document.getElementById("listaAdentro");
         
-        // Guardar posición del scroll actual
         const scrollW = listaW.scrollTop;
         const scrollI = listaI.scrollTop;
 
-        // Construir HTML en memoria
         let htmlW = "";
         if (faltantes.length === 0) htmlW = "<p style='color:#888;text-align:center;'>¡Todos han llegado!</p>";
         else {
@@ -288,22 +328,17 @@ async function cargarDashboard() {
         if (llegaron.length === 0) htmlI = "<p style='color:#888;text-align:center;'>Nadie ha entrado aún.</p>";
         else {
             llegaron.sort((a,b) => new Date(b.hora) - new Date(a.hora)).forEach(l => {
-                htmlI += `<div class="guest-item"><span class="name">${l.nombre}</span><span class="status in">Ingresó: ${l.hora}</span></div>`;
+                htmlI += `<div class="guest-item"><span class="name">${l.nombre}</span><span class="status in">Llegó: ${l.hora}</span></div>`;
             });
         }
         listaI.innerHTML = htmlI;
 
-        // Restaurar posición del scroll para que no "salte" la pantalla
         listaW.scrollTop = scrollW;
         listaI.scrollTop = scrollI;
 
-        // Actualizar Live Feed
         const feed = document.getElementById("liveFeed");
-        const feedContainer = document.getElementById("feedContainer");
-        const feedScroll = feedContainer.scrollTop;
-
         if (llegaron.length === 0) {
-            feed.innerHTML = "<p style='color:#888; font-size:0.9rem;'>Esperando ingresos...</p>";
+            feed.innerHTML = "<p style='color:#888; font-size:0.9rem;'>Esperando llegadas...</p>";
         } else {
             let htmlFeed = "";
             llegaron.slice(0, 5).forEach(l => {
@@ -311,7 +346,6 @@ async function cargarDashboard() {
             });
             feed.innerHTML = htmlFeed;
         }
-        feedContainer.scrollTop = feedScroll;
 
         const now = new Date();
         document.getElementById("lastUpdate").innerText = "Última actualización: " + now.toLocaleTimeString('es-MX');
@@ -323,13 +357,12 @@ async function cargarDashboard() {
     }
 }
 
-// --- GRÁFICO FLUIDO ---
 function actualizarGrafico(dentro, faltan) {
     const ctx = document.getElementById('myChart').getContext('2d');
     
     if (myChart) {
         myChart.data.datasets[0].data = [dentro, faltan];
-        myChart.update('none'); // 'none' evita que el gráfico haga una animación brusca
+        myChart.update('none');
     } else {
         myChart = new Chart(ctx, {
             type: 'doughnut',
@@ -346,103 +379,150 @@ function actualizarGrafico(dentro, faltan) {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '70%',
-                animation: { duration: 0 }, // Sin animación para evitar saltos
+                cutout: '75%',
+                animation: { duration: 0 },
                 plugins: {
-                    legend: { position: 'bottom', labels: { font: { family: 'Lato', size: 12, weight: 'bold' } } },
-                    title: { display: true, text: 'Estado de Ingreso', font: { family: 'Lato', size: 14, weight: 'bold' }, color: '#1B2A47' }
+                    legend: { position: 'bottom', labels: { font: { family: 'Lato', size: 12, weight: 'bold' }, padding: 20 } },
+                    title: { display: true, text: 'Estado de Ingreso', font: { family: 'Lato', size: 14, weight: 'bold' }, color: '#1B2A47', padding: {bottom: 10} }
                 }
             }
         });
     }
 }
 
-// --- GENERAR PDF PROFESIONAL ---
+// --- GENERAR PDF PROFESIONAL (CORREGIDO) ---
 async function descargarPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'mm', 'letter');
     const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
     
+    // 1. ENCABEZADO ELEGANTE
     doc.setFont("times", "italic");
-    doc.setFontSize(32);
-    doc.setTextColor(184, 79, 62);
-    doc.text("Adriana & César", pageWidth / 2, 20, { align: "center" });
+    doc.setFontSize(36);
+    doc.setTextColor(184, 79, 62); // Terracota
+    doc.text("Adriana & César", pageWidth / 2, 25, { align: "center" });
     
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
     const fecha = new Date().toLocaleString('es-MX');
-    doc.text(`Reporte generado el: ${fecha}`, pageWidth / 2, 28, { align: "center" });
+    doc.text(`Reporte generado el: ${fecha}`, pageWidth / 2, 33, { align: "center" });
     
-    doc.setDrawColor(212, 175, 55);
-    doc.setLineWidth(0.5);
-    doc.line(20, 32, pageWidth - 20, 32);
+    doc.setDrawColor(212, 175, 55); // Dorado
+    doc.setLineWidth(0.8);
+    doc.line(20, 38, pageWidth - 20, 38);
 
-    doc.setFontSize(14);
-    doc.setTextColor(27, 42, 71);
-    doc.setFont("helvetica", "bold");
-    doc.text("Resumen General", 20, 45);
-
+    // 2. RECUADRO DE RESUMEN (Texto alineado para evitar encimarse)
     const totalPases = document.getElementById("statPases").innerText;
     const adentro = document.getElementById("statDentro").innerText;
     const faltan = document.getElementById("statFaltan").innerText;
 
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    doc.text(`• Pases emitidos en total: ${totalPases}`, 25, 55);
-    doc.text(`• Personas que ya ingresaron: ${adentro}`, 25, 62);
-    doc.text(`• Personas por llegar: ${faltan}`, 25, 69);
+    doc.setFillColor(253, 249, 241); // Fondo crema
+    doc.roundedRect(20, 48, pageWidth - 40, 35, 3, 3, 'F');
+    doc.setDrawColor(212, 175, 55);
+    doc.setLineWidth(0.3);
+    doc.roundedRect(20, 48, pageWidth - 40, 35, 3, 3, 'S');
 
+    doc.setFontSize(14);
+    doc.setTextColor(27, 42, 71);
     doc.setFont("helvetica", "bold");
-    doc.text("Lista de Espera (Aún no llegan)", 20, 85);
+    doc.text("Resumen del Evento", pageWidth / 2, 56, { align: "center" });
+
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
     
+    // Pases emitidos (Izquierda)
+    doc.setTextColor(27, 42, 71);
+    doc.text(`Pases emitidos: ${totalPases}`, 25, 67);
+    
+    // Ya ingresaron (Centro)
+    doc.setTextColor(91, 112, 64); // Verde Olivo
+    doc.text(`Ya adentro: ${adentro}`, pageWidth / 2, 67, { align: "center" });
+    
+    // Por llegar (Derecha)
+    doc.setTextColor(184, 79, 62); // Terracota
+    doc.text(`Por llegar: ${faltan}`, pageWidth - 25, 67, { align: "right" });
+
+    // 3. TABLA 1: LISTA DE ESPERA
+    doc.setFontSize(14);
+    doc.setTextColor(27, 42, 71);
+    doc.setFont("helvetica", "bold");
+    doc.text("Invitados por Llegar", 20, 100);
+
     let faltantesData = [];
     globalData.forEach(r => {
         const asist = normalizar(r["Asistencia"]);
         if (asist.includes("si") && !asist.includes("no") && (!r["Check-in"] || r["Check-in"].toString().trim() === "")) {
-            let pases = 1;
-            if (normalizar(r["Lleva acompañante"]).includes("si") && r["Nombre de acompañante"]) {
-                pases += r["Nombre de acompañante"].split(/,| y /).filter(n => n.trim() !== "").length;
-            }
-            faltantesData.push([r["Nombre"] || "Sin nombre", pases.toString()]);
+            const acompList = obtenerAcompanantes(r);
+            let pases = 1 + acompList.length;
+            let acompTexto = acompList.length > 0 ? acompList.join(", ") : "—";
+            faltantesData.push([r["Nombre"] || "Sin nombre", acompTexto, pases.toString()]);
         }
     });
 
     doc.autoTable({
-        startY: 90,
-        head: [['Nombre del Invitado', 'Pases']],
+        startY: 105,
+        head: [['Invitado Principal', 'Acompañantes', 'Pases']],
         body: faltantesData,
-        theme: 'striped',
-        headStyles: { fillColor: [184, 79, 62], fontStyle: 'bold' },
-        styles: { font: 'helvetica', fontSize: 10 }
+        theme: 'grid',
+        headStyles: { fillColor: [184, 79, 62], fontStyle: 'bold', fontSize: 11 },
+        bodyStyles: { fontSize: 10, textColor: [50, 50, 50] },
+        alternateRowStyles: { fillColor: [253, 249, 241] },
+        columnStyles: {
+            0: { cellWidth: '40%' },
+            1: { cellWidth: '45%' },
+            2: { cellWidth: '15%', halign: 'center', fontStyle: 'bold' }
+        },
+        margin: { left: 20, right: 20 }
     });
 
+    // 4. TABLA 2: REGISTRO DE LLEGADAS
     let finalY = doc.lastAutoTable.finalY + 15;
-    if (finalY > 240) { doc.addPage(); finalY = 20; }
+    if (finalY > 230) { doc.addPage(); finalY = 20; }
 
+    doc.setFontSize(14);
+    doc.setTextColor(27, 42, 71);
     doc.setFont("helvetica", "bold");
-    doc.text("Registro de Ingresos", 20, finalY);
+    doc.text("Registro de Llegadas (Adentro)", 20, finalY);
 
     let llegaronData = [];
     globalData.forEach(r => {
         const asist = normalizar(r["Asistencia"]);
         if (asist.includes("si") && !asist.includes("no") && r["Check-in"] && r["Check-in"].toString().trim() !== "") {
-            let pases = 1;
-            if (normalizar(r["Lleva acompañante"]).includes("si") && r["Nombre de acompañante"]) {
-                pases += r["Nombre de acompañante"].split(/,| y /).filter(n => n.trim() !== "").length;
-            }
-            llegaronData.push([r["Nombre"] || "Sin nombre", pases.toString(), r["Check-in"].toString()]);
+            const acompList = obtenerAcompanantes(r);
+            let pases = 1 + acompList.length;
+            let acompTexto = acompList.length > 0 ? acompList.join(", ") : "—";
+            llegaronData.push([r["Nombre"] || "Sin nombre", acompTexto, pases.toString(), r["Check-in"].toString()]);
         }
     });
 
     doc.autoTable({
         startY: finalY + 5,
-        head: [['Nombre del Invitado', 'Pases', 'Hora de Ingreso']],
+        head: [['Invitado Principal', 'Acompañantes', 'Pases', 'Hora de Llegada']],
         body: llegaronData,
         theme: 'grid',
-        headStyles: { fillColor: [91, 112, 64], fontStyle: 'bold' },
-        styles: { font: 'helvetica', fontSize: 10 }
+        headStyles: { fillColor: [91, 112, 64], fontStyle: 'bold', fontSize: 11 },
+        bodyStyles: { fontSize: 10, textColor: [50, 50, 50] },
+        alternateRowStyles: { fillColor: [240, 245, 235] },
+        columnStyles: {
+            0: { cellWidth: '35%' },
+            1: { cellWidth: '35%' },
+            2: { cellWidth: '12%', halign: 'center', fontStyle: 'bold' },
+            3: { cellWidth: '18%', halign: 'center' }
+        },
+        margin: { left: 20, right: 20 }
     });
+
+    // 5. PIE DE PÁGINA
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        doc.text(`Página ${i} de ${pageCount}`, pageWidth / 2, pageHeight - 10, { align: "center" });
+        doc.text("Adriana & César - 14 de Noviembre de 2026", 20, pageHeight - 10);
+    }
 
     doc.save('Reporte_Boda_Adriana_Cesar.pdf');
 }
